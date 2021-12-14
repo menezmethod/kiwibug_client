@@ -1,15 +1,20 @@
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, ChangeEvent } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import EditIcon from '@mui/icons-material/Edit';
-import axios, { AxiosResponse } from 'axios';
+// import { RouteComponentProps } from 'react-router-dom';
 import { User } from '../types';
 import { Button, Paper, styled } from '@mui/material';
 
-import UserDataService from "../api/UserService";
+import UserDataService from '../api/UserService';
 
-// import { DeleteUser } from './DeleteUser';
+// interface RouterProps {
+//   // type for `match.params`
+//   id: string; // must be type `string` since value comes from the URL
+// }
+
+// type Props = RouteComponentProps<RouterProps>;
 
 const ControlButtons = styled(Paper)({
   padding: 8,
@@ -21,21 +26,32 @@ const UserButtons = styled(Button)({
 });
 
 export const UsersList = () => {
+  const initialUserState = {
+    employeeName: '',
+    employeeEmail: '',
+    employeeRole: '',
+    username: '',
+    createdOn: null,
+    createdBy: '',
+    modifiedOn: null,
+    modifiedBy: '',
+    projectName: '',
+  };
   const [userData, setUserData] = useState<User[]>([]);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   useEffect(() => {
-    // axios.get<User[]>('http://localhost:8080/employees').then((response: AxiosResponse) => {
-    //   setUserData(response.data);
-    // });
     retrieveUsers();
+    console.log(selectionModel);
+
   }, [selectionModel]);
 
   const retrieveUsers = () => {
     UserDataService.getAll()
       .then((response: any) => {
         setUserData(response.data);
-        console.log(response.data);
+        // console.log(response.data);
+
       })
       .catch((e: Error) => {
         console.log(e);
@@ -52,7 +68,14 @@ export const UsersList = () => {
 
   const handleDeleteUser = () => {
     console.log('Deleting: ' + selectionModel);
-    axios.delete('http://localhost:8080/employees/' + selectionModel);
+    UserDataService.remove(selectionModel)
+      .then((response: any) => {
+        console.log(response.data);
+        // props.history.push('/employees');
+      })
+      .catch((e: Error) => {
+        console.log(e);
+      });
   };
 
   const handleEdit = () => {};

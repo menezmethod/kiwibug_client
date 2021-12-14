@@ -18,6 +18,7 @@
     "react": "latest",
     "react-dom": "latest",
     "react-query": "^3.34.2",
+    "react-router-dom": "^6.1.1",
     "react-scripts": "latest",
     "styled-components": "latest"
   },
