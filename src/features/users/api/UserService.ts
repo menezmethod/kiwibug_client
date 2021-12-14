@@ -18,6 +18,10 @@ const update = (id: any, data: User) => {
   return axios.put<any>(`/employees/${id}`, data);
 };
 
+const assignProjectToEmployee = (employeeId: any, projectId: any, data: User) => {
+  return axios.put<any>(`/${employeeId}/projects/${projectId}`, data);
+};
+
 const remove = (id: any) => {
   return axios.delete<any>(`/employees/${id}`);
 };
@@ -35,6 +39,7 @@ const UserService = {
   get,
   create,
   update,
+  assignProjectToEmployee,
   remove,
   removeAll,
   findByTitle,
