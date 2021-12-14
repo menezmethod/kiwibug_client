@@ -1,12 +1,12 @@
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import IssueForm from './features/issues/components/IssueForm';
+import { UsersList } from './features/users/components/UsersList';
 
 export default function App() {
   return (
     <Container>
       <Box>
-        <IssueForm />
+        <UsersList />
       </Box>
     </Container>
   );

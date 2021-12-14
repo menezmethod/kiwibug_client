@@ -7,6 +7,8 @@ import axios, { AxiosResponse } from 'axios';
 import { User } from '../types';
 import { Button, Paper, styled } from '@mui/material';
 
+import UserDataService from "../api/UserService";
+
 // import { DeleteUser } from './DeleteUser';
 
 const ControlButtons = styled(Paper)({
@@ -23,10 +25,22 @@ export const UsersList = () => {
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   useEffect(() => {
-    axios.get<User[]>('http://localhost:8080/employees').then((response: AxiosResponse) => {
-      setUserData(response.data);
-    });
+    // axios.get<User[]>('http://localhost:8080/employees').then((response: AxiosResponse) => {
+    //   setUserData(response.data);
+    // });
+    retrieveUsers();
   }, [selectionModel]);
+
+  const retrieveUsers = () => {
+    UserDataService.getAll()
+      .then((response: any) => {
+        setUserData(response.data);
+        console.log(response.data);
+      })
+      .catch((e: Error) => {
+        console.log(e);
+      });
+  };
 
   // if (usersQuery.isLoading) {
   //   return (
