@@ -3,7 +3,7 @@ import { BaseEntity } from '@/types';
 export type User = {
   employeeName: string;
   employeeEmail: string;
-  employeeRole: 'CEO' | 'MANAGER' | 'LEAD' | 'MEMBER';
+  role: 'ADMIN' | 'MANAGER' | 'LEAD' | 'USER';
   username: string;
   createdOn: Date;
   createdBy: string;

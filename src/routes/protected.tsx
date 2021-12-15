@@ -6,10 +6,10 @@ import { MainLayout } from '@/components/Layout/MainLayout';
 import { Box } from '@mui/material';
 import { lazyImport } from '@/utils/lazyimports';
 
-const { Dashboard } = lazyImport(() => import('@/features/misc'), 'Dashboard');
-const { ProjectsRoutes } = lazyImport(() => import('@/features/projects'), 'ProjectsRoutes');
-const { IssuesRoutes } = lazyImport(() => import('@/features/issues'), 'IssuesRoutes');
-const { Users } = lazyImport(() => import('@/features/users'), 'Users');
+const { Dashboard } = lazyImport({ factory: () => import('@/features/misc'), name: 'Dashboard' });
+const { ProjectsRoutes } = lazyImport({ factory: () => import('@/features/projects'), name: 'ProjectsRoutes' });
+const { IssuesRoutes } = lazyImport({ factory: () => import('@/features/issues'), name: 'IssuesRoutes' });
+const { Users } = lazyImport({ factory: () => import('@/features/users'), name: 'Users' });
 
 const App = () => {
   return (
