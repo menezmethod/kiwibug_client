@@ -63,10 +63,10 @@ export default function AddProject() {
             <FormControl component="fieldset">
               <FormLabel component="legend">Role</FormLabel>
               <RadioGroup row aria-label="Role" name="row-radio-buttons-group">
-                <FormControlLabel value="CEO" control={<Radio />} label="CEO" />
+                <FormControlLabel value="admin" control={<Radio />} label="Admin" />
                 <FormControlLabel value="manager" control={<Radio />} label="Manager" />
                 <FormControlLabel value="lead" control={<Radio />} label="Lead" />
-                <FormControlLabel value="member" control={<Radio />} label="Member" />
+                <FormControlLabel value="user" control={<Radio />} label="User" />
               </RadioGroup>
             </FormControl>
           </Item>

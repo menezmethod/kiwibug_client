@@ -5,7 +5,11 @@ import BugReportIcon from '@mui/icons-material/BugReport';
 import EditIcon from '@mui/icons-material/Edit';
 import axios, { AxiosResponse } from 'axios';
 import { Issue } from '../types';
-import { Button, Paper, styled } from '@mui/material';
+import { Box, Button, Modal, Paper, styled } from '@mui/material';
+
+import IssueDataService from '../api/IssueService';
+import IssueForm from './IssueForm';
+import React from 'react';
 
 
 // import { DeleteIssue } from './DeleteIssue';
@@ -19,15 +23,47 @@ const IssueButtons = styled(Button)({
   margin: 6,
 });
 
+const userModalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '85vw',
+  bgcolor: 'background.paper',
+  border: '0px solid #000',
+  boxShadow: 24,
+  overflow: 'scroll',
+  p: 4,
+};
+
+const DataGridIssue = styled(DataGrid)({
+  border:'0',
+  marginTop:'-4vh'
+});
+
+
 export const IssuesList = () => {
+  const [open, setOpen] = React.useState(false);
   const [issueData, setIssueData] = useState<Issue[]>([]);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   useEffect(() => {
-    axios.get<Issue[]>('http://localhost:8080/issues').then((response: AxiosResponse) => {
-      setIssueData(response.data);
-    });
+    retrieveIssues();
+    console.log(selectionModel);
+
   }, [selectionModel]);
+
+  const retrieveIssues = () => {
+    IssueDataService.getAll()
+      .then((response: any) => {
+        setIssueData(response.data);
+        // console.log(response.data);
+
+      })
+      .catch((e: Error) => {
+        console.log(e);
+      });
+  };
 
   // if (issuesQuery.isLoading) {
   //   return (
@@ -39,12 +75,21 @@ export const IssuesList = () => {
 
   const handleDeleteIssue = () => {
     console.log('Deleting: ' + selectionModel);
-    axios.delete('http://localhost:8080/issues/' + selectionModel);
+    IssueDataService.remove(selectionModel)
+      .then((response: any) => {
+        console.log(response.data);
+      })
+      .catch((e: Error) => {
+        console.log(e);
+      });
   };
+
 
   const handleEdit = () => {};
 
-  const handleClose = () => {};
+  const handleOpen = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
 
   const handleSubmit = () => {};
 
@@ -114,12 +159,12 @@ export const IssuesList = () => {
     },
   ];
   return (
-    <div style={{ height: '71vh', width: '100%' }}>
-      <DataGrid
+    <div style={{ height: '75vh', width: '100%' }}>
+      <DataGridIssue
         rows={issueData}
         columns={issueColumns}
         pageSize={5}
-        getRowId={(row) => row.issuesId}
+        getRowId={(row: { issuesId: any; }) => row.issuesId}
         rowsPerPageOptions={[5]}
         components={{
           Toolbar: GridToolbar,
@@ -143,7 +188,7 @@ export const IssuesList = () => {
         selectionModel={selectionModel}
       />
       <ControlButtons elevation={0}>
-        <IssueButtons onClick={handleEdit} variant="outlined" startIcon={<BugReportIcon />}>
+        <IssueButtons onClick={handleOpen} variant="outlined" startIcon={<BugReportIcon />}>
           Add Issue
         </IssueButtons>
         {selectionModel && selectionModel.length ? (
@@ -167,6 +212,17 @@ export const IssuesList = () => {
           ''
         )}
       </ControlButtons>
+      <Modal
+        keepMounted
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <Box sx={userModalStyle}>
+          <IssueForm />
+        </Box>
+      </Modal>
     </div>
   );
 };

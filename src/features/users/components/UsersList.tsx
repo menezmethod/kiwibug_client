@@ -5,9 +5,11 @@ import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import EditIcon from '@mui/icons-material/Edit';
 // import { RouteComponentProps } from 'react-router-dom';
 import { User } from '../types';
-import { Button, Paper, styled } from '@mui/material';
+import { Box, Button, Modal, Paper, styled } from '@mui/material';
 
 import UserDataService from '../api/UserService';
+import UserForm from './UserForm';
+import React from 'react';
 
 // interface RouterProps {
 //   // type for `match.params`
@@ -20,15 +22,34 @@ const ControlButtons = styled(Paper)({
   padding: 8,
   textAlign: 'right',
 });
+
+const DataGridUser = styled(DataGrid)({
+  border:'0',
+  marginTop:'-4vh'
+});
+
 const UserButtons = styled(Button)({
   padding: 10,
   margin: 6,
 });
 
+const userModalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '80vw',
+  bgcolor: 'background.paper',
+  border: '0px solid #000',
+  boxShadow: 24,
+  // overflow: 'scroll',
+  p: 4,
+};
+
 export const UsersList = () => {
   const initialUserState = {
     employeeName: '',
-    employeeEmail: '',
+    email: '',
     employeeRole: '',
     username: '',
     createdOn: null,
@@ -37,13 +58,13 @@ export const UsersList = () => {
     modifiedBy: '',
     projectName: '',
   };
+  const [open, setOpen] = React.useState(false);
   const [userData, setUserData] = useState<User[]>([]);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   useEffect(() => {
     retrieveUsers();
     console.log(selectionModel);
-
   }, [selectionModel]);
 
   const retrieveUsers = () => {
@@ -51,7 +72,6 @@ export const UsersList = () => {
       .then((response: any) => {
         setUserData(response.data);
         // console.log(response.data);
-
       })
       .catch((e: Error) => {
         console.log(e);
@@ -80,14 +100,38 @@ export const UsersList = () => {
 
   const handleEdit = () => {};
 
-  const handleClose = () => {};
-
   const handleSubmit = () => {};
 
+  const handleOpen = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
+
   function getAssignedProject(params: { row: { assignedProjects: { projectName: any } } }) {
+    if (params.row.assignedProjects === null) {
+      return 'Unassigned';
+    }
     return `${params.row.assignedProjects.projectName}`;
   }
 
+  // function getRole(params: { row: { roles: { b: string; }[]; }; }) {
+  //   (params.row.roles.map((item: { b: string; }, i: any)=> {
+
+  //   });
+  // }
+
+  function getRole(params: { row: { roles: { name: any; }[]; }; }) {
+    let theRole = params.row.roles[0].name;
+    switch(theRole) {
+      case 'ROLE_USER':
+        return 'User';
+      case 'ROLE_MANAGER':
+        return 'Manager';
+      case 'ROLE_LEAD':
+        return 'Lead';
+      case 'ROLE_ADMIN':
+        return 'Administrator';
+    }
+  }
   const userColumns = [
     {
       field: 'employeeName',
@@ -95,7 +139,7 @@ export const UsersList = () => {
       width: 180,
     },
     {
-      field: 'employeeEmail',
+      field: 'email',
       headerName: 'Email',
       width: 180,
     },
@@ -103,6 +147,7 @@ export const UsersList = () => {
       field: 'employeeRole',
       headerName: 'Role',
       width: 180,
+      valueGetter: getRole,
     },
     {
       field: 'username',
@@ -118,11 +163,11 @@ export const UsersList = () => {
   ];
   return (
     <div style={{ height: '71vh', width: '100%' }}>
-      <DataGrid
+      <DataGridUser
         rows={userData}
         columns={userColumns}
         pageSize={5}
-        getRowId={(row) => row.employeeId}
+        getRowId={(row: { employeeId: any; }) => row.employeeId}
         rowsPerPageOptions={[5]}
         components={{
           Toolbar: GridToolbar,
@@ -146,11 +191,11 @@ export const UsersList = () => {
         selectionModel={selectionModel}
       />
       <ControlButtons elevation={0}>
-        <UserButtons onClick={handleEdit} variant="outlined" startIcon={<PersonAddAltIcon />}>
+        <UserButtons onClick={handleOpen} variant="outlined" startIcon={<PersonAddAltIcon />}>
           Add User
         </UserButtons>
         {selectionModel && selectionModel.length ? (
-          <UserButtons onClick={handleSubmit} variant="outlined" startIcon={<EditIcon />}>
+          <UserButtons onClick={handleEdit} variant="outlined" startIcon={<EditIcon />}>
             Edit
           </UserButtons>
         ) : (
@@ -170,6 +215,17 @@ export const UsersList = () => {
           ''
         )}
       </ControlButtons>
+      <Modal
+        keepMounted
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <Box sx={userModalStyle}>
+          <UserForm />
+        </Box>
+      </Modal>
     </div>
   );
 };

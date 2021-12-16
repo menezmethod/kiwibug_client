@@ -5,7 +5,11 @@ import AccountTreeIcon from '@mui/icons-material/AccountTree';
 import EditIcon from '@mui/icons-material/Edit';
 import axios, { AxiosResponse } from 'axios';
 import { Project } from '../types';
-import { Button, Paper, styled } from '@mui/material';
+import { Box, Button, Modal, Paper, styled } from '@mui/material';
+
+import ProjectDataService from '../api/ProjectService';
+import ProjectForm from './ProjectForm';
+import React from 'react';
 
 // import { DeleteProject } from './DeleteProject';
 
@@ -13,20 +17,52 @@ const ControlButtons = styled(Paper)({
   padding: 8,
   textAlign: 'right',
 });
+
 const ProjectButtons = styled(Button)({
   padding: 10,
   margin: 6,
 });
 
+const DataGridProject = styled(DataGrid)({
+  border:'0',
+  marginTop:'-4vh'
+});
+
+const userModalStyle = {
+  position: 'absolute',
+  top: '50%',
+  left: '50%',
+  transform: 'translate(-50%, -50%)',
+  width: '80vw',
+  bgcolor: 'background.paper',
+  border: '0px solid #000',
+  boxShadow: 24,
+  // overflow: 'scroll',
+  p: 4,
+};
+
 export const ProjectsList = () => {
+  const [open, setOpen] = React.useState(false);
   const [projectData, setProjectData] = useState<Project[]>([]);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   useEffect(() => {
-    axios.get<Project[]>('http://localhost:8080/projects').then((response: AxiosResponse) => {
-      setProjectData(response.data);
-    });
+    retrieveProjects();
+    console.log(selectionModel);
+
   }, [selectionModel]);
+
+  const retrieveProjects = () => {
+    ProjectDataService.getAll()
+      .then((response: any) => {
+        setProjectData(response.data);
+        // console.log(response.data);
+
+      })
+      .catch((e: Error) => {
+        console.log(e);
+      });
+  };
 
   // if (usersQuery.isLoading) {
   //   return (
@@ -38,12 +74,20 @@ export const ProjectsList = () => {
 
   const handleDeleteProject = () => {
     console.log('Deleting: ' + selectionModel);
-    axios.delete('http://localhost:8080/projects/' + selectionModel);
+    ProjectDataService.remove(selectionModel)
+      .then((response: any) => {
+        console.log(response.data);
+      })
+      .catch((e: Error) => {
+        console.log(e);
+      });
   };
 
   const handleEdit = () => {};
 
-  const handleClose = () => {};
+  const handleOpen = () => setOpen(true);
+
+  const handleClose = () => setOpen(false);
 
   const handleSubmit = () => {};
 
@@ -70,8 +114,8 @@ export const ProjectsList = () => {
     },
   ];
   return (
-    <div style={{ height: '71vh', width: '100%' }}>
-      <DataGrid
+    <div style={{ height: '75vh', width: '100%' }}>
+      <DataGridProject
         rows={projectData}
         columns={projectColumns}
         pageSize={5}
@@ -99,7 +143,7 @@ export const ProjectsList = () => {
         selectionModel={selectionModel}
       />
       <ControlButtons elevation={0}>
-        <ProjectButtons onClick={handleEdit} variant="outlined" startIcon={<AccountTreeIcon />}>
+        <ProjectButtons onClick={handleOpen} variant="outlined" startIcon={<AccountTreeIcon />}>
           Add Project
         </ProjectButtons>
         {selectionModel && selectionModel.length ? (
@@ -123,6 +167,17 @@ export const ProjectsList = () => {
           ''
         )}
       </ControlButtons>
+      <Modal
+        keepMounted
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="keep-mounted-modal-title"
+        aria-describedby="keep-mounted-modal-description"
+      >
+        <Box sx={userModalStyle}>
+          <ProjectForm />
+        </Box>
+      </Modal>
     </div>
   );
 };
