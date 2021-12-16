@@ -1,3 +1,4 @@
+import * as z from 'zod';
 import * as React from 'react';
 import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
@@ -26,15 +27,29 @@ function Copyright(props: any) {
   );
 }
 
+const schema = z.object({
+  email: z.string().min(1, 'Required'),
+  password: z.string().min(1, 'Required'),
+});
+
+type LoginValues = {
+  email: string;
+  password: string;
+};
+
+type LoginFormProps = {
+  onSuccess: () => void;
+};
+
 const theme = createTheme();
 
-export default function SignIn() {
+export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     // eslint-disable-next-line no-console
     console.log({
-      email: data.get('email'),
+      username: data.get('username'),
       password: data.get('password'),
     });
   };
@@ -62,10 +77,10 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="email"
-              label="Email Address"
-              name="email"
-              autoComplete="email"
+              id="username"
+              label="Username"
+              name="username"
+              autoComplete="username"
               autoFocus
             />
             <TextField
@@ -78,6 +93,7 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
+            {/* Remember to program this remember me feature... */}
             <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
@@ -97,7 +113,7 @@ export default function SignIn() {
                 </Link>
               </Grid>
               <Grid item>
-                <Link href="#" variant="body2">
+                <Link href="register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>

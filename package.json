@@ -23,14 +23,22 @@
     "react-query-auth": "^1.1.0",
     "react-router-dom": "^6.1.1",
     "react-scripts": "latest",
-    "styled-components": "latest"
+    "styled-components": "latest",
+    "zod": "^3.11.6"
   },
   "scripts": {
     "tsc": "./node_modules/.bin/tsc",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint --fix --ext .js,.ts,.tsx ./src --ignore-path .gitignore",
+    "prettier": "prettier --ignore-path .gitignore --write \"**/*.+(js|json|ts|tsx)\"",
+    "format": "npm run prettier -- --write",
+    "check-types": "tsc --project tsconfig.json --pretty --noEmit",
+    "check-format": "npm run prettier -- --list-different",
+    "validate-and-build": "npm-run-all --parallel check-types check-format lint build",
+    "validate": "npm-run-all --parallel check-types && lint-staged"
   },
   "browserslist": {
     "production": [
@@ -63,7 +71,26 @@
     "eslint-plugin-react": "^7.24.0",
     "eslint-plugin-react-hooks": "^4.2.0",
     "eslint-plugin-testing-library": "^4.6.0",
+    "lint-staged": "^11.0.0",
+    "prettier": "^2.3.0",
     "tsconfig-paths-webpack-plugin": "^3.5.1",
     "typescript": "latest"
+  },
+  "eslintConfig": {
+    "overrides": [
+      {
+        "files": [
+          "**/*.stories.*"
+        ],
+        "rules": {
+          "import/no-anonymous-default-export": "off"
+        }
+      }
+    ]
+  },
+  "lint-staged": {
+    "*.+(ts|tsx)": [
+      "yarn lint"
+    ]
   }
 }

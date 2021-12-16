@@ -12,31 +12,31 @@ import AssignmentIcon from '@mui/icons-material/Assignment';
 
 export const mainListItems = (
   <div>
-    <ListItem button>
+    <ListItem button component="a" href="/">
       <ListItemIcon>
         <DashboardIcon />
       </ListItemIcon>
       <ListItemText primary="Dashboard" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component="a" href="/projects">
       <ListItemIcon>
         <AccountTreeIcon />
       </ListItemIcon>
       <ListItemText primary="Projects" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component="a" href="/issues">
       <ListItemIcon>
         <BugReportIcon />
       </ListItemIcon>
       <ListItemText primary="Issues" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component="a" href="/reports">
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Reports" />
     </ListItem>
-    <ListItem button>
+    <ListItem button component="a" href="/users">
       <ListItemIcon>
         <PeopleIcon />
       </ListItemIcon>

@@ -1,11 +1,11 @@
-import { MainLayout } from '@/components/Layout/MainLayout'
+import { ContentLayout } from '@/components/Layout/ContentLayout'
 import React from 'react'
 import { ProjectsList } from '../components/ProjectsList'
 
 export const Projects = () => {
     return (
-        <MainLayout title="Projects">
+        <ContentLayout title="Projects">
             <ProjectsList />
-        </MainLayout>
+        </ContentLayout>
     )
 }

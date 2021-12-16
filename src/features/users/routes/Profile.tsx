@@ -1,10 +1,10 @@
-import { MainLayout } from '@/components/Layout/MainLayout'
+import { ContentLayout } from '@/components/Layout/ContentLayout'
 import React from 'react'
 
 export const Profile = () => {
     return (
-        <MainLayout title="USER TITLE">
+        <ContentLayout title="USER TITLE">
             USER PROFILE
-        </MainLayout>
+        </ContentLayout>
     )
 }

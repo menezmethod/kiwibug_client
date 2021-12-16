@@ -18,13 +18,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
+import { Head } from '../Head';
+import { ContentLayout } from './ContentLayout';
 
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="https://gimenez.dev/">
+        KiwiBug Issue Tracker
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -118,7 +120,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               <MenuIcon />
             </IconButton>
             <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-              Dashboard
+              SOMETITLE
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">
@@ -156,7 +158,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           }}
         >
           <Toolbar />
-          <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+          <Container maxWidth={false} sx={{ mt: 6, mb: 4 }}>
             {children}
             <Copyright sx={{ pt: 4 }} />
           </Container>

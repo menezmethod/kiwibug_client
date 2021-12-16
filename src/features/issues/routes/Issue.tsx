@@ -1,10 +1,10 @@
-import { MainLayout } from '@/components/Layout/MainLayout'
+import { ContentLayout } from '@/components/Layout/ContentLayout'
 import React from 'react'
 
 export const Issue = () => {
     return (
-        <MainLayout title="Issue TITLE">
+        <ContentLayout title="Issue TITLE">
             ISSUE CONTENT
-        </MainLayout>
+        </ContentLayout>
     )
 }
