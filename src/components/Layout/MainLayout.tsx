@@ -91,6 +91,14 @@ type MainLayoutProps = {
   title: string;
 };
 
+const Logo = styled('div')({
+  position: 'relative',
+  clear: 'both',
+  fontSize:"32px",
+  paddingRight: "20px",
+  fontWeight:"bold"
+});
+
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
@@ -101,6 +109,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
+
         <AppBar position="absolute" open={open}>
           <Toolbar
             sx={{
@@ -119,6 +128,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             >
               <MenuIcon />
             </IconButton>
+
             <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
               SOMETITLE
             </Typography>
@@ -137,7 +147,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               justifyContent: 'flex-end',
               px: [1],
             }}
-          >
+          ><Logo>KiwiBug</Logo>
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>

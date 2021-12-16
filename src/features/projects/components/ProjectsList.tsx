@@ -1,4 +1,10 @@
-import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridSelectionModel,
+  GridToolbar,
+  GridValueFormatterParams,
+  GridValueGetterParams,
+} from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AccountTreeIcon from '@mui/icons-material/AccountTree';
@@ -6,10 +12,12 @@ import EditIcon from '@mui/icons-material/Edit';
 import axios, { AxiosResponse } from 'axios';
 import { Project } from '../types';
 import { Box, Button, Modal, Paper, styled } from '@mui/material';
+import { formatDataGridDate } from '@/utils/format';
 
 import ProjectDataService from '../api/ProjectService';
 import ProjectForm from './ProjectForm';
 import React from 'react';
+import dayjs from 'dayjs';
 
 // import { DeleteProject } from './DeleteProject';
 
@@ -24,8 +32,8 @@ const ProjectButtons = styled(Button)({
 });
 
 const DataGridProject = styled(DataGrid)({
-  border:'0',
-  marginTop:'-4vh'
+  border: '0',
+  marginTop: '-4vh',
 });
 
 const userModalStyle = {
@@ -49,7 +57,6 @@ export const ProjectsList = () => {
   useEffect(() => {
     retrieveProjects();
     console.log(selectionModel);
-
   }, [selectionModel]);
 
   const retrieveProjects = () => {
@@ -57,12 +64,12 @@ export const ProjectsList = () => {
       .then((response: any) => {
         setProjectData(response.data);
         // console.log(response.data);
-
       })
       .catch((e: Error) => {
         console.log(e);
       });
   };
+
 
   // if (usersQuery.isLoading) {
   //   return (
@@ -101,16 +108,37 @@ export const ProjectsList = () => {
       field: 'startDate',
       headerName: 'Start Date',
       width: 280,
+    //   valueFormatter: (params: GridValueFormatterParams) => {
+    //     // first converts to JS Date, then to locale option through date-fns
+    //     return dayjs(params.startDate).format('MMMM DD, YYYY');
+    //   },
+    //   valueGetter: (params: GridValueGetterParams) => {
+    //     return dayjs(params.startDate).format('MMMM DD, YYYY');
+    //   },
     },
     {
       field: 'targetEndDate',
       headerName: 'Target End Date',
       width: 280,
-    },
+      // valueFormatter: (params: GridValueFormatterParams) => {
+      //   // first converts to JS Date, then to locale option through date-fns
+      //   return dayjs(params.targetEndDate).format('MMMM DD, YYYY');
+      // },
+      // valueGetter: (params: GridValueGetterParams) => {
+      //   return dayjs(params.targetEndDate).format('MMMM DD, YYYY');
+      // },
+  },
     {
       field: 'actualEndDate',
       headerName: 'Actual End Date',
       width: 280,
+      // valueFormatter: (params: GridValueFormatterParams) => {
+      //   // first converts to JS Date, then to locale option through date-fns
+      //   return dayjs(params.actualEndDate).format('MMMM DD, YYYY');
+      // },
+      // valueGetter: (params: GridValueGetterParams) => {
+      //   return dayjs(params.actualEndDate).format('MMMM DD, YYYY');
+      // },
     },
   ];
   return (
@@ -119,7 +147,7 @@ export const ProjectsList = () => {
         rows={projectData}
         columns={projectColumns}
         pageSize={5}
-        getRowId={(row: { projectId: any; }) => row.projectId}
+        getRowId={(row: { projectId: any }) => row.projectId}
         rowsPerPageOptions={[5]}
         components={{
           Toolbar: GridToolbar,
