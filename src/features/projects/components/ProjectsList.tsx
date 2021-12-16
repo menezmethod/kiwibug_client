@@ -29,7 +29,7 @@ const DataGridProject = styled(DataGrid)({
 });
 
 const userModalStyle = {
-  position: 'absolute',
+  position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -119,7 +119,7 @@ export const ProjectsList = () => {
         rows={projectData}
         columns={projectColumns}
         pageSize={5}
-        getRowId={(row) => row.projectId}
+        getRowId={(row: { projectId: any; }) => row.projectId}
         rowsPerPageOptions={[5]}
         components={{
           Toolbar: GridToolbar,
@@ -137,7 +137,7 @@ export const ProjectsList = () => {
             },
           },
         }}
-        onSelectionModelChange={(newSelectionModel) => {
+        onSelectionModelChange={(newSelectionModel: React.SetStateAction<GridSelectionModel>) => {
           setSelectionModel(newSelectionModel);
         }}
         selectionModel={selectionModel}

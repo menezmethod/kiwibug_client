@@ -34,7 +34,7 @@ const UserButtons = styled(Button)({
 });
 
 const userModalStyle = {
-  position: 'absolute',
+  position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -185,7 +185,7 @@ export const UsersList = () => {
             },
           },
         }}
-        onSelectionModelChange={(newSelectionModel) => {
+        onSelectionModelChange={(newSelectionModel: React.SetStateAction<GridSelectionModel>) => {
           setSelectionModel(newSelectionModel);
         }}
         selectionModel={selectionModel}

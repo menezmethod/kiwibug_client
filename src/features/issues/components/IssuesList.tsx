@@ -11,7 +11,6 @@ import IssueDataService from '../api/IssueService';
 import IssueForm from './IssueForm';
 import React from 'react';
 
-
 // import { DeleteIssue } from './DeleteIssue';
 
 const ControlButtons = styled(Paper)({
@@ -24,7 +23,7 @@ const IssueButtons = styled(Button)({
 });
 
 const userModalStyle = {
-  position: 'absolute',
+  position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
   transform: 'translate(-50%, -50%)',
@@ -37,10 +36,9 @@ const userModalStyle = {
 };
 
 const DataGridIssue = styled(DataGrid)({
-  border:'0',
-  marginTop:'-4vh'
+  border: '0',
+  marginTop: '-4vh',
 });
-
 
 export const IssuesList = () => {
   const [open, setOpen] = React.useState(false);
@@ -50,7 +48,6 @@ export const IssuesList = () => {
   useEffect(() => {
     retrieveIssues();
     console.log(selectionModel);
-
   }, [selectionModel]);
 
   const retrieveIssues = () => {
@@ -58,7 +55,6 @@ export const IssuesList = () => {
       .then((response: any) => {
         setIssueData(response.data);
         // console.log(response.data);
-
       })
       .catch((e: Error) => {
         console.log(e);
@@ -84,7 +80,6 @@ export const IssuesList = () => {
       });
   };
 
-
   const handleEdit = () => {};
 
   const handleOpen = () => setOpen(true);
@@ -99,7 +94,9 @@ export const IssuesList = () => {
   function getAssignedTo(params: { row: { assignedToEmployeeId: { employeeName: any } } }) {
     return `${params.row.assignedToEmployeeId.employeeName}`;
   }
-  function getAssignedProject(params: { row: { assignedToEmployeeId: { assignedProjects: { projectName: any; }; }; }; }) {
+  function getAssignedProject(params: {
+    row: { assignedToEmployeeId: { assignedProjects: { projectName: any } } };
+  }) {
     return `${params.row.assignedToEmployeeId.assignedProjects.projectName}`;
   }
 
@@ -164,7 +161,7 @@ export const IssuesList = () => {
         rows={issueData}
         columns={issueColumns}
         pageSize={5}
-        getRowId={(row: { issuesId: any; }) => row.issuesId}
+        getRowId={(row: { issuesId: any }) => row.issuesId}
         rowsPerPageOptions={[5]}
         components={{
           Toolbar: GridToolbar,
@@ -182,7 +179,7 @@ export const IssuesList = () => {
             },
           },
         }}
-        onSelectionModelChange={(newSelectionModel) => {
+        onSelectionModelChange={(newSelectionModel: React.SetStateAction<GridSelectionModel>) => {
           setSelectionModel(newSelectionModel);
         }}
         selectionModel={selectionModel}
