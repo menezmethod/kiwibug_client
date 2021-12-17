@@ -8,7 +8,6 @@ import {
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
-import axios, { AxiosResponse } from 'axios';
 import { Project } from '../types';
 import { Box, Button, CircularProgress, Modal, Paper, styled } from '@mui/material';
 import { formatDataGridDate } from '@/utils/format';
@@ -19,6 +18,7 @@ import AddProject from './AddProject';
 // import { EditProject } from '../api/EditProject';
 // import { EdeleteProject } from '../api/DeleteProject';
 import { useProjects } from '../api/getProjects';
+import { QueryClientProvider } from 'react-query';
 
 // import { DeleteProject } from './DeleteProject';
 
@@ -31,30 +31,17 @@ const DataGridProject = styled(DataGrid)({
   border: '0',
   marginTop: '-4vh',
 });
-
-const userModalStyle = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '80vw',
-  bgcolor: 'background.paper',
-  border: '0px solid #000',
-  boxShadow: 24,
-  // overflow: 'scroll',
-  p: 4,
-};
+type ApiResponse = { data: { projectName: string } };
 
 export const ProjectsList = () => {
+  const projectsQuery = useProjects();
   const [open, setOpen] = React.useState(false);
   const [projectData, setProjectData] = useState<Project[]>([]);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   useEffect(() => {
-    console.log(projectsQuery.data);
+    console.log(selectionModel);
   }, [selectionModel]);
-
-  const projectsQuery = useProjects();
 
   if (projectsQuery.isLoading) {
     return (
@@ -105,14 +92,16 @@ export const ProjectsList = () => {
       width: 280,
     },
   ];
+  
 
   if (!projectsQuery.data) return null;
+
 
   return (
     <div style={{ height: '75vh', width: '100%' }}>
       <DataGridProject
         pageSize={10}
-        rows={projectsQuery.data}
+        rows={projectsQuery.data?.data}
         columns={projectColumns}
         getRowId={(row: { projectId: any }) => row.projectId}
         rowsPerPageOptions={[10, 20]}

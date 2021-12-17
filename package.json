@@ -26,7 +26,7 @@
     "react-hook-form": "^7.22.1",
     "react-material-ui-form-validator": "^3.0.0",
     "react-moment": "^1.1.1",
-    "react-query": "^3.34.2",
+    "react-query": "^3.34.5",
     "react-query-auth": "^1.1.0",
     "react-router-dom": "^6.1.1",
     "react-scripts": "latest",
