@@ -8,7 +8,7 @@ import { Issue } from '../types';
 import { Box, Button, Modal, Paper, styled } from '@mui/material';
 
 import IssueDataService from '../api/IssueService';
-import IssueForm from './IssueForm';
+import AddIssue from './AddIssue';
 import React from 'react';
 import { date } from 'zod';
 
