@@ -8,7 +8,7 @@ import { User } from '../types';
 import { Box, Button, Modal, Paper, styled } from '@mui/material';
 
 import UserDataService from '../api/UserService';
-import UserForm from './UserForm';
+import UpdateProfile from './UpdateProfile';
 import React from 'react';
 
 // interface RouterProps {
@@ -222,7 +222,7 @@ export const UsersList = () => {
         aria-describedby="keep-mounted-modal-description"
       >
         <Box sx={userModalStyle}>
-          <UserForm />
+          <UpdateProfile />
         </Box>
       </Modal>
     </div>

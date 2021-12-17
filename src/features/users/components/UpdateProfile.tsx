@@ -28,7 +28,7 @@ const ButtonUser = styled(Button)({
   textAlign: 'center',
 });
 
-export default function AddProject() {
+export default function UpdateProfile() {
   const [assignedProject, setAssignedProject] = React.useState('');
   const handleChange = (event: SelectChangeEvent) => {
     setAssignedProject(event.target.value as string);
@@ -59,6 +59,9 @@ export default function AddProject() {
               variant="outlined"
             />
           </Item>
+
+          {/* IF ADMIN */}
+
           <Item elevation={0}>
             <FormControl component="fieldset">
               <FormLabel component="legend">Role</FormLabel>
@@ -70,6 +73,10 @@ export default function AddProject() {
               </RadioGroup>
             </FormControl>
           </Item>
+
+          {/* IF ADMIN */}
+
+          {/* IF ADMIN / MANAGER */}
           <Item elevation={0}>
             <FormControl fullWidth>
               <InputLabel id="assigned_project_lb">Assigned Project</InputLabel>
@@ -86,6 +93,7 @@ export default function AddProject() {
               </Select>
             </FormControl>
           </Item>
+         {/* IF ADMIN / MANAGER */}
           <Item elevation={0}>
             <ButtonUser variant="contained">Create</ButtonUser>{' '}
             <ButtonUser variant="outlined">Cancel</ButtonUser>

@@ -7,7 +7,13 @@ import React, { useState } from 'react';
 import { CreateProjectDTO, useCreateProject } from '../api/createProject';
 import { Controller, useForm } from 'react-hook-form';
 import ProjectDataService from '../api/ProjectService';
-import * as z from 'zod';
+
+
+
+// CHANGE TO MODAL FULL SCREEN DIALOG
+// MAKE SURE REACT-QUERY WORKS
+// https://mui.com/components/dialogs/#responsive-full-screen
+
 
 const Item = styled(Paper)({
   padding: 8,
@@ -69,11 +75,10 @@ export default function AddProject() {
                     <DatePicker
                       label="Start Date"
                       value={startDate}
-                      onChange={(startDate1) => {
+                      onChange={(startDate1: React.SetStateAction<Date | null>) => {
                         setStartDate(startDate1);
                         setValue('startDate', startDate1, {
-                          // setValue('startDate', startDate1, {
-                            shouldValidate: true,
+                          shouldValidate: true,
                           shouldDirty: true,
                         });
                       }}
@@ -94,7 +99,7 @@ export default function AddProject() {
                       label="Target End Date"
                       value={targetEndDate}
                       minDate={startDate}
-                      onChange={(targetEndDate1) => {
+                      onChange={(targetEndDate1: React.SetStateAction<Date | null>) => {
                         setTargetEndDate(targetEndDate1);
                         setValue('targetEndDate', targetEndDate1, {
                           shouldValidate: true,
@@ -120,7 +125,7 @@ export default function AddProject() {
                   label="Actual End Date"
                   minDate={targetEndDate}
                   value={actualEndDate}
-                  onChange={(actualEndDate1) => {
+                  onChange={(actualEndDate1: React.SetStateAction<Date | null>) => {
                     setActualEndDate(actualEndDate1);
                     setValue('actualEndDate', actualEndDate1, {
                       shouldValidate: true,
