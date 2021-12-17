@@ -6,30 +6,27 @@ import { MutationConfig, queryClient } from '@/lib/react-query';
 
 import { Project } from '../types';
 
-export type CreateProjectDTO = {
-  data: {
-    title: string;
-    body: string;
-  };
+export const deleteProject = ({ projectId }: { projectId: string }) => {
+  return axios.delete(`/projects/${projectId}`);
 };
 
-export const addProject = ({ data }: CreateProjectDTO): Promise<Project> => {
-  return axios.post(`/projects`, data);
+type UseDeleteProjectOptions = {
+  config?: MutationConfig<typeof deleteProject>;
 };
 
-type UseCreateProjectOptions = {
-  config?: MutationConfig<typeof addProject>;
-};
+export const useDeleteProject = ({ config }: UseDeleteProjectOptions = {}) => {
+  //   const { addNotification } = useNotificationStore();
 
-export const useAddProject = ({ config }: UseCreateProjectOptions = {}) => {
-//   const { addNotification } = useNotificationStore();
   return useMutation({
-    onMutate: async (newProject) => {
+    onMutate: async (deletedProject) => {
       await queryClient.cancelQueries('projects');
 
       const previousProjects = queryClient.getQueryData<Project[]>('projects');
 
-      queryClient.setQueryData('projects', [...(previousProjects || []), newProject.data]);
+      queryClient.setQueryData(
+        'projects',
+        previousProjects?.filter((project: { id: any }) => project.id !== deletedProject.projectId)
+      );
 
       return { previousProjects };
     },
@@ -40,12 +37,12 @@ export const useAddProject = ({ config }: UseCreateProjectOptions = {}) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries('projects');
-    //   addNotification({
-    //     type: 'success',
-    //     title: 'Project Created',
-    //   });
+      //   addNotification({
+      //     type: 'success',
+      //     title: 'Project Deleted',
+      //   });
     },
     ...config,
-    mutationFn: addProject,
+    mutationFn: deleteProject,
   });
 };

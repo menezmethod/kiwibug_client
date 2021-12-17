@@ -1,6 +1,6 @@
 import { useMutation } from 'react-query';
 
-import  axios  from '@/lib/axios';
+import axios from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
 // import { useNotificationStore } from '@/stores/notifications';
 
@@ -16,19 +16,16 @@ export type UpdateProjectDTO = {
   projectId: string;
 };
 
-export const updateProject = ({
-  data,
-  projectId,
-}: UpdateProjectDTO): Promise<Project> => {
+export const editProject = ({ data, projectId }: UpdateProjectDTO): Promise<Project> => {
   return axios.patch(`/project/${projectId}`, data);
 };
 
 type UseUpdateProjectOptions = {
-  config?: MutationConfig<typeof updateProject>;
+  config?: MutationConfig<typeof editProject>;
 };
 
 export const useUpdateProject = ({ config }: UseUpdateProjectOptions = {}) => {
-//   const { addNotification } = useNotificationStore();
+  //   const { addNotification } = useNotificationStore();
 
   return useMutation({
     onMutate: async (updatingProject: any) => {
@@ -49,20 +46,17 @@ export const useUpdateProject = ({ config }: UseUpdateProjectOptions = {}) => {
     },
     onError: (_, __, context: any) => {
       if (context?.previousProject) {
-        queryClient.setQueryData(
-          ['project', context.previousProject.id],
-          context.previousProject
-        );
+        queryClient.setQueryData(['project', context.previousProject.id], context.previousProject);
       }
     },
     onSuccess: (data) => {
       queryClient.refetchQueries(['project', data.id]);
-    //   addNotification({
-    //     type: 'success',
-    //     title: 'Project Updated',
-    //   });
+      //   addNotification({
+      //     type: 'success',
+      //     title: 'Project Updated',
+      //   });
     },
     ...config,
-    mutationFn: updateProject,
+    mutationFn: editProject,
   });
 };

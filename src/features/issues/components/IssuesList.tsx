@@ -89,34 +89,33 @@ export const IssuesList = () => {
 
   const handleSubmit = () => {};
 
-
-  function getAssignedToEmployeeId(params: { row: { assignedToEmployeeId: { employeeName: any; } | null; }; }) {
+  function getAssignedToEmployeeId(params: {
+    row: { assignedToEmployeeId: { employeeName: any } | null };
+  }) {
     if (params.row.assignedToEmployeeId === null) {
       return 'Unassigned';
     } else {
-    return params.row.assignedToEmployeeId.employeeName;
+      return params.row.assignedToEmployeeId.employeeName;
     }
   }
 
-  function getIdentifiedByEmployeeId(params: { row: { identifiedByEmployeeId: { employeeName: any; } | null; }; }) {
+  function getIdentifiedByEmployeeId(params: {
+    row: { identifiedByEmployeeId: { employeeName: any } | null };
+  }) {
     if (params.row.identifiedByEmployeeId === null) {
       return 'Unidentified';
     } else {
-    return params.row.identifiedByEmployeeId.employeeName;
+      return params.row.identifiedByEmployeeId.employeeName;
     }
   }
 
-
-  function getAssignedProject(params: { row: { relatedProjectId: { projectName: any; } | null; }; }) {
+  function getAssignedProject(params: { row: { relatedProjectId: { projectName: any } | null } }) {
     if (params.row.relatedProjectId === null) {
       return 'Unassigned';
     } else {
-    return params.row.relatedProjectId.projectName;
+      return params.row.relatedProjectId.projectName;
     }
   }
-
-
-
 
   const issueColumns = [
     {
@@ -238,7 +237,7 @@ export const IssuesList = () => {
         aria-describedby="keep-mounted-modal-description"
       >
         <Box sx={userModalStyle}>
-          <IssueForm />
+          <AddIssue />
         </Box>
       </Modal>
     </div>

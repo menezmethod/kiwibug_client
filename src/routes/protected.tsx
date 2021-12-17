@@ -51,8 +51,6 @@ export const protectedRoutes = [
       { path: '/profile', element: <Profile /> },
       { path: '/issues', element: <Issues /> },
       { path: '/issue', element: <Issue /> },
-      { path: '/issue/edit', element: <EditIssue /> },
-      { path: '/issue/add', element: <AddIssue /> },
       { path: '/', element: <Dashboard /> },
       { path: '*', element: <Navigate to="." /> },
     ],

@@ -4,16 +4,22 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Button, Container, Paper, Stack, styled, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
 import React, { useState } from 'react';
-import { CreateProjectDTO, useCreateProject } from '../api/createProject';
+import { CreateProjectDTO, useAddProject } from '../api/createProject';
 import { Controller, useForm } from 'react-hook-form';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import ProjectDataService from '../api/ProjectService';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 
-
+import { useTheme } from '@mui/material/styles';
 
 // CHANGE TO MODAL FULL SCREEN DIALOG
 // MAKE SURE REACT-QUERY WORKS
 // https://mui.com/components/dialogs/#responsive-full-screen
-
 
 const Item = styled(Paper)({
   padding: 8,
@@ -26,9 +32,15 @@ const ButtonProject = styled(Button)({
 });
 
 export default function AddProject() {
+  const [open, setOpen] = React.useState(false);
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
   const [targetEndDate, setTargetEndDate] = React.useState<Date | null>(null);
   const [actualEndDate, setActualEndDate] = React.useState<Date | null>(null);
+
+  const theme = useTheme();
+  
+  const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
+
   const {
     register,
     watch,
@@ -39,14 +51,40 @@ export default function AddProject() {
   } = useForm();
 
   const onSubmit = async (values: any) => {
-    await createProjectMutation.mutateAsync({ data: values });
+    await addProjectMutation.mutateAsync({ data: values });
     console.log(values);
   };
 
-  const createProjectMutation = useCreateProject();
+  const ProjectButtons = styled(Button)({
+    padding: 10,
+    margin: 6,
+  });
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const addProjectMutation = useAddProject();
 
   return (
     <Container>
+      <ProjectButtons onClick={handleOpen} variant="outlined" startIcon={<AccountTreeIcon />}>
+        Add Project
+      </ProjectButtons>
+      <Dialog
+        fullScreen={fullScreen}
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="responsive-dialog-title"
+      >
+        <DialogTitle id="responsive-dialog-title">
+        {"Add Project"}
+        </DialogTitle>
+        <DialogContent>
       <Box>
         <Stack spacing={2}>
           <Item elevation={1}>
@@ -145,6 +183,16 @@ export default function AddProject() {
           </Form>
         </Stack>
       </Box>
+      </DialogContent>
+        <DialogActions>
+          <Button autoFocus type="submit" onClick={handleClose}>
+            Add
+          </Button>
+          <Button onClick={handleClose} autoFocus>
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 }
