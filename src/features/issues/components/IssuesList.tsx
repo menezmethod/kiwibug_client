@@ -10,6 +10,7 @@ import { Box, Button, Modal, Paper, styled } from '@mui/material';
 import IssueDataService from '../api/IssueService';
 import IssueForm from './IssueForm';
 import React from 'react';
+import { date } from 'zod';
 
 // import { DeleteIssue } from './DeleteIssue';
 
@@ -88,17 +89,34 @@ export const IssuesList = () => {
 
   const handleSubmit = () => {};
 
-  function getIdentifiedBy(params: { row: { identifiedByEmployeeId: { employeeName: any } } }) {
-    return `${params.row.identifiedByEmployeeId.employeeName}`;
+
+  function getAssignedToEmployeeId(params: { row: { assignedToEmployeeId: { employeeName: any; } | null; }; }) {
+    if (params.row.assignedToEmployeeId === null) {
+      return 'Unassigned';
+    } else {
+    return params.row.assignedToEmployeeId.employeeName;
+    }
   }
-  function getAssignedTo(params: { row: { assignedToEmployeeId: { employeeName: any } } }) {
-    return `${params.row.assignedToEmployeeId.employeeName}`;
+
+  function getIdentifiedByEmployeeId(params: { row: { identifiedByEmployeeId: { employeeName: any; } | null; }; }) {
+    if (params.row.identifiedByEmployeeId === null) {
+      return 'Unidentified';
+    } else {
+    return params.row.identifiedByEmployeeId.employeeName;
+    }
   }
-  function getAssignedProject(params: {
-    row: { assignedToEmployeeId: { assignedProjects: { projectName: any } } };
-  }) {
-    return `${params.row.assignedToEmployeeId.assignedProjects.projectName}`;
+
+
+  function getAssignedProject(params: { row: { relatedProjectId: { projectName: any; } | null; }; }) {
+    if (params.row.relatedProjectId === null) {
+      return 'Unassigned';
+    } else {
+    return params.row.relatedProjectId.projectName;
+    }
   }
+
+
+
 
   const issueColumns = [
     {
@@ -109,6 +127,7 @@ export const IssuesList = () => {
     {
       field: 'identifiedDate',
       headerName: 'Identified Date',
+      type: 'date',
       width: 160,
     },
     {
@@ -124,6 +143,7 @@ export const IssuesList = () => {
     {
       field: 'targetResolutionDate',
       headerName: 'Target Resolution Date',
+      type: 'date',
       width: 175,
     },
     {
@@ -134,13 +154,14 @@ export const IssuesList = () => {
     {
       field: 'actualResolutionDate',
       headerName: 'Actual Resolution Date',
+      type: 'date',
       width: 175,
     },
     {
       field: 'identifiedByEmployeeId',
       headerName: 'Identified By',
       width: 160,
-      valueGetter: getIdentifiedBy,
+      valueGetter: getIdentifiedByEmployeeId,
     },
     {
       field: 'assignedProjects',
@@ -152,7 +173,7 @@ export const IssuesList = () => {
       field: 'assignedToEmployeeId',
       headerName: 'Assigned To',
       width: 160,
-      valueGetter: getAssignedTo,
+      valueGetter: getAssignedToEmployeeId,
     },
   ];
   return (

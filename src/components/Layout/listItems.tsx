@@ -30,12 +30,12 @@ export const mainListItems = (
       </ListItemIcon>
       <ListItemText primary="Issues" />
     </ListItem>
-    <ListItem button component="a" href="/reports">
+    {/* <ListItem button component="a" href="/reports">
       <ListItemIcon>
         <BarChartIcon />
       </ListItemIcon>
       <ListItemText primary="Reports" />
-    </ListItem>
+    </ListItem> */}
     <ListItem button component="a" href="/users">
       <ListItemIcon>
         <PeopleIcon />
@@ -47,25 +47,24 @@ export const mainListItems = (
 
 export const secondaryListItems = (
   <div>
-    {/* <ListSubheader inset>Saved reports</ListSubheader>
+    <ListSubheader inset>Issues reports</ListSubheader>
     <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Current month" />
+      <ListItemText primary="Current issues" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Last quarter" />
+      <ListItemText primary="Unassigned issues" />
     </ListItem>
     <ListItem button>
       <ListItemIcon>
         <AssignmentIcon />
       </ListItemIcon>
-      <ListItemText primary="Year-end sale" />
-    </ListItem> */}
-    Admin Stuff?
+      <ListItemText primary="Performance" />
+    </ListItem>
   </div>
 );

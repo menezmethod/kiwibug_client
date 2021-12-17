@@ -120,8 +120,7 @@ export const UsersList = () => {
   // }
 
   function getRole(params: { row: { roles: { name: any; }[]; }; }) {
-    let theRole = params.row.roles[0].name;
-    switch(theRole) {
+    switch(params.row.roles[0].name) {
       case 'ROLE_USER':
         return 'User';
       case 'ROLE_MANAGER':
