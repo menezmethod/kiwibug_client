@@ -70,7 +70,6 @@ export const ProjectsList = () => {
       });
   };
 
-
   // if (usersQuery.isLoading) {
   //   return (
   //     <Box sx={{ display: 'flex' }}>
@@ -108,13 +107,13 @@ export const ProjectsList = () => {
       field: 'startDate',
       headerName: 'Start Date',
       width: 280,
-    //   valueFormatter: (params: GridValueFormatterParams) => {
-    //     // first converts to JS Date, then to locale option through date-fns
-    //     return dayjs(params.startDate).format('MMMM DD, YYYY');
-    //   },
-    //   valueGetter: (params: GridValueGetterParams) => {
-    //     return dayjs(params.startDate).format('MMMM DD, YYYY');
-    //   },
+      //   valueFormatter: (params: GridValueFormatterParams) => {
+      //     // first converts to JS Date, then to locale option through date-fns
+      //     return dayjs(params.startDate).format('MMMM DD, YYYY');
+      //   },
+      //   valueGetter: (params: GridValueGetterParams) => {
+      //     return dayjs(params.startDate).format('MMMM DD, YYYY');
+      //   },
     },
     {
       field: 'targetEndDate',
@@ -127,7 +126,7 @@ export const ProjectsList = () => {
       // valueGetter: (params: GridValueGetterParams) => {
       //   return dayjs(params.targetEndDate).format('MMMM DD, YYYY');
       // },
-  },
+    },
     {
       field: 'actualEndDate',
       headerName: 'Actual End Date',
@@ -144,11 +143,11 @@ export const ProjectsList = () => {
   return (
     <div style={{ height: '75vh', width: '100%' }}>
       <DataGridProject
+        pageSize={10}
         rows={projectData}
         columns={projectColumns}
-        pageSize={5}
         getRowId={(row: { projectId: any }) => row.projectId}
-        rowsPerPageOptions={[5]}
+        rowsPerPageOptions={[10,20]}
         components={{
           Toolbar: GridToolbar,
         }}

@@ -8,7 +8,7 @@ import { Project } from '../types';
 
 export type CreateProjectDTO = {
   data: {
-    projectName: string;
+    projectName: any;
     startDate: Date;
     targetEndDate: Date;
     actualEndDate: Date;
