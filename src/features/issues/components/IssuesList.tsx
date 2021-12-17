@@ -1,8 +1,8 @@
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
-import BugReportIcon from '@mui/icons-material/BugReport';
-import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import BugReportIcon from '@material-ui/icons/BugReport';
+import EditIcon from '@material-ui/icons/Edit';
 import axios, { AxiosResponse } from 'axios';
 import { Issue } from '../types';
 import { Box, Button, Modal, Paper, styled } from '@mui/material';

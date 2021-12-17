@@ -6,9 +6,9 @@ import {
   GridValueGetterParams,
 } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
-import DeleteIcon from '@mui/icons-material/Delete';
-import AccountTreeIcon from '@mui/icons-material/AccountTree';
-import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import EditIcon from '@material-ui/icons/Edit';
 import axios, { AxiosResponse } from 'axios';
 import { Project } from '../types';
 import { Box, Button, Modal, Paper, styled } from '@mui/material';
