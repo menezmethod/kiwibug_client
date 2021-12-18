@@ -130,7 +130,7 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
                           <DatePicker
                             label="Target End Date"
                             value={targetEndDate}
-                            minDate={startDate}
+                            minDate={projectQuery.data?.data.startDate}
                             onChange={(targetEndDate1: React.SetStateAction<Date | null>) => {
                               setTargetEndDate(targetEndDate1);
                               setValue('targetEndDate', targetEndDate1, {
