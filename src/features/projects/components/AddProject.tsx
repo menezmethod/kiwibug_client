@@ -21,6 +21,7 @@ const Item = styled(Paper)({
   textAlign: 'center',
 });
 
+
 export default function AddProject() {
   const [open, setOpen] = React.useState(false);
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
@@ -54,6 +55,7 @@ export default function AddProject() {
     console.log(values);
   };
 
+
   const addProjectMutation = useAddProject();
 
   return (
@@ -62,7 +64,8 @@ export default function AddProject() {
         Add Project
       </Button>
       <Container>
-        <Form<AddProjectDTO['data']> id="add-project">
+        <Form<AddProjectDTO['data']>
+          id="add-project">
           <Dialog
             fullScreen={fullScreen}
             open={open}

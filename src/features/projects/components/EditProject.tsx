@@ -17,7 +17,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import { getProject, useProject } from '../api/getProject';
 import { parseISO } from 'date-fns';
-import { queryClient } from '@/lib/react-query';
 
 const Item = styled(Paper)({
   padding: 8,
@@ -32,9 +31,9 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
   const editProjectMutation = useEditProject();
   const projectQuery = useProject({ projectId });
   const [open, setOpen] = React.useState(false);
-  const [startDate, setStartDate] = React.useState<Date | null>(new Date());
-  const [targetEndDate, setTargetEndDate] = React.useState<Date | null>(new Date());
-  const [actualEndDate, setActualEndDate] = React.useState<Date | null>(new Date());
+  const [startDate, setStartDate] = React.useState<Date | null>(null);
+  const [targetEndDate, setTargetEndDate] = React.useState<Date | null>(null);
+  const [actualEndDate, setActualEndDate] = React.useState<Date | null>(null);
 
   const theme = useTheme();
 
@@ -51,7 +50,7 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
 
   const onSubmit = async (values: any) => {
     await editProjectMutation.mutateAsync({ data: values, projectId });
-    setOpen(false);
+    handleClose();
     console.log(values);
   };
 
@@ -64,6 +63,7 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
   };
 
   const handleClose = () => {
+    setStartDate(null);
     setTargetEndDate(null);
     setActualEndDate(null);
     setOpen(false);
@@ -86,15 +86,15 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
           <DialogContent>
             <Box>
               <Stack spacing={2}>
-                <Form<EditProjectDTO['data']> id="edit-project">
+                <Form<EditProjectDTO['data']> id="edit-project" onSubmit={handleSubmit(onSubmit)}>
                   <Item elevation={0}>
                     <TextField
-                      {...register('projectName', { required: 'Project name is required' })}
+                        {...register('projectName')}
                       fullWidth
                       id="projectName"
                       label="Project Name"
                       variant="outlined"
-                      value={projectQuery.data?.data.projectName}
+                      defaultValue={projectQuery.data?.data.projectName}
                       error={errors?.projectName}
                       helperText={errors.projectName?.message}
                     />
@@ -104,13 +104,11 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
                       <Controller
                         name="startDate"
                         control={control}
-                        rules={{ required: true }}
-                        // defaultValue={projectQuery.data?.data.startDate}
                         render={({ field: { ref, ...rest } }) => (
                           <DatePicker
                             label="Start Date"
                             value={startDate}
-                            onChange={(startDate1) => {
+                            onChange={(startDate1: React.SetStateAction<Date | null>) => {
                               setStartDate(startDate1);
                               setValue('startDate', startDate1, {
                                 shouldValidate: true,
@@ -128,13 +126,11 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
                       <Controller
                         name="targetEndDate"
                         control={control}
-                        rules={{ required: true }}
-                        // defaultValue={projectQuery.data?.data.targetEndDate}
                         render={({ field: { ref, ...rest } }) => (
                           <DatePicker
                             label="Target End Date"
                             value={targetEndDate}
-                            minDate={projectQuery.data?.data.startDate}
+                            minDate={startDate}
                             onChange={(targetEndDate1: React.SetStateAction<Date | null>) => {
                               setTargetEndDate(targetEndDate1);
                               setValue('targetEndDate', targetEndDate1, {

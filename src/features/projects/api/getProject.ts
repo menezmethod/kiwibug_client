@@ -1,4 +1,4 @@
-import { useQuery } from 'react-query';
+import  { useQuery }  from 'react-query';
 
 import axios from '@/lib/axios';
 import { QueryConfig } from '@/lib/react-query';
@@ -10,12 +10,10 @@ export const getProject = ({ projectId }: { projectId: string }): Promise<Projec
 };
 type UseProjectOptions = {
   projectId: string;
-  config?: QueryConfig<typeof getProject>;
 };
 
-export const useProject = ({ projectId, config }: UseProjectOptions) => {
+export const useProject = ({ projectId }: UseProjectOptions) => {
   return useQuery({
-    ...config,
     queryKey: ['project', projectId],
     queryFn: () => getProject({ projectId }),
   });
