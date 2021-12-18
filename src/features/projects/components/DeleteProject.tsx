@@ -34,12 +34,7 @@ export const DeleteProject = ({ id }: DeleteProjectProps) => {
 
   return (
     <div>
-      <Button
-        onClick={handleOpen}
-        color="error"
-        variant="contained"
-        startIcon={<DeleteIcon />}
-      >
+      <Button onClick={handleOpen} color="error" variant="contained" startIcon={<DeleteIcon />}>
         Delete
       </Button>
       <div>

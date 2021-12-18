@@ -7,7 +7,7 @@ import {
 } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { Project } from '../types';
-import { Box, Button, CircularProgress, Grid, Modal, Paper, Stack, styled } from '@mui/material';
+import { Box, Button, CircularProgress, Container, Grid, Modal, Paper, Stack, styled } from '@mui/material';
 import { formatDataGridDate } from '@/utils/format';
 
 import React from 'react';
@@ -18,9 +18,18 @@ import { QueryClientProvider } from 'react-query';
 import { DeleteProject } from './DeleteProject';
 import { EditProject } from './EditProject';
 
+export type ProjectListtDTO = {
+  data: {
+    projectName: any;
+    startDate: any;
+    targetEndDate: any;
+    actualEndDate: any;
+  };
+};
+
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body2,
-  padding: theme.spacing(.5),
+  padding: theme.spacing(0.5),
 }));
 
 const DataGridProject = styled(DataGrid)({
@@ -33,7 +42,7 @@ type ApiResponse = { data: { projectName: string } };
 export const ProjectsList = () => {
   const projectsQuery = useProjects();
   const [open, setOpen] = React.useState(false);
-  const [projectData, setProjectData] = useState<Project[]>([]);
+  const [projectData, setProjectData] = useState<Project>();
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   useEffect(() => {
@@ -123,11 +132,6 @@ export const ProjectsList = () => {
           ''
         )}
       </Grid>
-      {/* <ControlButtons elevation={0}>
-        
-        {selectionModel && selectionModel.length ? <EditProject /> : ''}
-        {selectionModel && selectionModel.length ?  : ''}
-      </ControlButtons> */}
     </div>
   );
 };

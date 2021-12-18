@@ -5,7 +5,7 @@ import { QueryConfig } from '@/lib/react-query';
 
 import { Project } from '../types';
 
-export const getProjects = (): Promise<Project[]> => {
+export const getProjects = (): Promise<Project> => {
   return axios.get(`/projects`);
 };
 

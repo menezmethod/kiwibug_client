@@ -54,7 +54,6 @@ export default function AddProject() {
     console.log(values);
   };
 
-
   const addProjectMutation = useAddProject();
 
   return (
@@ -63,8 +62,7 @@ export default function AddProject() {
         Add Project
       </Button>
       <Container>
-        <Form<AddProjectDTO['data']>
-          id="add-project">
+        <Form<AddProjectDTO['data']> id="add-project">
           <Dialog
             fullScreen={fullScreen}
             open={open}

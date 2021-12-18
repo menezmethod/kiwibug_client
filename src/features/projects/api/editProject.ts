@@ -9,9 +9,9 @@ import { Project } from '../types';
 export type EditProjectDTO = {
   data: {
     projectName: any;
-    startDate: any;
-    targetEndDate: any;
-    actualEndDate: any;
+    startDate: Date;
+    targetEndDate: Date;
+    actualEndDate: Date;
   };
   projectId: string;
 };
