@@ -9,17 +9,8 @@ export const getProjects = (): Promise<Project> => {
   return axios.get(`/projects`);
 };
 
-// const getProjects = () => {
-//   return axios.get<Array<Project>>('/projects');
-// };
-
-type UseProjectsOptions = {
-  config?: QueryConfig<typeof getProjects>;
-};
-
-export const useProjects = ({ config }: UseProjectsOptions = {}) => {
+export const useProjects = () => {
   return useQuery({
-    ...config,
     queryKey: ['projects'],
     queryFn: () => getProjects(),
   });
