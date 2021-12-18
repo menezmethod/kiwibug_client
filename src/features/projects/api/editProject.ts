@@ -6,40 +6,40 @@ import { MutationConfig, queryClient } from '@/lib/react-query';
 
 import { Project } from '../types';
 
-export type UpdateProjectDTO = {
+export type EditProjectDTO = {
   data: {
     projectName: any;
-    startDate: Date;
-    targetEndDate: Date;
-    actualEndDate: Date;
+    startDate: any;
+    targetEndDate: any;
+    actualEndDate: any;
   };
   projectId: string;
 };
 
-export const editProject = ({ data, projectId }: UpdateProjectDTO): Promise<Project> => {
-  return axios.patch(`/project/${projectId}`, data);
+export const editProject = ({ data, projectId }: EditProjectDTO): Promise<Project> => {
+  return axios.put(`/projects/${projectId}`, data);
 };
 
-type UseUpdateProjectOptions = {
+type UseEditProjectOptions = {
   config?: MutationConfig<typeof editProject>;
 };
 
-export const useUpdateProject = ({ config }: UseUpdateProjectOptions = {}) => {
+export const useEditProject = ({ config }: UseEditProjectOptions = {}) => {
   //   const { addNotification } = useNotificationStore();
 
   return useMutation({
-    onMutate: async (updatingProject: any) => {
-      await queryClient.cancelQueries(['project', updatingProject?.projectId]);
+    onMutate: async (editingProject: any) => {
+      await queryClient.cancelQueries(['project', editingProject?.projectId]);
 
       const previousProject = queryClient.getQueryData<Project>([
         'project',
-        updatingProject?.projectId,
+        editingProject?.projectId,
       ]);
 
-      queryClient.setQueryData(['project', updatingProject?.projectId], {
+      queryClient.setQueryData(['project', editingProject?.projectId], {
         ...previousProject,
-        ...updatingProject.data,
-        id: updatingProject.projectId,
+        ...editingProject.data,
+        id: editingProject.projectId,
       });
 
       return { previousProject };
@@ -50,7 +50,8 @@ export const useUpdateProject = ({ config }: UseUpdateProjectOptions = {}) => {
       }
     },
     onSuccess: (data) => {
-      queryClient.refetchQueries(['project', data.id]);
+      queryClient.refetchQueries(['projects', data.id]);
+      queryClient.invalidateQueries(['project', data.id]);
       //   addNotification({
       //     type: 'success',
       //     title: 'Project Updated',

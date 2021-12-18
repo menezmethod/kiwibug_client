@@ -6,22 +6,24 @@ import { MutationConfig, queryClient } from '@/lib/react-query';
 
 import { Project } from '../types';
 
-export type CreateProjectDTO = {
+export type AddProjectDTO = {
   data: {
-    title: string;
-    body: string;
+    projectName: any;
+    startDate: Date;
+    targetEndDate: Date;
+    actualEndDate: Date;
   };
 };
 
-export const addProject = ({ data }: CreateProjectDTO): Promise<Project> => {
+export const addProject = ({ data }: AddProjectDTO): Promise<Project> => {
   return axios.post(`/projects`, data);
 };
 
-type UseCreateProjectOptions = {
+type UseAddProjectOptions = {
   config?: MutationConfig<typeof addProject>;
 };
 
-export const useAddProject = ({ config }: UseCreateProjectOptions = {}) => {
+export const useAddProject = ({ config }: UseAddProjectOptions = {}) => {
 //   const { addNotification } = useNotificationStore();
   return useMutation({
     onMutate: async (newProject) => {
@@ -29,7 +31,7 @@ export const useAddProject = ({ config }: UseCreateProjectOptions = {}) => {
 
       const previousProjects = queryClient.getQueryData<Project[]>('projects');
 
-      queryClient.setQueryData('projects', [...(previousProjects || []), newProject.data]);
+      // queryClient.setQueryData('projects', [...(previousProjects || []), newProject.data]);
 
       return { previousProjects };
     },

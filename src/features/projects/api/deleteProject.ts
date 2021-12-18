@@ -6,7 +6,11 @@ import { MutationConfig, queryClient } from '@/lib/react-query';
 
 import { Project } from '../types';
 
-export const deleteProject = ({ projectId }: { projectId: string }) => {
+export type DeleteProjectDTO = {
+  projectId: string;
+};
+
+export const deleteProject = ({ projectId }: DeleteProjectDTO) => {
   return axios.delete(`/projects/${projectId}`);
 };
 
@@ -16,18 +20,16 @@ type UseDeleteProjectOptions = {
 
 export const useDeleteProject = ({ config }: UseDeleteProjectOptions = {}) => {
   //   const { addNotification } = useNotificationStore();
-
   return useMutation({
     onMutate: async (deletedProject) => {
       await queryClient.cancelQueries('projects');
 
       const previousProjects = queryClient.getQueryData<Project[]>('projects');
 
-      queryClient.setQueryData(
-        'projects',
-        previousProjects?.filter((project: { id: any }) => project.id !== deletedProject.projectId)
-      );
-
+    //   queryClient.setQueryData(
+    //     'projects',
+    //     previousProjects?.filter((project) => project.id !== deletedProject.projectId)
+    //   );
       return { previousProjects };
     },
     onError: (_, __, context: any) => {

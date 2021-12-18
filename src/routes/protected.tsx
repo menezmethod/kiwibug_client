@@ -10,8 +10,6 @@ import { Issues } from '@/features/issues/routes/Issues';
 import { Project } from '@/features/projects/routes/Project';
 import { Issue } from '@/features/issues/routes/Issue';
 import { Profile } from '@/features/users';
-import { AddIssue } from '@/features/issues/routes/AddIssue';
-import { EditIssue } from '@/features/issues/routes/EditIssue';
 
 const { Dashboard } = lazyImport({ factory: () => import('@/features/misc'), name: 'Dashboard' });
 const { ProjectsRoutes } = lazyImport({
