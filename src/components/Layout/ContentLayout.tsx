@@ -1,7 +1,6 @@
 import * as React from 'react';
 
 import { Head } from '../Head';
-import { MainLayout } from './MainLayout';
 
 type ContentLayoutProps = {
   children: React.ReactNode;

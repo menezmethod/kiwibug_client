@@ -31,9 +31,10 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
   const editProjectMutation = useEditProject();
   const projectQuery = useProject({ projectId });
   const [open, setOpen] = React.useState(false);
-  const [startDate, setStartDate] = React.useState<Date | null>(null);
-  const [targetEndDate, setTargetEndDate] = React.useState<Date | null>(null);
-  const [actualEndDate, setActualEndDate] = React.useState<Date | null>(null);
+  const [projectName, setProjectName] = React.useState<string | undefined>(undefined);
+  const [startDate, setStartDate] = React.useState<Date | undefined | null>(undefined);
+  const [targetEndDate, setTargetEndDate] = React.useState<Date | undefined | null>(undefined);
+  const [actualEndDate, setActualEndDate] = React.useState<Date | undefined | null>(undefined);
 
   const theme = useTheme();
 
@@ -55,19 +56,30 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
   };
 
   const handleOpen = () => {
-    setOpen(true);
+    setValue('projectName', projectQuery.data?.data.projectName);
+    // setValue('startDate', projectQuery.data?.data.startDate);
+    // setValue('targetEndDate', projectQuery.data?.data.targetEndDate);
+    // setValue('actualEndDate', projectQuery.data?.data.actualEndDate);
+    setProjectName(projectQuery.data?.data.projectName);
     setStartDate(projectQuery.data?.data.startDate);
     setTargetEndDate(projectQuery.data?.data.targetEndDate);
     setActualEndDate(projectQuery.data?.data.actualEndDate);
+    setOpen(true);
+
     console.log(projectId + ': ' + projectQuery.data?.data.projectName);
   };
 
   const handleClose = () => {
-    setStartDate(null);
-    setTargetEndDate(null);
-    setActualEndDate(null);
+    setProjectName(undefined);
+    setStartDate(undefined);
+    setTargetEndDate(undefined);
+    setActualEndDate(undefined);
     setOpen(false);
   };
+
+  useEffect(() => {
+    setProjectName(projectQuery.data?.data.projectName);
+  }, [projectQuery]);
 
   return (
     <>
@@ -89,12 +101,15 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
                 <Form<EditProjectDTO['data']> id="edit-project" onSubmit={handleSubmit(onSubmit)}>
                   <Item elevation={0}>
                     <TextField
-                        {...register('projectName')}
+                      onChange={(e) =>
+                        setValue('projectName', e.target.value, { shouldValidate: true })
+                      }
                       fullWidth
                       id="projectName"
+                      name="projectName"
                       label="Project Name"
                       variant="outlined"
-                      defaultValue={projectQuery.data?.data.projectName}
+                      defaultValue={projectName}
                       error={errors?.projectName}
                       helperText={errors.projectName?.message}
                     />
@@ -104,12 +119,14 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
                       <Controller
                         name="startDate"
                         control={control}
+                        defaultValue={startDate}
                         render={({ field: { ref, ...rest } }) => (
                           <DatePicker
                             label="Start Date"
                             value={startDate}
-                            onChange={(startDate1: React.SetStateAction<Date | null>) => {
+                            onChange={(startDate1) => {
                               setStartDate(startDate1);
+                              setValue('actualEndDate', projectQuery.data?.data.actualEndDate);
                               setValue('startDate', startDate1, {
                                 shouldValidate: true,
                                 shouldDirty: true,
@@ -126,13 +143,15 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
                       <Controller
                         name="targetEndDate"
                         control={control}
+                        defaultValue={targetEndDate}
                         render={({ field: { ref, ...rest } }) => (
                           <DatePicker
                             label="Target End Date"
                             value={targetEndDate}
-                            minDate={projectQuery.data?.data.startDate}
-                            onChange={(targetEndDate1: React.SetStateAction<Date | null>) => {
+                            minDate={startDate}
+                            onChange={(targetEndDate1) => {
                               setTargetEndDate(targetEndDate1);
+                              setValue('actualEndDate', projectQuery.data?.data.actualEndDate);
                               setValue('targetEndDate', targetEndDate1, {
                                 shouldValidate: true,
                                 shouldDirty: true,
@@ -149,18 +168,16 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
                       <Controller
                         name="actualEndDate"
                         control={control}
-                        rules={{ required: true }}
-                        defaultValue={projectQuery.data?.data.actualEndDate}
+                        defaultValue={actualEndDate}
                         render={({ field: { ref, ...rest } }) => (
                           <DatePicker
                             label="Actual End Date"
-                            minDate={projectQuery.data?.data.targetEndDate}
+                            minDate={new Date()}
                             value={actualEndDate}
-                            onChange={(actualEndDate1: React.SetStateAction<Date | null>) => {
+                            onChange={(actualEndDate1: React.SetStateAction<Date | undefined | null>) => {
                               setActualEndDate(actualEndDate1);
                               setValue('actualEndDate', actualEndDate1, {
                                 shouldValidate: true,
-                                shouldDirty: true,
                               });
                             }}
                             renderInput={(params) => <TextField fullWidth {...params} />}

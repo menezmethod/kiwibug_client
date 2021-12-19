@@ -149,7 +149,6 @@ export default function AddProject() {
                         onChange={(actualEndDate1: React.SetStateAction<Date | null>) => {
                           setActualEndDate(actualEndDate1);
                           setValue('actualEndDate', actualEndDate1, {
-                            shouldValidate: true,
                             shouldDirty: true,
                           });
                         }}

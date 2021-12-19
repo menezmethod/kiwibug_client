@@ -5,7 +5,7 @@ type HeadProps = {
   description?: string;
 };
 
-export const Head = ({ title = '', description = '' }: HeadProps = {}) => {
+export const Head = ({ title , description = '' }: HeadProps = {}) => {
   return (
     <Helmet
       title={title ? `${title} | KiwiBug Issue Tracker` : undefined}
