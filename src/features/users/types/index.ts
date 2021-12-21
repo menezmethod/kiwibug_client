@@ -10,4 +10,16 @@ export type User = {
   modifiedOn: Date;
   modifiedBy: string;
   projectName: string;
+  data: {
+    employeeName: string;
+    employeeEmail: string;
+    role: 'ADMIN' | 'MANAGER' | 'LEAD' | 'USER';
+    username: string;
+    createdOn: Date;
+    createdBy: string;
+    modifiedOn: Date;
+    modifiedBy: string;
+    projectName: string;
+    map: any;
+  }
 } & BaseEntity;

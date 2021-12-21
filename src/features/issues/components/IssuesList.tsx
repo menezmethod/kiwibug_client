@@ -1,97 +1,68 @@
-import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridSelectionModel,
+  GridToolbar,
+  GridValueFormatterParams,
+  GridValueGetterParams,
+} from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import DeleteIcon from '@material-ui/icons/Delete';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import EditIcon from '@material-ui/icons/Edit';
 import axios, { AxiosResponse } from 'axios';
 import { Issue } from '../types';
-import { Box, Button, Modal, Paper, styled } from '@mui/material';
+import {
+  Box,
+  Button,
+  CircularProgress,
+  Container,
+  Grid,
+  Paper,
+  Stack,
+  styled,
+} from '@mui/material';
 
 import IssueDataService from '../api/IssueService';
 import AddIssue from './AddIssue';
 import React from 'react';
-import { date } from 'zod';
-
-// import { DeleteIssue } from './DeleteIssue';
-
-const ControlButtons = styled(Paper)({
-  padding: 8,
-  textAlign: 'right',
-});
-const IssueButtons = styled(Button)({
-  padding: 10,
-  margin: 6,
-});
-
-const userModalStyle = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '85vw',
-  bgcolor: 'background.paper',
-  border: '0px solid #000',
-  boxShadow: 24,
-  overflow: 'scroll',
-  p: 4,
-};
+import { useIssues } from '../api/getIssues';
+import { QueryClientProvider } from 'react-query';
+import { DeleteIssue } from './DeleteIssue';
+import EditIssue from './EditIssue';
 
 const DataGridIssue = styled(DataGrid)({
   border: '0',
   marginTop: '-4vh',
 });
 
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(0.5),
+}));
+
+type EditIssueProps = {
+  issueId: string;
+};
+
 export const IssuesList = () => {
+  const issuesQuery = useIssues();
   const [open, setOpen] = React.useState(false);
   const [issueData, setIssueData] = useState<Issue[]>([]);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
-  useEffect(() => {
-    retrieveIssues();
-    console.log(selectionModel);
-  }, [selectionModel]);
+  if (!issuesQuery.data) return null;
 
-  const retrieveIssues = () => {
-    IssueDataService.getAll()
-      .then((response: any) => {
-        setIssueData(response.data);
-        // console.log(response.data);
-      })
-      .catch((e: Error) => {
-        console.log(e);
-      });
-  };
+  let issuesRows = issuesQuery.data?.data;
 
-  // if (issuesQuery.isLoading) {
-  //   return (
-  //     <Box sx={{ display: 'flex' }}>
-  //       <CircularProgress />
-  //     </Box>
-  //   );
-  // }
+  if (issuesQuery.isLoading) {
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-  const handleDeleteIssue = () => {
-    console.log('Deleting: ' + selectionModel);
-    IssueDataService.remove(selectionModel)
-      .then((response: any) => {
-        console.log(response.data);
-      })
-      .catch((e: Error) => {
-        console.log(e);
-      });
-  };
-
-  const handleEdit = () => {};
-
-  const handleOpen = () => setOpen(true);
-
-  const handleClose = () => setOpen(false);
-
-  const handleSubmit = () => {};
-
-  function getAssignedToEmployeeId(params: {
-    row: { assignedToEmployeeId: { employeeName: any } | null };
-  }) {
+  function getAssignedToEmployeeId(params: { row: { assignedToEmployeeId: { employeeName: string; } | null; }; }) {
     if (params.row.assignedToEmployeeId === null) {
       return 'Unassigned';
     } else {
@@ -99,9 +70,7 @@ export const IssuesList = () => {
     }
   }
 
-  function getIdentifiedByEmployeeId(params: {
-    row: { identifiedByEmployeeId: { employeeName: any } | null };
-  }) {
+  function getIdentifiedByEmployeeId(params: { row: { identifiedByEmployeeId: { employeeName: string; } | null; }; }) {
     if (params.row.identifiedByEmployeeId === null) {
       return 'Unidentified';
     } else {
@@ -109,7 +78,7 @@ export const IssuesList = () => {
     }
   }
 
-  function getAssignedProject(params: { row: { relatedProjectId: { projectName: any } | null } }) {
+  function getAssignedProject(params: { row: { relatedProjectId: { projectName: string; } | null; }; }) {
     if (params.row.relatedProjectId === null) {
       return 'Unassigned';
     } else {
@@ -161,6 +130,7 @@ export const IssuesList = () => {
       headerName: 'Identified By',
       width: 160,
       valueGetter: getIdentifiedByEmployeeId,
+
     },
     {
       field: 'assignedProjects',
@@ -173,16 +143,21 @@ export const IssuesList = () => {
       headerName: 'Assigned To',
       width: 160,
       valueGetter: getAssignedToEmployeeId,
+    },    
+    {
+      field: 'resolutionSummary',
+      headerName: 'Resolution Summary',
+      width: 160,
     },
   ];
   return (
     <div style={{ height: '75vh', width: '100%' }}>
       <DataGridIssue
-        rows={issueData}
+        rows={issuesRows}
         columns={issueColumns}
-        pageSize={5}
+        pageSize={10}
         getRowId={(row: { issuesId: any }) => row.issuesId}
-        rowsPerPageOptions={[5]}
+        rowsPerPageOptions={[10, 20]}
         components={{
           Toolbar: GridToolbar,
         }}
@@ -204,42 +179,25 @@ export const IssuesList = () => {
         }}
         selectionModel={selectionModel}
       />
-      <ControlButtons elevation={0}>
-        <IssueButtons onClick={handleOpen} variant="outlined" startIcon={<BugReportIcon />}>
-          Add Issue
-        </IssueButtons>
-        {selectionModel && selectionModel.length ? (
-          <IssueButtons onClick={handleSubmit} variant="outlined" startIcon={<EditIcon />}>
-            Edit
-          </IssueButtons>
-        ) : (
-          ''
-        )}
-
-        {selectionModel && selectionModel.length ? (
-          <IssueButtons
-            onClick={handleDeleteIssue}
-            color="error"
-            variant="contained"
-            startIcon={<DeleteIcon />}
-          >
-            Delete
-          </IssueButtons>
-        ) : (
-          ''
-        )}
-      </ControlButtons>
-      <Modal
-        keepMounted
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="keep-mounted-modal-title"
-        aria-describedby="keep-mounted-modal-description"
-      >
-        <Box sx={userModalStyle}>
+      <Grid container justifyContent="flex-end">
+        <Item elevation={0}>
           <AddIssue />
-        </Box>
-      </Modal>
+          </Item>
+        {selectionModel && selectionModel.length ? (
+          <Item elevation={0}>
+            <EditIssue issueId={selectionModel.join()} />
+            </Item>
+        ) : (
+          ''
+        )}
+        {selectionModel && selectionModel.length ? (
+          <Item elevation={0}>
+            <DeleteIssue id={selectionModel.join()} />
+            </Item>
+        ) : (
+          ''
+        )}
+      </Grid>
     </div>
   );
 };

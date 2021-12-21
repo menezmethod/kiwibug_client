@@ -21,7 +21,6 @@ const Item = styled(Paper)({
   textAlign: 'center',
 });
 
-
 export default function AddProject() {
   const [open, setOpen] = React.useState(false);
   const [startDate, setStartDate] = React.useState<Date | null>(new Date());
@@ -41,13 +40,9 @@ export default function AddProject() {
     formState: { errors },
   } = useForm();
 
-  const handleOpen = () => {
-    setOpen(true);
-  };
+  const handleOpen = () => setOpen(true);
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  const handleClose = () => setOpen(false);
 
   const onSubmit = async (values: any) => {
     await addProjectMutation.mutateAsync({ data: values });
@@ -63,7 +58,7 @@ export default function AddProject() {
         Add Project
       </Button>
       <Container>
-      <Form<AddProjectDTO['data']> id="edit-project" onSubmit={handleSubmit(onSubmit)}>
+        <Form<AddProjectDTO['data']> id="add-project">
           <Dialog
             fullScreen={fullScreen}
             open={open}
@@ -163,7 +158,7 @@ export default function AddProject() {
               <Button autoFocus type="submit" onClick={handleSubmit(onSubmit)}>
                 Add
               </Button>
-              <Button onClick={handleClose} autoFocus>
+              <Button color="error" onClick={handleClose} autoFocus>
                 Cancel
               </Button>
             </DialogActions>

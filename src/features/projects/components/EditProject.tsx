@@ -3,7 +3,7 @@ import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Button, Container, Paper, Stack, styled, TextField, Typography } from '@mui/material';
 import { Box } from '@mui/system';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { EditProjectDTO, useEditProject } from '../api/editProject';
 import { Controller, useForm } from 'react-hook-form';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -57,9 +57,6 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
 
   const handleOpen = () => {
     setValue('projectName', projectQuery.data?.data.projectName);
-    // setValue('startDate', projectQuery.data?.data.startDate);
-    // setValue('targetEndDate', projectQuery.data?.data.targetEndDate);
-    // setValue('actualEndDate', projectQuery.data?.data.actualEndDate);
     setProjectName(projectQuery.data?.data.projectName);
     setStartDate(projectQuery.data?.data.startDate);
     setTargetEndDate(projectQuery.data?.data.targetEndDate);
@@ -76,10 +73,6 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
     setActualEndDate(undefined);
     setOpen(false);
   };
-
-  useEffect(() => {
-    setProjectName(projectQuery.data?.data.projectName);
-  }, [projectQuery]);
 
   return (
     <>
@@ -98,7 +91,7 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
           <DialogContent>
             <Box>
               <Stack spacing={2}>
-                <Form<EditProjectDTO['data']> id="edit-project" onSubmit={handleSubmit(onSubmit)}>
+                <Form<EditProjectDTO['data']> id="edit-project">
                   <Item elevation={0}>
                     <TextField
                       onChange={(e) =>
@@ -172,9 +165,9 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
                         render={({ field: { ref, ...rest } }) => (
                           <DatePicker
                             label="Actual End Date"
-                            minDate={new Date()}
+                            minDate={startDate}
                             value={actualEndDate}
-                            onChange={(actualEndDate1: React.SetStateAction<Date | undefined | null>) => {
+                            onChange={(actualEndDate1) => {
                               setActualEndDate(actualEndDate1);
                               setValue('actualEndDate', actualEndDate1, {
                                 shouldValidate: true,

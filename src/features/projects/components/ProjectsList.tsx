@@ -37,8 +37,6 @@ const DataGridProject = styled(DataGrid)({
   marginTop: '-5.5vh',
 });
 
-type ApiResponse = { data: { projectName: string } };
-
 export const ProjectsList = () => {
   const projectsQuery = useProjects();
   const [open, setOpen] = React.useState(false);
@@ -83,7 +81,7 @@ export const ProjectsList = () => {
   if (!projectsQuery.data) return null;
 
   let projectsRows = projectsQuery.data?.data;
-
+  
   return (
     <div style={{ height: '75vh', width: '100%' }}>
       <DataGridProject

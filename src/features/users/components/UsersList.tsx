@@ -24,8 +24,8 @@ const ControlButtons = styled(Paper)({
 });
 
 const DataGridUser = styled(DataGrid)({
-  border:'0',
-  marginTop:'-4vh'
+  border: '0',
+  marginTop: '-4vh',
 });
 
 const UserButtons = styled(Button)({
@@ -119,8 +119,8 @@ export const UsersList = () => {
   //   });
   // }
 
-  function getRole(params: { row: { roles: { name: any; }[]; }; }) {
-    switch(params.row.roles[0].name) {
+  function getRole(params: { row: { roles: { name: any }[] } }) {
+    switch (params.row.roles[0].name) {
       case 'ROLE_USER':
         return 'User';
       case 'ROLE_MANAGER':
@@ -166,7 +166,7 @@ export const UsersList = () => {
         rows={userData}
         columns={userColumns}
         pageSize={5}
-        getRowId={(row: { employeeId: any; }) => row.employeeId}
+        getRowId={(row: { employeeId: any }) => row.employeeId}
         rowsPerPageOptions={[5]}
         components={{
           Toolbar: GridToolbar,

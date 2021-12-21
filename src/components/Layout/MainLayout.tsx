@@ -18,8 +18,6 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import { mainListItems, secondaryListItems } from './listItems';
-import { Head } from '../Head';
-import { ContentLayout } from './ContentLayout';
 
 function Copyright(props: any) {
   return (
@@ -99,7 +97,7 @@ const Logo = styled('div')({
   fontWeight:"bold"
 });
 
-export const MainLayout = ({ children }: MainLayoutProps) => {
+export const MainLayout = ({ title, children }: MainLayoutProps) => {
   const [open, setOpen] = React.useState(true);
   const toggleDrawer = () => {
     setOpen(!open);
@@ -130,7 +128,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             </IconButton>
 
             <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-              SOMETITLE
+              {title}
             </Typography>
             <IconButton color="inherit">
               <Badge badgeContent={4} color="secondary">

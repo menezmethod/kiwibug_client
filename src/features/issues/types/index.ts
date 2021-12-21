@@ -4,7 +4,7 @@ export type Issue = {
   issueSummary: string;
   issueDescription: string;
   identifiedDate: Date;
-  status: 'OPEN' | 'ONHOLD' |'CLOSED';
+  status: 'OPEN' | 'ONHOLD' | 'CLOSED';
   priority: 'LOW' | 'MEDIUM' | 'HIGH';
   targetResolutionDate: Date;
   progress: string;
@@ -15,5 +15,36 @@ export type Issue = {
   modifiedOn: Date;
   employeeName: string;
   projectName: string;
+  data: {
+    issueSummary: string;
+    issueDescription: string;
+    identifiedDate: Date;
+    status: 'OPEN' | 'ONHOLD' | 'CLOSED';
+    priority: 'LOW' | 'MEDIUM' | 'HIGH';
+    targetResolutionDate: Date;
+    progress: string;
+    actualResolutionDate: Date;
+    resolutionSummary: string;
+    createdOn: Date;
+    createdBy: string;
+    modifiedOn: Date;
+    employeeName: string;
+    projectName: string;
+    assignedToEmployeeId: {
+      assignedToEmployeeId: bigint;
+      employeeName: string;
+      employeeId: any;
+    };
+    identifiedByEmployeeId: {
+      identifiedByEmployeeId: bigint;
+      employeeName: string;
+      employeeId: any;
+    };
+    relatedProjectId: {
+      relatedProjectId: bigint;
+      projectName: string;
+      projectId: any;
+    };
 
+  };
 } & BaseEntity;
