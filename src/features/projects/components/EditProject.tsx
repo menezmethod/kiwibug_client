@@ -17,6 +17,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import { getProject, useProject } from '../api/getProject';
 import { parseISO } from 'date-fns';
+import { queryClient } from '@/lib/react-query';
 
 const Item = styled(Paper)({
   padding: 8,
@@ -67,10 +68,11 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
   };
 
   const handleClose = () => {
-    setProjectName(undefined);
-    setStartDate(undefined);
-    setTargetEndDate(undefined);
-    setActualEndDate(undefined);
+    // setProjectName(undefined);
+    // setStartDate(undefined);
+    // setTargetEndDate(undefined);
+    // setActualEndDate(undefined);
+    queryClient.clear();
     setOpen(false);
   };
 

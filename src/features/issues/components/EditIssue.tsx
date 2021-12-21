@@ -35,6 +35,7 @@ import { useUsers } from '@/features/users/api/getUsers';
 import { User } from '@/features/users/types';
 import { Project } from '@/features/projects/types';
 import { useIssue } from '../api/getIssue';
+import { queryClient } from '@/lib/react-query';
 
 const Item = styled(Paper)({
   pediting: 4,
@@ -46,11 +47,15 @@ type EditIssueProps = {
 };
 
 export default function EditIssue({ issueId }: EditIssueProps) {
+  // Load list of projects and users from api for select assignment
   const projectsQuery = useProjects();
   const usersQuery = useUsers();
+
+  // Load single issue data from api.
   const issueQuery = useIssue({ issueId });
   const editIssueMutation = useEditIssue();
   const [open, setOpen] = React.useState(false);
+  const [status, setStatus] = React.useState('');
   const [targetResolutionDate, setTargetResolutionDate] = React.useState<Date | undefined | null>(
     undefined
   );
@@ -64,6 +69,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
 
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
+  // Load react-hook-form
   const {
     register,
     watch,
@@ -73,41 +79,85 @@ export default function EditIssue({ issueId }: EditIssueProps) {
     formState: { errors },
   } = useForm();
 
-  const handleOpen = () => {
+  const handleOpen = async () => {
+    // Set the dates to correct default values on open. *Will probably have to refactor this.
+
     setTargetResolutionDate(issueQuery.data?.data.targetResolutionDate);
     setIdentifiedDate(issueQuery.data?.data.identifiedDate);
     setActualResDate(issueQuery.data?.data.actualResolutionDate);
-    setRelatedProjectId(issueQuery.data?.data.relatedProjectId.projectId);
-    setIdentifiedBy(issueQuery.data?.data.identifiedByEmployeeId.employeeId);
-    setAssignedTo(issueQuery.data?.data.assignedToEmployeeId.employeeId);
+
+    // Check if there are related projects, identified by employee, or assigned to employee.
+    if (issueQuery.data?.data.relatedProjectId !== null) {
+      setRelatedProjectId(issueQuery.data?.data.relatedProjectId.projectId);
+      // setValue Fixes JSON for deserialization.
+      setValue('relatedProjectId', { projectId: issueQuery.data?.data.relatedProjectId.projectId });
+    } else {
+      setValue('relatedProjectId', null);
+    }
+    if (issueQuery.data?.data.identifiedByEmployeeId !== null) {
+      setIdentifiedBy(issueQuery.data?.data.identifiedByEmployeeId.employeeId);
+      setValue('identifiedByEmployeeId', {
+        employeeId: issueQuery.data?.data.identifiedByEmployeeId.employeeId,
+      });
+    } else {
+      setValue('identifiedByEmployeeId', null);
+    }
+    if (issueQuery.data?.data.assignedToEmployeeId !== null) {
+      setAssignedTo(issueQuery.data?.data.assignedToEmployeeId.employeeId);
+      setValue('assignedToEmployeeId', {
+        employeeId: issueQuery.data?.data.assignedToEmployeeId.employeeId,
+      });
+    } else {
+      setValue('assignedToEmployeeId', null);
+    }
     setOpen(true);
   };
 
-  const handleClose = () => setOpen(false);
-
+  const handleClose =  () => {
+    setOpen(false);
+    queryClient.resetQueries("issue");
+    queryClient.resetQueries("projects");
+    queryClient.resetQueries("users");
+    queryClient.resetQueries("issues");
+    // queryClient.clear();
+  };
   const onSubmit = async (values: any) => {
     await editIssueMutation.mutateAsync({ data: values, issueId });
-    handleClose();
     console.log(values);
+    handleClose();
   };
 
+  // Handle assignment select and do correct JSON nesting with react hook forms.
   const handleChangeAp = (event: SelectChangeEvent) => {
     setRelatedProjectId(event.target.value);
-    setValue('relatedProjectId', { projectId: event.target.value });
+    if (parseInt(event.target.value) >= 1) {
+      setValue('relatedProjectId', { projectId: event.target.value });
+    } else {
+      setValue('relatedProjectId', null);
+    }
   };
-
   const handleChangeIB = (event: SelectChangeEvent) => {
     setIdentifiedBy(event.target.value);
-    setValue('identifiedByEmployeeId', { employeeId: event.target.value });
+    if (parseInt(event.target.value) >= 1) {
+      setValue('identifiedByEmployeeId', { employeeId: event.target.value });
+    } else {
+      setValue('identifiedByEmployeeId', null);
+    }
   };
   const handleChangeAT = (event: SelectChangeEvent) => {
     setAssignedTo(event.target.value);
-    setValue('assignedToEmployeeId', { employeeId: event.target.value });
+    if (parseInt(event.target.value) >= 1) {
+      setValue('assignedToEmployeeId', { employeeId: event.target.value });
+    } else {
+      setValue('assignedToEmployeeId', null);
+    }
   };
 
+  // Return null if no data from projects or users.
   if (!projectsQuery.data) return null;
   if (!usersQuery.data) return null;
 
+  // Load data from api for assignment selects
   let projectsRows = projectsQuery.data?.data;
   let usersRows = usersQuery.data?.data;
 
@@ -199,7 +249,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                     <Controller
                       name="identifiedByEmployeeId"
                       control={control}
-                      defaultValue={issueQuery.data?.data.identifiedByEmployeeId.employeeId}
+                      defaultValue={identifiedBy}
                       // rules={{ required: true }}
                       render={({ field }) => (
                         <FormControl fullWidth>
@@ -254,7 +304,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                     <Controller
                       name="assignedToEmployeeId"
                       control={control}
-                      defaultValue={issueQuery.data?.data.assignedToEmployeeId.employeeId}
+                      defaultValue={assignedTo}
                       render={({ field }) => (
                         <FormControl fullWidth>
                           <InputLabel id="assigned_to">Assigned To</InputLabel>

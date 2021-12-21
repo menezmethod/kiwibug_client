@@ -22,7 +22,6 @@ import {
   styled,
 } from '@mui/material';
 
-import IssueDataService from '../api/IssueService';
 import AddIssue from './AddIssue';
 import React from 'react';
 import { useIssues } from '../api/getIssues';
