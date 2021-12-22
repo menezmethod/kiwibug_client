@@ -116,7 +116,6 @@ export default function EditIssue({ issueId }: EditIssueProps) {
     queryClient.resetQueries('projects');
     queryClient.resetQueries('users');
     queryClient.resetQueries('issues');
-    // queryClient.clear();
   };
   const onSubmit = async (values: any) => {
     await editIssueMutation.mutateAsync({ data: values, issueId });
@@ -218,7 +217,6 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       name="relatedProjectId"
                       control={control}
                       defaultValue={relatedProjectId}
-                      // rules={{ required: true }}
                       render={({ field }) => (
                         <FormControl fullWidth>
                           <InputLabel id="related-project-id">Related Project</InputLabel>

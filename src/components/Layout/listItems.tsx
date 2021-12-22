@@ -1,8 +1,5 @@
-import * as React from 'react';
-
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import AssignmentIcon from '@material-ui/icons/Assignment';
-import BarChartIcon from '@material-ui/icons/BarChart';
 import BugReportIcon from '@material-ui/icons/BugReport';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PeopleIcon from '@material-ui/icons/People';
@@ -10,6 +7,7 @@ import ListItem from '@mui/material/ListItem';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
+import * as React from 'react';
 
 export const mainListItems = (
   <div>

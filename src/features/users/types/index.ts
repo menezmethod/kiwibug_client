@@ -2,7 +2,7 @@ import { BaseEntity } from '@/types';
 
 export type User = {
   employeeName: string;
-  employeeEmail: string;
+  email: string;
   role: 'ADMIN' | 'MANAGER' | 'LEAD' | 'USER';
   username: string;
   createdOn: Date;
@@ -10,10 +10,11 @@ export type User = {
   modifiedOn: Date;
   modifiedBy: string;
   projectName: string;
+  name: string;
   data: {
     employeeName: string;
-    employeeEmail: string;
-    role: 'ADMIN' | 'MANAGER' | 'LEAD' | 'USER';
+    email: string;
+    roles: 'ADMIN' | 'MANAGER' | 'LEAD' | 'USER' | any;
     username: string;
     createdOn: Date;
     createdBy: string;
@@ -21,5 +22,6 @@ export type User = {
     modifiedBy: string;
     projectName: string;
     map: any;
-  }
+    assignedProjects: any;
+  };
 } & BaseEntity;

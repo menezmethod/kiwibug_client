@@ -33,7 +33,6 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
   const editProjectMutation = useEditProject();
   const projectQuery = useProject({ projectId });
   const [open, setOpen] = React.useState(false);
-  const [projectName, setProjectName] = React.useState<string | undefined>(undefined);
   const [startDate, setStartDate] = React.useState<Date | undefined | null>(undefined);
   const [targetEndDate, setTargetEndDate] = React.useState<Date | undefined | null>(undefined);
   const [actualEndDate, setActualEndDate] = React.useState<Date | undefined | null>(undefined);
@@ -58,8 +57,6 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
   };
 
   const handleOpen = () => {
-    // setValue('projectName', projectQuery.data?.data.projectName);
-    // setProjectName(projectQuery.data?.data.projectName);
     setStartDate(projectQuery.data?.data.startDate);
     setTargetEndDate(projectQuery.data?.data.targetEndDate);
     setActualEndDate(projectQuery.data?.data.actualEndDate);
@@ -105,9 +102,6 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
                           {...field}
                         />
                       )}
-                      // onChange={(e) =>
-                      //   setValue('projectName', e.target.value, { shouldValidate: true })
-                      // }
                       name="projectName"
                       control={control}
                       defaultValue={projectQuery.data?.data.projectName}

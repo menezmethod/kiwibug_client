@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SubmitHandler, useForm, UseFormProps, UseFormReturn } from 'react-hook-form';
+import { UseFormProps } from 'react-hook-form';
 
 type FormProps<TFormValues> = {
   // onSubmit: any;
@@ -13,7 +13,7 @@ export const Form = <TFormValues extends Record<string, unknown> = Record<string
   options,
   id,
 }: FormProps<TFormValues>) => {
-  const methods = useForm<TFormValues>({ ...options });
+  // const methods = useForm<TFormValues>({ ...options });
   return (
     <form id={id}>
       {children}

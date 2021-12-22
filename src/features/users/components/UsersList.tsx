@@ -1,110 +1,42 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
-
-import DeleteIcon from '@material-ui/icons/Delete';
-import EditIcon from '@material-ui/icons/Edit';
+import { formatRoleGrid, formatRoleForm } from '@/utils/format';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import { Box, Button, Modal, Paper, styled } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+import { useUsers } from '../api/getUsers';
 
-import UserDataService from '../api/UserService';
-// import { RouteComponentProps } from 'react-router-dom';
 import { User } from '../types';
-import UpdateProfile from './UpdateProfile';
-
-// interface RouterProps {
-//   // type for `match.params`
-//   id: string; // must be type `string` since value comes from the URL
-// }
-
-// type Props = RouteComponentProps<RouterProps>;
-
-const ControlButtons = styled(Paper)({
-  padding: 8,
-  textAlign: 'right',
-});
+import { DeleteUser } from './DeleteUser';
+import EditUser from './EditUser';
 
 const DataGridUser = styled(DataGrid)({
   border: '0',
   marginTop: '-4vh',
 });
 
-const UserButtons = styled(Button)({
-  padding: 10,
-  margin: 6,
-});
-
-const userModalStyle = {
-  position: 'absolute' as 'absolute',
-  top: '50%',
-  left: '50%',
-  transform: 'translate(-50%, -50%)',
-  width: '80vw',
-  bgcolor: 'background.paper',
-  border: '0px solid #000',
-  boxShadow: 24,
-  // overflow: 'scroll',
-  p: 4,
-};
+const Item = styled(Paper)(({ theme }) => ({
+  ...theme.typography.body2,
+  padding: theme.spacing(0.5),
+}));
 
 export const UsersList = () => {
-  const initialUserState = {
-    employeeName: '',
-    email: '',
-    employeeRole: '',
-    username: '',
-    createdOn: null,
-    createdBy: '',
-    modifiedOn: null,
-    modifiedBy: '',
-    projectName: '',
-  };
+  const usersQuery = useUsers();
   const [open, setOpen] = React.useState(false);
   const [userData, setUserData] = useState<User[]>([]);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
-  useEffect(() => {
-    retrieveUsers();
-    console.log(selectionModel);
-  }, [selectionModel]);
+  if (usersQuery.isLoading) {
+    return (
+      <Box sx={{ display: 'flex' }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
 
-  const retrieveUsers = () => {
-    UserDataService.getAll()
-      .then((response: any) => {
-        setUserData(response.data);
-        // console.log(response.data);
-      })
-      .catch((e: Error) => {
-        console.log(e);
-      });
-  };
+  if (!usersQuery.data) return null;
 
-  // if (usersQuery.isLoading) {
-  //   return (
-  //     <Box sx={{ display: 'flex' }}>
-  //       <CircularProgress />
-  //     </Box>
-  //   );
-  // }
+  let usersRows = usersQuery.data?.data;
 
-  const handleDeleteUser = () => {
-    console.log('Deleting: ' + selectionModel);
-    UserDataService.remove(selectionModel)
-      .then((response: any) => {
-        console.log(response.data);
-        // props.history.push('/employees');
-      })
-      .catch((e: Error) => {
-        console.log(e);
-      });
-  };
-
-  const handleEdit = () => {};
-
-  const handleSubmit = () => {};
-
-  const handleOpen = () => setOpen(true);
-
-  const handleClose = () => setOpen(false);
 
   function getAssignedProject(params: { row: { assignedProjects: { projectName: any } } }) {
     if (params.row.assignedProjects === null) {
@@ -112,24 +44,9 @@ export const UsersList = () => {
     }
     return `${params.row.assignedProjects.projectName}`;
   }
-
-  // function getRole(params: { row: { roles: { b: string; }[]; }; }) {
-  //   (params.row.roles.map((item: { b: string; }, i: any)=> {
-
-  //   });
-  // }
-
-  function getRole(params: { row: { roles: { name: any }[] } }) {
-    switch (params.row.roles[0].name) {
-      case 'ROLE_USER':
-        return 'User';
-      case 'ROLE_MANAGER':
-        return 'Manager';
-      case 'ROLE_LEAD':
-        return 'Lead';
-      case 'ROLE_ADMIN':
-        return 'Administrator';
-    }
+  
+  function getRole(params: any) {
+    return formatRoleGrid(params.row.roles);
   }
   const userColumns = [
     {
@@ -163,7 +80,7 @@ export const UsersList = () => {
   return (
     <div style={{ height: '71vh', width: '100%' }}>
       <DataGridUser
-        rows={userData}
+        rows={usersRows}
         columns={userColumns}
         pageSize={5}
         getRowId={(row: { employeeId: any }) => row.employeeId}
@@ -189,42 +106,27 @@ export const UsersList = () => {
         }}
         selectionModel={selectionModel}
       />
-      <ControlButtons elevation={0}>
-        <UserButtons onClick={handleOpen} variant="outlined" startIcon={<PersonAddAltIcon />}>
-          Add User
-        </UserButtons>
+      <Grid container justifyContent="flex-end">
+        <Item elevation={0}>
+          <Button variant="outlined" startIcon={<PersonAddAltIcon />}>
+            Add User
+          </Button>{' '}
+        </Item>
         {selectionModel && selectionModel.length ? (
-          <UserButtons onClick={handleEdit} variant="outlined" startIcon={<EditIcon />}>
-            Edit
-          </UserButtons>
+          <Item elevation={0}>
+            <EditUser employeeId={selectionModel.join()} />
+          </Item>
         ) : (
           ''
         )}
-
         {selectionModel && selectionModel.length ? (
-          <UserButtons
-            onClick={handleDeleteUser}
-            color="error"
-            variant="contained"
-            startIcon={<DeleteIcon />}
-          >
-            Delete
-          </UserButtons>
+          <Item elevation={0}>
+            <DeleteUser id={selectionModel.join()} />
+          </Item>
         ) : (
           ''
         )}
-      </ControlButtons>
-      <Modal
-        keepMounted
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="keep-mounted-modal-title"
-        aria-describedby="keep-mounted-modal-description"
-      >
-        <Box sx={userModalStyle}>
-          <UpdateProfile />
-        </Box>
-      </Modal>
+      </Grid>
     </div>
   );
 };
