@@ -1,11 +1,10 @@
-import { useMutation } from 'react-query';
-
 import axios from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
-// import { useNotificationStore } from '@/stores/notifications';
+import { useMutation } from 'react-query';
 
 import { Project } from '../types';
 
+// import { useNotificationStore } from '@/stores/notifications';
 export type EditProjectDTO = {
   data: {
     projectName: any;

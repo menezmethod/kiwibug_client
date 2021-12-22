@@ -1,8 +1,6 @@
-import * as React from 'react';
-
 import { Issue } from '@/features/issues';
-import { Project } from '@/features/projects';
 import { User } from '@/features/users';
+import * as React from 'react';
 
 import { useAuth } from './auth';
 

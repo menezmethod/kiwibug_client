@@ -1,6 +1,6 @@
 import axios from '@/lib/axios';
-import { User } from '../types';
 
+import { User } from '../types';
 
 const getAll = () => {
   return axios.get<Array<User>>('/users');

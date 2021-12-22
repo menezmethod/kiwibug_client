@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { IssuesList } from '../components/IssuesList';
 
 import { Issue } from './Issue';
 import { Issues } from './Issues';

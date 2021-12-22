@@ -4,13 +4,13 @@ import { HelmetProvider } from 'react-helmet-async';
 import { QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter as Router } from 'react-router-dom';
-import Alert from '@mui/material/Alert';
 
-import CircularProgress from '@mui/material/CircularProgress';
 // import { Notifications } from '@/components/Notifications/Notifications';
 import { AuthProvider } from '@/lib/auth';
 import { queryClient } from '@/lib/react-query';
 import { AlertTitle, Box, Button, Stack } from '@mui/material';
+import Alert from '@mui/material/Alert';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const ErrorFallback = () => {
   return (

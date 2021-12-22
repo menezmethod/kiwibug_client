@@ -1,31 +1,10 @@
-import {
-  DataGrid,
-  GridSelectionModel,
-  GridToolbar,
-  GridValueFormatterParams,
-  GridValueGetterParams,
-} from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
-import DeleteIcon from '@material-ui/icons/Delete';
-import BugReportIcon from '@material-ui/icons/BugReport';
-import EditIcon from '@material-ui/icons/Edit';
-import axios, { AxiosResponse } from 'axios';
-import { Issue } from '../types';
-import {
-  Box,
-  Button,
-  CircularProgress,
-  Container,
-  Grid,
-  Paper,
-  Stack,
-  styled,
-} from '@mui/material';
+import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
+import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
+import React, { useEffect, useState } from 'react';
 
-import AddIssue from './AddIssue';
-import React from 'react';
 import { useIssues } from '../api/getIssues';
-import { QueryClientProvider } from 'react-query';
+import { Issue } from '../types';
+import AddIssue from './AddIssue';
 import { DeleteIssue } from './DeleteIssue';
 import EditIssue from './EditIssue';
 

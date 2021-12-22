@@ -1,15 +1,15 @@
 import { Suspense } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
 
-import CircularProgress from '@mui/material/CircularProgress';
 import { MainLayout } from '@/components/Layout/MainLayout';
-import { Box } from '@mui/material';
-import { lazyImport } from '@/utils/lazyImport';
-import { Projects } from '@/features/projects/routes/Projects';
+import { Issue } from '@/features/issues/routes/Issue';
 import { Issues } from '@/features/issues/routes/Issues';
 import { Project } from '@/features/projects/routes/Project';
-import { Issue } from '@/features/issues/routes/Issue';
+import { Projects } from '@/features/projects/routes/Projects';
 import { Profile } from '@/features/users';
+import { lazyImport } from '@/utils/lazyImport';
+import { Box } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 
 const { Dashboard } = lazyImport({ factory: () => import('@/features/misc'), name: 'Dashboard' });
 const { ProjectsRoutes } = lazyImport({

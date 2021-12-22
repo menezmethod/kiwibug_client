@@ -1,4 +1,10 @@
 import { Form } from '@/components/Form/Form';
+import { useProjects } from '@/features/projects/api/getProjects';
+import { useUsers } from '@/features/users/api/getUsers';
+import { queryClient } from '@/lib/react-query';
+import EditIcon from '@mui/icons-material/Edit';
+import { DatePicker, LocalizationProvider } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
   Button,
   Container,
@@ -16,26 +22,18 @@ import {
   styled,
   TextField,
 } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import EditIcon from '@mui/icons-material/Edit';
-import { Controller, useForm } from 'react-hook-form';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { Box } from '@mui/system';
-import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Box } from '@mui/system';
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
 import { EditIssueDTO, useEditIssue } from '../api/editIssue';
-import { useProjects } from '@/features/projects/api/getProjects';
-import { useUsers } from '@/features/users/api/getUsers';
-import { User } from '@/features/users/types';
-import { Project } from '@/features/projects/types';
 import { useIssue } from '../api/getIssue';
-import { queryClient } from '@/lib/react-query';
 
 const Item = styled(Paper)({
   pediting: 4,
@@ -88,8 +86,6 @@ export default function EditIssue({ issueId }: EditIssueProps) {
 
     // Check if there are related projects, identified by employee, or assigned to employee.
     if (issueQuery.data?.data.relatedProjectId !== null) {
-      setRelatedProjectId(issueQuery.data?.data.relatedProjectId.projectId);
-      // setValue Fixes JSON for deserialization.
       setValue('relatedProjectId', { projectId: issueQuery.data?.data.relatedProjectId.projectId });
     } else {
       setValue('relatedProjectId', null);
@@ -113,12 +109,13 @@ export default function EditIssue({ issueId }: EditIssueProps) {
     setOpen(true);
   };
 
-  const handleClose =  () => {
+  const handleClose = () => {
     setOpen(false);
-    queryClient.resetQueries("issue");
-    queryClient.resetQueries("projects");
-    queryClient.resetQueries("users");
-    queryClient.resetQueries("issues");
+    // Reset cache. This also allows the form to begin with most current selected values.
+    queryClient.resetQueries('issue');
+    queryClient.resetQueries('projects');
+    queryClient.resetQueries('users');
+    queryClient.resetQueries('issues');
     // queryClient.clear();
   };
   const onSubmit = async (values: any) => {

@@ -1,11 +1,10 @@
-import { useMutation } from 'react-query';
-
 import axios from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
-// import { useNotificationStore } from '@/stores/notifications';
+import { useMutation } from 'react-query';
 
 import { Issue } from '../types';
 
+// import { useNotificationStore } from '@/stores/notifications';
 export type AddIssueDTO = {
   data: {
     issueId: string;
@@ -38,7 +37,7 @@ type UseAddIssueOptions = {
 export const useAddIssue = ({ config }: UseAddIssueOptions = {}) => {
   //   const { addNotification } = useNotificationStore();
   return useMutation({
-    onMutate: async (newIssue) => {
+    onMutate: async (newIssue: any) => {
       await queryClient.cancelQueries('issues');
 
       const previousIssues = queryClient.getQueryData<Issue[]>('issues');
@@ -47,7 +46,7 @@ export const useAddIssue = ({ config }: UseAddIssueOptions = {}) => {
 
       return { previousIssues };
     },
-    onError: (_, __, context: any) => {
+    onError: (_: any, __: any, context: any) => {
       if (context?.previousIssues) {
         queryClient.setQueryData('issues', context.previousIssues);
       }

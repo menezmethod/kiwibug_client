@@ -1,20 +1,10 @@
-import {
-  DataGrid,
-  GridSelectionModel,
-  GridToolbar,
-  GridValueFormatterParams,
-  GridValueGetterParams,
-} from '@mui/x-data-grid';
-import { useEffect, useState } from 'react';
-import { Project } from '../types';
-import { Box, Button, CircularProgress, Container, Grid, Modal, Paper, Stack, styled } from '@mui/material';
-import { formatDataGridDate } from '@/utils/format';
+import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
+import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
+import React, { useEffect, useState } from 'react';
 
-import React from 'react';
-import dayjs from 'dayjs';
-import AddProject from './AddProject';
 import { useProjects } from '../api/getProjects';
-import { QueryClientProvider } from 'react-query';
+import { Project } from '../types';
+import AddProject from './AddProject';
 import { DeleteProject } from './DeleteProject';
 import { EditProject } from './EditProject';
 

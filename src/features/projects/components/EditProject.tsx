@@ -1,23 +1,24 @@
+import { parseISO } from 'date-fns';
+import React, { useState } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
 import { Form } from '@/components/Form/Form';
+import { queryClient } from '@/lib/react-query';
+import EditIcon from '@material-ui/icons/Edit';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Button, Container, Paper, Stack, styled, TextField, Typography } from '@mui/material';
-import { Box } from '@mui/system';
-import React, { useState } from 'react';
-import { EditProjectDTO, useEditProject } from '../api/editProject';
-import { Controller, useForm } from 'react-hook-form';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import EditIcon from '@material-ui/icons/Edit';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-
 import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Box } from '@mui/system';
+
+import { EditProjectDTO, useEditProject } from '../api/editProject';
 import { getProject, useProject } from '../api/getProject';
-import { parseISO } from 'date-fns';
-import { queryClient } from '@/lib/react-query';
 
 const Item = styled(Paper)({
   padding: 8,
@@ -57,8 +58,8 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
   };
 
   const handleOpen = () => {
-    setValue('projectName', projectQuery.data?.data.projectName);
-    setProjectName(projectQuery.data?.data.projectName);
+    // setValue('projectName', projectQuery.data?.data.projectName);
+    // setProjectName(projectQuery.data?.data.projectName);
     setStartDate(projectQuery.data?.data.startDate);
     setTargetEndDate(projectQuery.data?.data.targetEndDate);
     setActualEndDate(projectQuery.data?.data.actualEndDate);
@@ -68,11 +69,8 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
   };
 
   const handleClose = () => {
-    // setProjectName(undefined);
-    // setStartDate(undefined);
-    // setTargetEndDate(undefined);
-    // setActualEndDate(undefined);
-    queryClient.clear();
+    queryClient.resetQueries('project');
+    queryClient.resetQueries('projects');
     setOpen(false);
   };
 
@@ -95,18 +93,24 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
               <Stack spacing={2}>
                 <Form<EditProjectDTO['data']> id="edit-project">
                   <Item elevation={0}>
-                    <TextField
-                      onChange={(e) =>
-                        setValue('projectName', e.target.value, { shouldValidate: true })
-                      }
-                      fullWidth
-                      id="projectName"
+                    <Controller
+                      render={({ field }) => (
+                        <TextField
+                          fullWidth
+                          id="projectName"
+                          label="Project Name"
+                          variant="outlined"
+                          error={errors?.projectName}
+                          helperText={errors.projectName?.message}
+                          {...field}
+                        />
+                      )}
+                      // onChange={(e) =>
+                      //   setValue('projectName', e.target.value, { shouldValidate: true })
+                      // }
                       name="projectName"
-                      label="Project Name"
-                      variant="outlined"
-                      defaultValue={projectName}
-                      error={errors?.projectName}
-                      helperText={errors.projectName?.message}
+                      control={control}
+                      defaultValue={projectQuery.data?.data.projectName}
                     />
                   </Item>
                   <Item elevation={0}>

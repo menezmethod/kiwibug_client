@@ -1,4 +1,9 @@
 import { Form } from '@/components/Form/Form';
+import { useProjects } from '@/features/projects/api/getProjects';
+import { useUsers } from '@/features/users/api/getUsers';
+import BugReportIcon from '@mui/icons-material/BugReport';
+import { DatePicker, LocalizationProvider } from '@mui/lab';
+import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
   Button,
   Container,
@@ -16,24 +21,17 @@ import {
   styled,
   TextField,
 } from '@mui/material';
-import { DatePicker, LocalizationProvider } from '@mui/lab';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import BugReportIcon from '@mui/icons-material/BugReport';
-import { Controller, useForm } from 'react-hook-form';
-import useMediaQuery from '@mui/material/useMediaQuery';
-import { Box } from '@mui/system';
-import React from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { Box } from '@mui/system';
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
 import { AddIssueDTO, useAddIssue } from '../api/addIssue';
-import { useProjects } from '@/features/projects/api/getProjects';
-import { useUsers } from '@/features/users/api/getUsers';
-import { User } from '@/features/users/types';
-import { Project } from '@/features/projects/types';
 
 const Item = styled(Paper)({
   padding: 4,

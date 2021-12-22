@@ -1,15 +1,15 @@
-import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
-import { useEffect, useState, ChangeEvent } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
+
 import DeleteIcon from '@material-ui/icons/Delete';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import EditIcon from '@material-ui/icons/Edit';
-// import { RouteComponentProps } from 'react-router-dom';
-import { User } from '../types';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { Box, Button, Modal, Paper, styled } from '@mui/material';
+import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
 
 import UserDataService from '../api/UserService';
+// import { RouteComponentProps } from 'react-router-dom';
+import { User } from '../types';
 import UpdateProfile from './UpdateProfile';
-import React from 'react';
 
 // interface RouterProps {
 //   // type for `match.params`

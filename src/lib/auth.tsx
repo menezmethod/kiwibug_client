@@ -1,17 +1,16 @@
-import { initReactQueryAuth } from 'react-query-auth';
-
-import CircularProgress from '@mui/material/CircularProgress';
 import {
-  loginWithEmailAndPassword,
+  AuthUser,
   getUser,
+  LoginCredentialsDTO,
+  loginWithEmailAndPassword,
+  RegisterCredentialsDTO,
   registerWithEmailAndPassword,
   UserResponse,
-  LoginCredentialsDTO,
-  RegisterCredentialsDTO,
-  AuthUser,
 } from '@/features/auth';
 import storage from '@/utils/storage';
 import { Box } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
+import { initReactQueryAuth } from 'react-query-auth';
 
 async function handleUserResponse(data: UserResponse) {
   const { jwt, user } = data;

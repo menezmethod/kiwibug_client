@@ -1,4 +1,5 @@
 import * as React from 'react';
+
  // eslint-disable-next-line
 export function lazyImport<T extends React.ComponentType<any>,
   I extends { [K2 in K]: T },

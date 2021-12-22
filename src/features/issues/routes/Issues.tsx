@@ -1,6 +1,7 @@
-import { ContentLayout } from '@/components/Layout/ContentLayout'
-import React from 'react'
-import { IssuesList } from '../components/IssuesList'
+import { ContentLayout } from '@/components/Layout/ContentLayout';
+import React from 'react';
+
+import { IssuesList } from '../components/IssuesList';
 
 export const Issues = () => {
     return (

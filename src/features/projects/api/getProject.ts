@@ -1,4 +1,4 @@
-import  { useQuery }  from 'react-query';
+import { useQuery } from 'react-query';
 
 import axios from '@/lib/axios';
 import { QueryConfig } from '@/lib/react-query';

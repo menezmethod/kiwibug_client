@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+
 import { RegisterForm } from '../components/RegisterForm';
 
 export const Register = () => {

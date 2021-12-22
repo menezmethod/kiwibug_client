@@ -11,6 +11,12 @@ module.exports = {
     {
       files: ['**/*.ts', '**/*.tsx'],
       parser: '@typescript-eslint/parser',
+      parserOptions: {
+        sourceType: "module"
+    },
+    rules: {
+        "quotes": [ "error", "single" ]
+    },
       settings: {
         react: { version: 'detect' },
         'import/resolver': {
