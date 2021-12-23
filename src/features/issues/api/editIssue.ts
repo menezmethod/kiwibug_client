@@ -26,7 +26,7 @@ export type EditIssueDTO = {
 };
 
 export const editIssue = ({ data, issueId }: EditIssueDTO): Promise<Issue> => {
-  return axios.put(`/issues/${issueId}`, data);
+  return axios.patch(`/issues/${issueId}`, data);
 };
 
 type UseEditIssueOptions = {

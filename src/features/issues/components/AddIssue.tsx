@@ -41,6 +41,7 @@ const Item = styled(Paper)({
 export default function AddIssue() {
   const projectsQuery = useProjects();
   const usersQuery = useUsers();
+  const addIssueMutation = useAddIssue();
   const [open, setOpen] = React.useState(false);
   const [targetResolutionDate, setTargetResolutionDate] = React.useState<Date | null>(null);
   const [identifiedDate, setIdentifiedDate] = React.useState<Date | null>(null);
@@ -86,7 +87,6 @@ export default function AddIssue() {
     setValue('assignedToEmployeeId', { employeeId: event.target.value });
   };
 
-  const addIssueMutation = useAddIssue();
 
   if (!projectsQuery.data) return null;
   if (!usersQuery.data) return null;

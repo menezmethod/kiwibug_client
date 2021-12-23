@@ -16,7 +16,7 @@ export type EditUserDTO = {
 };
 
 export const editUser = ({ data, employeeId }: EditUserDTO): Promise<User> => {
-  return axios.put(`/users/${employeeId}`, data);
+  return axios.patch(`/users/${employeeId}`, data);
 };
 
 type UseEditUserOptions = {

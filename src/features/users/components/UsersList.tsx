@@ -1,4 +1,4 @@
-import { formatRoleGrid, formatRoleForm } from '@/utils/format';
+import { formatRole, formatRoleForm } from '@/utils/format';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { Box, Button, CircularProgress, Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
@@ -6,6 +6,7 @@ import React, { ChangeEvent, useEffect, useState } from 'react';
 import { useUsers } from '../api/getUsers';
 
 import { User } from '../types';
+import AddUser from './AddUser';
 import { DeleteUser } from './DeleteUser';
 import EditUser from './EditUser';
 
@@ -46,7 +47,7 @@ export const UsersList = () => {
   }
   
   function getRole(params: any) {
-    return formatRoleGrid(params.row.roles);
+    return formatRole(params.row.roles);
   }
   const userColumns = [
     {
@@ -108,9 +109,7 @@ export const UsersList = () => {
       />
       <Grid container justifyContent="flex-end">
         <Item elevation={0}>
-          <Button variant="outlined" startIcon={<PersonAddAltIcon />}>
-            Add User
-          </Button>{' '}
+          <AddUser />
         </Item>
         {selectionModel && selectionModel.length ? (
           <Item elevation={0}>

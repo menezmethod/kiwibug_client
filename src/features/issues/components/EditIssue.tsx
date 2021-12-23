@@ -245,7 +245,6 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       name="identifiedByEmployeeId"
                       control={control}
                       defaultValue={identifiedBy}
-                      // rules={{ required: true }}
                       render={({ field }) => (
                         <FormControl fullWidth>
                           <InputLabel id="assigned_project_lb">Identified By</InputLabel>

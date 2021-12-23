@@ -26,10 +26,10 @@ function Copyright(props: any) {
   );
 }
 
-// type LoginValues = {
-//   email: string;
-//   password: string;
-// };
+type LoginValues = {
+  username: string;
+  password: string;
+};
 
 type LoginFormProps = {
   onSuccess: () => void;
@@ -88,10 +88,10 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               autoComplete="current-password"
             />
             {/* Remember to program this remember me feature... */}
-            <FormControlLabel
+            {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
-            />
+            /> */}
             <Button
               type="submit"
               fullWidth

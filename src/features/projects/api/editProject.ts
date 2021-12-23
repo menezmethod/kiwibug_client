@@ -16,7 +16,7 @@ export type EditProjectDTO = {
 };
 
 export const editProject = ({ data, projectId }: EditProjectDTO): Promise<Project> => {
-  return axios.put(`/projects/${projectId}`, data);
+  return axios.patch(`/projects/${projectId}`, data);
 };
 
 type UseEditProjectOptions = {

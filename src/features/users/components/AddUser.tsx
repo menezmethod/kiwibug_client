@@ -2,7 +2,7 @@ import { Form } from '@/components/Form/Form';
 import { useProjects } from '@/features/projects/api/getProjects';
 import { queryClient } from '@/lib/react-query';
 import { formatRoleForm } from '@/utils/format';
-import EditIcon from '@mui/icons-material/Edit';
+import AddIcon from '@mui/icons-material/Add';
 import {
   Button,
   Container,
@@ -30,7 +30,7 @@ import { Box } from '@mui/system';
 import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
-import { EditUserDTO, useEditUser } from '../api/editUser';
+import { AddUserDTO, useAddUser } from '../api/addUser';
 import { useUser } from '../api/getUser';
 
 const Item = styled(Paper)({
@@ -38,18 +38,18 @@ const Item = styled(Paper)({
   textAlign: 'center',
 });
 
-type EditUserProps = {
+type AddUserProps = {
   employeeId: string;
 };
 
-export default function EditUser({ employeeId }: EditUserProps) {
-  const userQuery = useUser({ employeeId });
-  const editUserMutation = useEditUser();
+export default function AddUser() {
+  const addUserMutation = useAddUser();
   const projectsQuery = useProjects();
 
   const [open, setOpen] = React.useState(false);
-  const [roleForm, setRoleForm] = React.useState('null');
+
   const [role, setRole] = React.useState('user');
+  const [roleForm, setRoleForm] = React.useState('null');
   const [assignedProject, setAssignedProject] = React.useState('');
 
   const theme = useTheme();
@@ -68,7 +68,7 @@ export default function EditUser({ employeeId }: EditUserProps) {
     if (event.target.value.length >= 6) setValue('password', event.target.value);
   };
 
-  const convertRoles = (event: { target: { value: any; }; }) => {
+  const convertRoles = (event: { target: { value: any } }) => {
     setValue('role', ['user', event.target.value]);
   };
 
@@ -84,31 +84,16 @@ export default function EditUser({ employeeId }: EditUserProps) {
 
   const handleOpen = () => {
     // Check if there are assigned projects to employee and tells react-form-hooks about it.
-    if (userQuery.data?.data.assignedProjects !== null) {
-      setAssignedProject(userQuery.data?.data.assignedProjects.projectId);
-      setValue('assignedProjects', {
-        projectId: userQuery.data?.data.assignedProjects.projectId,
-      });
-    } else {
-      setValue('assignedProjects', null);
-    }
     // Set the correct roles for the form.
-    setRoleForm(formatRoleForm(userQuery.data?.data.roles));
-    setValue('role', [formatRoleForm(userQuery.data?.data.roles), "user"]);
-
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-    // Reset cache. This also allows the form to begin with most current selected values.
-    queryClient.resetQueries('user');
-    queryClient.resetQueries('users');
-    queryClient.resetQueries('projects');
   };
 
   const onSubmit = async (values: any) => {
-    await editUserMutation.mutateAsync({ data: values, employeeId });
+    await addUserMutation.mutateAsync({ data: values });
     console.log(values);
     handleClose();
   };
@@ -118,18 +103,18 @@ export default function EditUser({ employeeId }: EditUserProps) {
 
   return (
     <>
-      <Button onClick={handleOpen} variant="outlined" startIcon={<EditIcon />}>
-        Edit User
+      <Button onClick={handleOpen} variant="outlined" startIcon={<AddIcon />}>
+        Add User
       </Button>
       <Container>
-        <Form<EditUserDTO['data']> id="edit-user">
+        <Form<AddUserDTO['data']> id="add-user">
           <Dialog
             fullScreen={fullScreen}
             open={open}
             onClose={handleClose}
-            aria-labelledby="responsive-edit_user"
+            aria-labelledby="responsive-add_user"
           >
-            <DialogTitle id="responsive-edit_user">{'Edit User'}</DialogTitle>
+            <DialogTitle id="responsive-add_user">{'Add User'}</DialogTitle>
             <DialogContent>
               <Box>
                 <Stack spacing={2}>
@@ -145,8 +130,8 @@ export default function EditUser({ employeeId }: EditUserProps) {
                         />
                       )}
                       name="employeeName"
-                      defaultValue={userQuery.data?.data.employeeName}
                       control={control}
+                      rules={{ required: true }}
                     />
                   </Item>
                   <Item elevation={0}>
@@ -162,7 +147,6 @@ export default function EditUser({ employeeId }: EditUserProps) {
                       )}
                       name="email"
                       control={control}
-                      defaultValue={userQuery.data?.data.email}
                     />
                   </Item>
                   <Item elevation={0}>
@@ -177,38 +161,46 @@ export default function EditUser({ employeeId }: EditUserProps) {
                         />
                       )}
                       name="username"
-                      defaultValue={userQuery.data?.data.username}
                       control={control}
+                      rules={{ required: true }}
                     />
                   </Item>
                   <Item elevation={0}>
-                    <TextField
-                      fullWidth
-                      id="password"
-                      label="Password"
-                      type="password"
-                      variant="outlined"
-                      onChange={changePassword}
+                    <Controller
+                      render={({ field }) => (
+                        <TextField
+                          fullWidth
+                          id="password"
+                          label="Password"
+                          type="password"
+                          variant="outlined"
+                          {...field}
+                        />
+                      )}
+                      name="password"
+                      control={control}
+                      rules={{ required: true, minLength: 6 }}
                     />
                   </Item>
 
                   {/* IF ADMIN */}
 
                   <Item elevation={0}>
-                    <FormControl component="fieldset">
-                      <FormLabel component="legend">Role</FormLabel>
-                      <RadioGroup
-                        onChange={convertRoles}
-                        defaultValue={roleForm}
-                        row
-                        aria-label="Role"
-                      >
-                        <FormControlLabel value="admin" control={<Radio />} label="Admin" />
-                        <FormControlLabel value="manager" control={<Radio />} label="Manager" />
-                        <FormControlLabel value="lead" control={<Radio />} label="Lead" />
-                        <FormControlLabel value="user" control={<Radio />} label="User" />
-                      </RadioGroup>
-                    </FormControl>
+                    <Controller
+                      render={({ field }) => (
+                        <FormControl component="fieldset">
+                          <FormLabel component="legend">Role</FormLabel>
+                          <RadioGroup onChange={convertRoles} row aria-label="Role">
+                            <FormControlLabel value="admin" control={<Radio />} label="Admin" />
+                            <FormControlLabel value="manager" control={<Radio />} label="Manager" />
+                            <FormControlLabel value="lead" control={<Radio />} label="Lead" />
+                            <FormControlLabel value="user" control={<Radio />} label="User" />
+                          </RadioGroup>
+                        </FormControl>
+                      )}
+                      name="role"
+                      control={control}
+                    />
                   </Item>
                   {/* IF ADMIN */}
 
@@ -217,7 +209,6 @@ export default function EditUser({ employeeId }: EditUserProps) {
                     <Controller
                       name="assignedProjects"
                       control={control}
-                      defaultValue={assignedProject}
                       render={({ field }) => (
                         <FormControl fullWidth>
                           <InputLabel id="assigned_project">Assigned Project</InputLabel>
@@ -246,7 +237,7 @@ export default function EditUser({ employeeId }: EditUserProps) {
             </DialogContent>
             <DialogActions>
               <Button autoFocus type="submit" onClick={handleSubmit(onSubmit)}>
-                Edit
+                Add
               </Button>
               <Button color="error" onClick={handleClose} autoFocus>
                 Cancel
