@@ -123,13 +123,13 @@ export default function AddUser() {
                       render={({ field }) => (
                         <TextField
                           fullWidth
-                          id="employeeName"
+                          id="name"
                           label="Person's Name"
                           variant="outlined"
                           {...field}
                         />
                       )}
-                      name="employeeName"
+                      name="name"
                       control={control}
                       rules={{ required: true }}
                     />

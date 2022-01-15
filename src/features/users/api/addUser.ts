@@ -21,7 +21,7 @@ export type AddUserDTO = {
 };
 
 export const addUser = ({ data }: AddUserDTO): Promise<User> => {
-  return axios.post(`/users`, data);
+  return axios.post(`/auth/signup`, data);
 };
 
 type UseAddUserOptions = {

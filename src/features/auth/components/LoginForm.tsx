@@ -1,3 +1,4 @@
+import { useAuth } from '@/lib/auth';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -12,13 +13,14 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
+import { LoginCredentialsDTO } from '../api/login';
 
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://gimenez.dev">
-       Build by Luis Gimenez
+        Built by Luis Gimenez
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -38,15 +40,7 @@ type LoginFormProps = {
 const theme = createTheme();
 
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-    });
-  };
+  const { login, isLoggingIn } = useAuth();
 
   return (
     <ThemeProvider theme={theme}>
@@ -66,7 +60,15 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+          <Box
+            component="form"
+            onSubmit={async (values: any) => {
+              await login(values);
+              onSuccess();
+            }}
+            noValidate
+            sx={{ mt: 1 }}
+          >
             <TextField
               margin="normal"
               required
@@ -92,22 +94,17 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-            >
+            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
             <Grid container>
-              <Grid item xs>
+              {/* <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
                 </Link>
-              </Grid>
+              </Grid> */}
               <Grid item>
-                <Link href="register" variant="body2">
+                <Link href="/auth/register" variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
@@ -118,4 +115,4 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
       </Container>
     </ThemeProvider>
   );
-}
+};
