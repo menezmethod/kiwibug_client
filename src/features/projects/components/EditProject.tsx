@@ -57,12 +57,12 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
   };
 
   const handleOpen = () => {
-    setStartDate(projectQuery.data?.data.startDate);
-    setTargetEndDate(projectQuery.data?.data.targetEndDate);
-    setActualEndDate(projectQuery.data?.data.actualEndDate);
+    setStartDate(projectQuery?.data.startDate);
+    setTargetEndDate(projectQuery?.data.targetEndDate);
+    setActualEndDate(projectQuery?.data.actualEndDate);
     setOpen(true);
 
-    console.log(projectId + ': ' + projectQuery.data?.data.projectName);
+    console.log(projectId + ': ' + projectQuery?.data.projectName);
   };
 
   const handleClose = () => {
@@ -104,7 +104,7 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
                       )}
                       name="projectName"
                       control={control}
-                      defaultValue={projectQuery.data?.data.projectName}
+                      defaultValue={projectQuery?.data.projectName}
                     />
                   </Item>
                   <Item elevation={0}>
@@ -119,7 +119,7 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
                             value={startDate}
                             onChange={(startDate1) => {
                               setStartDate(startDate1);
-                              setValue('actualEndDate', projectQuery.data?.data.actualEndDate);
+                              setValue('actualEndDate', projectQuery?.data.actualEndDate);
                               setValue('startDate', startDate1, {
                                 shouldValidate: true,
                                 shouldDirty: true,
@@ -144,7 +144,7 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
                             minDate={startDate}
                             onChange={(targetEndDate1) => {
                               setTargetEndDate(targetEndDate1);
-                              setValue('actualEndDate', projectQuery.data?.data.actualEndDate);
+                              setValue('actualEndDate', projectQuery?.data.actualEndDate);
                               setValue('targetEndDate', targetEndDate1, {
                                 shouldValidate: true,
                                 shouldDirty: true,

@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
 import NotificationsIcon from '@material-ui/icons/Notifications';
@@ -14,7 +16,6 @@ import List from '@mui/material/List';
 import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
 
 import { mainListItems, secondaryListItems } from './listItems';
 

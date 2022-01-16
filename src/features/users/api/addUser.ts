@@ -1,6 +1,7 @@
-import axios from '@/lib/axios';
-import { MutationConfig, queryClient } from '@/lib/react-query';
 import { useMutation } from 'react-query';
+
+import { axios } from '@/lib/axios';
+import { MutationConfig, queryClient } from '@/lib/react-query';
 
 import { User } from '../types';
 
@@ -29,7 +30,7 @@ type UseAddUserOptions = {
 };
 
 export const useAddUser = ({ config }: UseAddUserOptions = {}) => {
-//   const { addNotification } = useNotificationStore();
+  //   const { addNotification } = useNotificationStore();
   return useMutation({
     onMutate: async (newUser) => {
       await queryClient.cancelQueries('users');
@@ -47,10 +48,10 @@ export const useAddUser = ({ config }: UseAddUserOptions = {}) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries('users');
-    //   addNotification({
-    //     type: 'success',
-    //     title: 'User Created',
-    //   });
+      //   addNotification({
+      //     type: 'success',
+      //     title: 'User Created',
+      //   });
     },
     ...config,
     mutationFn: addUser,

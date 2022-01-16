@@ -1,6 +1,7 @@
+import React, { useEffect, useState } from 'react';
+
 import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react';
 
 import { useProjects } from '../api/getProjects';
 import { Project } from '../types';
@@ -70,7 +71,7 @@ export const ProjectsList = () => {
 
   if (!projectsQuery.data) return null;
 
-  let projectsRows = projectsQuery.data?.data;
+  let projectsRows = projectsQuery?.data;
   
   return (
     <div style={{ height: '75vh', width: '100%' }}>

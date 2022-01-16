@@ -1,6 +1,7 @@
+import React, { useEffect, useState } from 'react';
+
 import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react';
 
 import { useIssues } from '../api/getIssues';
 import { Issue } from '../types';
@@ -30,7 +31,7 @@ export const IssuesList = () => {
 
   if (!issuesQuery.data) return null;
 
-  let issuesRows = issuesQuery.data?.data;
+  let issuesRows = issuesQuery?.data;
 
   if (issuesQuery.isLoading) {
     return (

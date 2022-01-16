@@ -1,26 +1,23 @@
+import { initReactQueryAuth } from 'react-query-auth';
+
 import {
-  AuthUser,
-  getUser,
-  LoginCredentialsDTO,
-  loginWithUsernameAndPassword,
-  RegisterCredentialsDTO,
-  registerWithEmailAndPassword,
-  UserResponse,
+    AuthUser, getUser, LoginCredentialsDTO, loginWithUsernameAndPassword, RegisterCredentialsDTO,
+    registerWithEmailAndPassword, UserResponse
 } from '@/features/auth';
 import storage from '@/utils/storage';
 import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
-import { initReactQueryAuth } from 'react-query-auth';
 
 async function handleUserResponse(data: UserResponse) {
-  const { jwt, user } = data;
-  storage.setToken(jwt);
+  const { user } = data;
+  storage.setToken(data.accessToken);
   return user;
 }
 
 async function loadUser() {
   if (storage.getToken()) {
     const data = await getUser();
+    console.log(data);
     return data;
   }
   return null;

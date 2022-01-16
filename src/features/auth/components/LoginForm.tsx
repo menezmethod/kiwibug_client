@@ -1,3 +1,6 @@
+import * as React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
 import { useAuth } from '@/lib/auth';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@mui/material/Avatar';
@@ -12,7 +15,7 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
+
 import { LoginCredentialsDTO } from '../api/login';
 
 function Copyright(props: any) {
@@ -42,6 +45,20 @@ const theme = createTheme();
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
   const { login, isLoggingIn } = useAuth();
 
+  const {
+    register,
+    watch,
+    setValue,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm();
+
+  const onSubmit = async (values: any) => {
+    await login(values);
+    onSuccess();
+    window.location.reload();
+  };
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -58,43 +75,47 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Login to your account
           </Typography>
-          <Box
-            component="form"
-            onSubmit={async (values: any) => {
-              await login(values);
-              onSuccess();
-            }}
-            noValidate
-            sx={{ mt: 1 }}
-          >
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="username"
-              label="Username"
+          <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
+            <Controller
+              render={({ field }) => (
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  id="username"
+                  label="Username"
+                  autoComplete="username"
+                  autoFocus
+                  {...field}
+                />
+              )}
               name="username"
-              autoComplete="username"
-              autoFocus
+              control={control}
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
+            <Controller
+              render={({ field }) => (
+                <TextField
+                  margin="normal"
+                  required
+                  fullWidth
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="current-password"
+                  {...field}
+                />
+              )}
               name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              control={control}
             />
             {/* Remember to program this remember me feature... */}
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
-            <Button type="submit" fullWidth variant="contained" sx={{ mt: 3, mb: 2 }}>
+            <Button type="submit" fullWidth variant="text" sx={{ mt: 3, mb: 2 }}>
               Sign In
             </Button>
             <Grid container>
@@ -105,7 +126,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
               </Grid> */}
               <Grid item>
                 <Link href="/auth/register" variant="body2">
-                  {"Don't have an account? Sign Up"}
+                  {'Register'}
                 </Link>
               </Grid>
             </Grid>

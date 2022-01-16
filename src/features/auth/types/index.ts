@@ -1,12 +1,16 @@
 export type AuthUser = {
-    id: string;
-    email: string;
-    name: string;
-    createdOn: Date;
-    role: 'ADMIN' | 'USER'| 'LEAD'| 'MANAGER';
+  data: {
+  id: string;
+  email: string;
+  username: string;
+  name: string;
+  role: 'ADMIN' | 'USER' | 'LEAD' | 'MANAGER';
+}
+};
+
+export type UserResponse = {
+  data: {
+    accessToken: string;
   };
-  
-  export type UserResponse = {
-    jwt: string;
-    user: AuthUser;
-  };
+  user: AuthUser;
+};

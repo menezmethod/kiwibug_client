@@ -1,18 +1,20 @@
-import { useRoutes, useNavigate } from 'react-router-dom';
+import { useNavigate, useRoutes } from 'react-router-dom';
 
-import { publicRoutes } from './public';
-import { Dashboard } from '@/features/misc/routes/Dashboard';
-
-import { useAuth } from '@/lib/auth';
-import { protectedRoutes } from './protected';
 import { LoginForm } from '@/features/auth/components/LoginForm';
+import { Dashboard } from '@/features/misc/routes/Dashboard';
+import { useAuth } from '@/lib/auth';
 
-// import { Users } from '@/features/users/routes/Users';
+import { protectedRoutes } from './protected';
+import { publicRoutes } from './public';
 
 export const AppRoutes = () => {
+  const navigate = useNavigate();
+
   const auth = useAuth();
 
-  const commonRoutes = [{ path: '/', element: <LoginForm onSuccess={() => navigate('/app')}/> }];
+  const commonRoutes = [
+    { path: '/', element: <LoginForm onSuccess={() => navigate('/')} /> },
+  ];
 
   const routes = auth.user ? protectedRoutes : publicRoutes;
   // const routes = protectedRoutes;

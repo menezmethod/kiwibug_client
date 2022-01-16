@@ -1,10 +1,11 @@
+import React, { ChangeEvent, useEffect, useState } from 'react';
+
 import { formatRole, formatRoleForm } from '@/utils/format';
 import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
 import { Box, Button, CircularProgress, Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
-import React, { ChangeEvent, useEffect, useState } from 'react';
-import { useUsers } from '../api/getUsers';
 
+import { useUsers } from '../api/getUsers';
 import { User } from '../types';
 import AddUser from './AddUser';
 import { DeleteUser } from './DeleteUser';
@@ -36,7 +37,7 @@ export const UsersList = () => {
 
   if (!usersQuery.data) return null;
 
-  let usersRows = usersQuery.data?.data;
+  let usersRows = usersQuery?.data;
 
 
   function getAssignedProject(params: { row: { assignedProjects: { projectName: any } } }) {

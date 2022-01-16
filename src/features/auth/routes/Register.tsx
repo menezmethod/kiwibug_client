@@ -7,7 +7,7 @@ export const Register = () => {
 
   return (
     <div>
-      <RegisterForm onSuccess={() => navigate('/app')} />
+      <RegisterForm onSuccess={() => navigate('/dashboard')} />
     </div>
   );
 };

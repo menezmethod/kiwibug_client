@@ -50,6 +50,7 @@ export const protectedRoutes = [
       { path: '/issues', element: <Issues /> },
       { path: '/issue', element: <Issue /> },
       { path: '/', element: <Dashboard /> },
+      { path: '/', element: <App /> },
       { path: '*', element: <Navigate to="." /> },
     ],
   },

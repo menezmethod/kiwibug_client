@@ -1,3 +1,5 @@
+import * as React from 'react';
+
 import { useAuth } from '@/lib/auth';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@mui/material/Avatar';
@@ -10,7 +12,6 @@ import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-import * as React from 'react';
 
 function Copyright(props: any) {
   return (

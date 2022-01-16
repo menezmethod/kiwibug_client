@@ -1,24 +1,14 @@
+import React, { useEffect } from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
 import { Form } from '@/components/Form/Form';
 import { useProjects } from '@/features/projects/api/getProjects';
 import { queryClient } from '@/lib/react-query';
 import { formatRoleForm } from '@/utils/format';
 import AddIcon from '@mui/icons-material/Add';
 import {
-  Button,
-  Container,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  styled,
-  TextField,
+    Button, Container, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio,
+    RadioGroup, Select, SelectChangeEvent, Stack, styled, TextField
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -27,8 +17,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
-import React, { useEffect } from 'react';
-import { Controller, useForm } from 'react-hook-form';
 
 import { AddUserDTO, useAddUser } from '../api/addUser';
 import { useUser } from '../api/getUser';
@@ -99,7 +87,7 @@ export default function AddUser() {
   };
 
   // Load projects to assign to employees.
-  let projectsRows = projectsQuery.data?.data;
+  let projectsRows = projectsQuery?.data;
 
   return (
     <>

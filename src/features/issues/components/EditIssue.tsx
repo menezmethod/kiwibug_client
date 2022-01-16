@@ -1,3 +1,6 @@
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
+
 import { Form } from '@/components/Form/Form';
 import { useProjects } from '@/features/projects/api/getProjects';
 import { useUsers } from '@/features/users/api/getUsers';
@@ -6,21 +9,8 @@ import EditIcon from '@mui/icons-material/Edit';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
-  Button,
-  Container,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  styled,
-  TextField,
+    Button, Container, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio,
+    RadioGroup, Select, SelectChangeEvent, Stack, styled, TextField
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -29,8 +19,6 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
 
 import { EditIssueDTO, useEditIssue } from '../api/editIssue';
 import { useIssue } from '../api/getIssue';
@@ -80,28 +68,28 @@ export default function EditIssue({ issueId }: EditIssueProps) {
   const handleOpen = async () => {
     // Set the dates to correct default values on open. *Will probably have to refactor this.
 
-    setTargetResolutionDate(issueQuery.data?.data.targetResolutionDate);
-    setIdentifiedDate(issueQuery.data?.data.identifiedDate);
-    setActualResDate(issueQuery.data?.data.actualResolutionDate);
+    setTargetResolutionDate(issueQuery?.data.targetResolutionDate);
+    setIdentifiedDate(issueQuery?.data.identifiedDate);
+    setActualResDate(issueQuery?.data.actualResolutionDate);
 
     // Check if there are related projects, identified by employee, or assigned to employee.
-    if (issueQuery.data?.data.relatedProjectId !== null) {
-      setValue('relatedProjectId', { projectId: issueQuery.data?.data.relatedProjectId.projectId });
+    if (issueQuery?.data.relatedProjectId !== null) {
+      setValue('relatedProjectId', { projectId: issueQuery?.data.relatedProjectId.projectId });
     } else {
       setValue('relatedProjectId', null);
     }
-    if (issueQuery.data?.data.identifiedByEmployeeId !== null) {
-      setIdentifiedBy(issueQuery.data?.data.identifiedByEmployeeId.employeeId);
+    if (issueQuery?.data.identifiedByEmployeeId !== null) {
+      setIdentifiedBy(issueQuery?.data.identifiedByEmployeeId.employeeId);
       setValue('identifiedByEmployeeId', {
-        employeeId: issueQuery.data?.data.identifiedByEmployeeId.employeeId,
+        employeeId: issueQuery?.data.identifiedByEmployeeId.employeeId,
       });
     } else {
       setValue('identifiedByEmployeeId', null);
     }
-    if (issueQuery.data?.data.assignedToEmployeeId !== null) {
-      setAssignedTo(issueQuery.data?.data.assignedToEmployeeId.employeeId);
+    if (issueQuery?.data.assignedToEmployeeId !== null) {
+      setAssignedTo(issueQuery?.data.assignedToEmployeeId.employeeId);
       setValue('assignedToEmployeeId', {
-        employeeId: issueQuery.data?.data.assignedToEmployeeId.employeeId,
+        employeeId: issueQuery?.data.assignedToEmployeeId.employeeId,
       });
     } else {
       setValue('assignedToEmployeeId', null);
@@ -154,8 +142,8 @@ export default function EditIssue({ issueId }: EditIssueProps) {
   if (!usersQuery.data) return null;
 
   // Load data from api for assignment selects
-  let projectsRows = projectsQuery.data?.data;
-  let usersRows = usersQuery.data?.data;
+  let projectsRows = projectsQuery?.data;
+  let usersRows = usersQuery?.data;
 
   return (
     <>
@@ -192,7 +180,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       )}
                       name="issueSummary"
                       control={control}
-                      defaultValue={issueQuery.data?.data.issueSummary}
+                      defaultValue={issueQuery?.data.issueSummary}
                     />
                   </Item>
                   <Item elevation={0}>
@@ -209,7 +197,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       )}
                       name="issueDescription"
                       control={control}
-                      defaultValue={issueQuery.data?.data.issueDescription}
+                      defaultValue={issueQuery?.data.issueDescription}
                     />
                   </Item>
                   <Item elevation={0}>
@@ -338,7 +326,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                           </RadioGroup>
                         </FormControl>
                       )}
-                      defaultValue={issueQuery.data?.data.status}
+                      defaultValue={issueQuery?.data.status}
                       name="status"
                       control={control}
                     />
@@ -357,7 +345,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       )}
                       name="priority"
                       control={control}
-                      defaultValue={issueQuery.data?.data.priority}
+                      defaultValue={issueQuery?.data.priority}
                       // rules={{ required: true }}
                     />
                   </Item>
@@ -423,7 +411,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       )}
                       name="progress"
                       control={control}
-                      defaultValue={issueQuery.data?.data.progress}
+                      defaultValue={issueQuery?.data.progress}
                     />
                   </Item>
                   <Item elevation={0}>
@@ -440,7 +428,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                         />
                       )}
                       name="resolutionSummary"
-                      defaultValue={issueQuery.data?.data.resolutionSummary}
+                      defaultValue={issueQuery?.data.resolutionSummary}
                       control={control}
                     />
                   </Item>
