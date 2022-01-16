@@ -37,7 +37,7 @@ export const useAddUser = ({ config }: UseAddUserOptions = {}) => {
 
       const previousUsers = queryClient.getQueryData<User[]>('users');
 
-      // queryClient.setQueryData('users', [...(previousUsers || []), newUser.data]);
+      queryClient.setQueryData('users', [...(previousUsers || []), newUser.data]);
 
       return { previousUsers };
     },

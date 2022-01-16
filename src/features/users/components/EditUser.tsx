@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Form } from '@/components/Form/Form';
+
 import { useProjects } from '@/features/projects/api/getProjects';
 import { queryClient } from '@/lib/react-query';
 import { formatRoleForm } from '@/utils/format';
@@ -52,7 +53,7 @@ export default function EditUser({ employeeId }: EditUserProps) {
     }
   };
 
-  const changePassword = (event: SelectChangeEvent) => {
+  const changePassword = (event: { target: { value: string | any[]; }; }) => {
     if (event.target.value.length >= 6) setValue('password', event.target.value);
   };
 
@@ -72,17 +73,17 @@ export default function EditUser({ employeeId }: EditUserProps) {
 
   const handleOpen = () => {
     // Check if there are assigned projects to employee and tells react-form-hooks about it.
-    if (userQuery?.data.assignedProjects !== null) {
-      setAssignedProject(userQuery?.data.assignedProjects.projectId);
+    if (userQuery.data?.assignedProjects !== null) {
+      setAssignedProject(userQuery.data?.assignedProjects.projectId);
       setValue('assignedProjects', {
-        projectId: userQuery?.data.assignedProjects.projectId,
+        projectId: userQuery.data?.assignedProjects.projectId,
       });
     } else {
       setValue('assignedProjects', null);
     }
     // Set the correct roles for the form.
-    setRoleForm(formatRoleForm(userQuery?.data.roles));
-    setValue('role', [formatRoleForm(userQuery?.data.roles), "user"]);
+    setRoleForm(formatRoleForm(userQuery.data?.roles));
+    setValue('role', [formatRoleForm(userQuery.data?.roles), "user"]);
 
     setOpen(true);
   };
@@ -133,7 +134,7 @@ export default function EditUser({ employeeId }: EditUserProps) {
                         />
                       )}
                       name="employeeName"
-                      defaultValue={userQuery?.data.employeeName}
+                      defaultValue={userQuery.data?.employeeName}
                       control={control}
                     />
                   </Item>
@@ -150,7 +151,7 @@ export default function EditUser({ employeeId }: EditUserProps) {
                       )}
                       name="email"
                       control={control}
-                      defaultValue={userQuery?.data.email}
+                      defaultValue={userQuery.data?.email}
                     />
                   </Item>
                   <Item elevation={0}>
@@ -165,7 +166,7 @@ export default function EditUser({ employeeId }: EditUserProps) {
                         />
                       )}
                       name="username"
-                      defaultValue={userQuery?.data.username}
+                      defaultValue={userQuery.data?.username}
                       control={control}
                     />
                   </Item>

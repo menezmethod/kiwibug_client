@@ -68,28 +68,28 @@ export default function EditIssue({ issueId }: EditIssueProps) {
   const handleOpen = async () => {
     // Set the dates to correct default values on open. *Will probably have to refactor this.
 
-    setTargetResolutionDate(issueQuery?.data.targetResolutionDate);
-    setIdentifiedDate(issueQuery?.data.identifiedDate);
-    setActualResDate(issueQuery?.data.actualResolutionDate);
+    setTargetResolutionDate(issueQuery.data?.targetResolutionDate);
+    setIdentifiedDate(issueQuery.data?.identifiedDate);
+    setActualResDate(issueQuery.data?.actualResolutionDate);
 
     // Check if there are related projects, identified by employee, or assigned to employee.
-    if (issueQuery?.data.relatedProjectId !== null) {
-      setValue('relatedProjectId', { projectId: issueQuery?.data.relatedProjectId.projectId });
+    if (issueQuery.data?.relatedProjectId !== null) {
+      setValue('relatedProjectId', { projectId: issueQuery.data?.relatedProjectId.projectId });
     } else {
       setValue('relatedProjectId', null);
     }
-    if (issueQuery?.data.identifiedByEmployeeId !== null) {
-      setIdentifiedBy(issueQuery?.data.identifiedByEmployeeId.employeeId);
+    if (issueQuery.data?.identifiedByEmployeeId !== null) {
+      setIdentifiedBy(issueQuery.data?.identifiedByEmployeeId.employeeId);
       setValue('identifiedByEmployeeId', {
-        employeeId: issueQuery?.data.identifiedByEmployeeId.employeeId,
+        employeeId: issueQuery.data?.identifiedByEmployeeId.employeeId,
       });
     } else {
       setValue('identifiedByEmployeeId', null);
     }
-    if (issueQuery?.data.assignedToEmployeeId !== null) {
-      setAssignedTo(issueQuery?.data.assignedToEmployeeId.employeeId);
+    if (issueQuery.data?.assignedToEmployeeId !== null) {
+      setAssignedTo(issueQuery.data?.assignedToEmployeeId.employeeId);
       setValue('assignedToEmployeeId', {
-        employeeId: issueQuery?.data.assignedToEmployeeId.employeeId,
+        employeeId: issueQuery.data?.assignedToEmployeeId.employeeId,
       });
     } else {
       setValue('assignedToEmployeeId', null);
@@ -180,7 +180,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       )}
                       name="issueSummary"
                       control={control}
-                      defaultValue={issueQuery?.data.issueSummary}
+                      defaultValue={issueQuery.data?.issueSummary}
                     />
                   </Item>
                   <Item elevation={0}>
@@ -197,7 +197,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       )}
                       name="issueDescription"
                       control={control}
-                      defaultValue={issueQuery?.data.issueDescription}
+                      defaultValue={issueQuery.data?.issueDescription}
                     />
                   </Item>
                   <Item elevation={0}>
@@ -326,7 +326,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                           </RadioGroup>
                         </FormControl>
                       )}
-                      defaultValue={issueQuery?.data.status}
+                      defaultValue={issueQuery.data?.status}
                       name="status"
                       control={control}
                     />
@@ -345,7 +345,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       )}
                       name="priority"
                       control={control}
-                      defaultValue={issueQuery?.data.priority}
+                      defaultValue={issueQuery.data?.priority}
                       // rules={{ required: true }}
                     />
                   </Item>
@@ -411,7 +411,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       )}
                       name="progress"
                       control={control}
-                      defaultValue={issueQuery?.data.progress}
+                      defaultValue={issueQuery.data?.progress}
                     />
                   </Item>
                   <Item elevation={0}>
@@ -428,7 +428,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                         />
                       )}
                       name="resolutionSummary"
-                      defaultValue={issueQuery?.data.resolutionSummary}
+                      defaultValue={issueQuery.data?.resolutionSummary}
                       control={control}
                     />
                   </Item>
