@@ -1,11 +1,10 @@
 export type AuthUser = {
-  data: {
     id: string;
     email: string;
     username: string;
     name: string;
-    role: 'ADMIN' | 'USER' | 'LEAD' | 'MANAGER';
-  };
+    authorities: any;
+    role: 'Admin' | 'User' | 'Lead' | 'Manager';
 };
 
 export type UserResponse = {

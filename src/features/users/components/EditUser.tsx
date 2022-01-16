@@ -1,15 +1,27 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Form } from '@/components/Form/Form';
-
 import { useProjects } from '@/features/projects/api/getProjects';
 import { queryClient } from '@/lib/react-query';
 import { formatRoleForm } from '@/utils/format';
 import EditIcon from '@mui/icons-material/Edit';
 import {
-    Button, Container, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio,
-    RadioGroup, Select, SelectChangeEvent, Stack, styled, TextField
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  styled,
+  TextField,
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -38,7 +50,6 @@ export default function EditUser({ employeeId }: EditUserProps) {
 
   const [open, setOpen] = React.useState(false);
   const [roleForm, setRoleForm] = React.useState('null');
-  const [role, setRole] = React.useState('user');
   const [assignedProject, setAssignedProject] = React.useState('');
 
   const theme = useTheme();
@@ -53,23 +64,15 @@ export default function EditUser({ employeeId }: EditUserProps) {
     }
   };
 
-  const changePassword = (event: { target: { value: string | any[]; }; }) => {
+  const changePassword = (event: { target: { value: string | any[] } }) => {
     if (event.target.value.length >= 6) setValue('password', event.target.value);
   };
 
-  const convertRoles = (event: { target: { value: any; }; }) => {
+  const convertRoles = (event: { target: { value: any } }) => {
     setValue('role', ['user', event.target.value]);
   };
 
-  const {
-    unregister,
-    register,
-    watch,
-    setValue,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
+  const { setValue, handleSubmit, control } = useForm();
 
   const handleOpen = () => {
     // Check if there are assigned projects to employee and tells react-form-hooks about it.
@@ -83,7 +86,7 @@ export default function EditUser({ employeeId }: EditUserProps) {
     }
     // Set the correct roles for the form.
     setRoleForm(formatRoleForm(userQuery.data?.roles));
-    setValue('role', [formatRoleForm(userQuery.data?.roles), "user"]);
+    setValue('role', [formatRoleForm(userQuery.data?.roles), 'user']);
 
     setOpen(true);
   };

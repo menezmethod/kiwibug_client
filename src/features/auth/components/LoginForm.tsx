@@ -6,17 +6,13 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Checkbox from '@mui/material/Checkbox';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
-
-import { LoginCredentialsDTO } from '../api/login';
 
 function Copyright(props: any) {
   return (
@@ -31,11 +27,6 @@ function Copyright(props: any) {
   );
 }
 
-type LoginValues = {
-  username: string;
-  password: string;
-};
-
 type LoginFormProps = {
   onSuccess: () => void;
 };
@@ -43,16 +34,12 @@ type LoginFormProps = {
 const theme = createTheme();
 
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
-  const { login, isLoggingIn } = useAuth();
-
   const {
-    register,
-    watch,
-    setValue,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
+    login,
+    // isLoggingIn
+  } = useAuth();
+
+  const { handleSubmit, control } = useForm();
 
   const onSubmit = async (values: any) => {
     await login(values);

@@ -8,8 +8,21 @@ import BugReportIcon from '@mui/icons-material/BugReport';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
-    Button, Container, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio,
-    RadioGroup, Select, SelectChangeEvent, Stack, styled, TextField
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  styled,
+  TextField,
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -42,14 +55,7 @@ export default function AddIssue() {
 
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
-  const {
-    register,
-    watch,
-    setValue,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
+  const { setValue, handleSubmit, control } = useForm();
 
   const handleOpen = () => setOpen(true);
 
@@ -74,7 +80,6 @@ export default function AddIssue() {
     setAssignedTo(event.target.value);
     setValue('assignedToEmployeeId', { employeeId: event.target.value });
   };
-
 
   if (!projectsQuery.data) return null;
   if (!usersQuery.data) return null;
@@ -178,10 +183,10 @@ export default function AddIssue() {
                             label="Identified By"
                             onChange={handleChangeIB}
                           >
-                            <MenuItem value=''>
+                            <MenuItem value="">
                               <em>Nobody</em>
                             </MenuItem>
-                            {usersRows.map((usersRows : any) => (
+                            {usersRows.map((usersRows: any) => (
                               <MenuItem key={usersRows.employeeId} value={usersRows.employeeId}>
                                 {usersRows.employeeName}
                               </MenuItem>
@@ -231,7 +236,7 @@ export default function AddIssue() {
                             label="Assigned Project"
                             onChange={handleChangeAT}
                           >
-                            <MenuItem value=''>
+                            <MenuItem value="">
                               <em>Nobody</em>
                             </MenuItem>
                             {usersRows.map((usersRows: any) => (

@@ -9,8 +9,21 @@ import EditIcon from '@mui/icons-material/Edit';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
-    Button, Container, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio,
-    RadioGroup, Select, SelectChangeEvent, Stack, styled, TextField
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  styled,
+  TextField,
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -41,7 +54,6 @@ export default function EditIssue({ issueId }: EditIssueProps) {
   const issueQuery = useIssue({ issueId });
   const editIssueMutation = useEditIssue();
   const [open, setOpen] = React.useState(false);
-  const [status, setStatus] = React.useState('');
   const [targetResolutionDate, setTargetResolutionDate] = React.useState<Date | undefined | null>(
     undefined
   );
@@ -56,14 +68,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   // Load react-hook-form
-  const {
-    register,
-    watch,
-    setValue,
-    handleSubmit,
-    control,
-    formState: { errors },
-  } = useForm();
+  const { setValue, handleSubmit, control } = useForm();
 
   const handleOpen = async () => {
     // Set the dates to correct default values on open. *Will probably have to refactor this.

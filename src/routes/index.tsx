@@ -1,7 +1,6 @@
 import { useNavigate, useRoutes } from 'react-router-dom';
 
 import { LoginForm } from '@/features/auth/components/LoginForm';
-import { Dashboard } from '@/features/misc/routes/Dashboard';
 import { useAuth } from '@/lib/auth';
 
 import { protectedRoutes } from './protected';

@@ -1,12 +1,10 @@
-import React, { ChangeEvent, useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
-import { formatRole, formatRoleForm } from '@/utils/format';
-import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
-import { Box, Button, CircularProgress, Grid, Paper, styled } from '@mui/material';
+import { formatRole } from '@/utils/format';
+import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
 
 import { useUsers } from '../api/getUsers';
-import { User } from '../types';
 import AddUser from './AddUser';
 import { DeleteUser } from './DeleteUser';
 import EditUser from './EditUser';
@@ -23,8 +21,6 @@ const Item = styled(Paper)(({ theme }) => ({
 
 export const UsersList = () => {
   const usersQuery = useUsers();
-  const [open, setOpen] = React.useState(false);
-  const [userData, setUserData] = useState<User[]>([]);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   if (usersQuery.isLoading) {

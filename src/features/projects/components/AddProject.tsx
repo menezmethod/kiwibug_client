@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Form } from '@/components/Form/Form';
@@ -9,7 +9,6 @@ import { Button, Container, Paper, Stack, styled, TextField, Typography } from '
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -34,7 +33,6 @@ export default function AddProject() {
 
   const {
     register,
-    watch,
     setValue,
     handleSubmit,
     control,

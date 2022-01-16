@@ -4,7 +4,6 @@ import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
 
 import { useProjects } from '../api/getProjects';
-import { Project } from '../types';
 import AddProject from './AddProject';
 import { DeleteProject } from './DeleteProject';
 import { EditProject } from './EditProject';
@@ -30,12 +29,10 @@ const DataGridProject = styled(DataGrid)({
 
 export const ProjectsList = () => {
   const projectsQuery = useProjects();
-  const [open, setOpen] = React.useState(false);
-  const [projectData, setProjectData] = useState<Project>();
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   useEffect(() => {
-    console.log(selectionModel);
+    // console.log(selectionModel);
   }, [selectionModel]);
 
   if (projectsQuery.isLoading) {

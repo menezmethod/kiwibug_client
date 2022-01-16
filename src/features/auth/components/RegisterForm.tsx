@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import { useAuth } from '@/lib/auth';
+// import { useAuth } from '@/lib/auth';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -45,7 +45,7 @@ type RegisterFormProps = {
 const theme = createTheme();
 
 export const RegisterForm = ({ onSuccess }: RegisterFormProps) => {
-  const { register, isRegistering } = useAuth();
+  // const { register, isRegistering } = useAuth();
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

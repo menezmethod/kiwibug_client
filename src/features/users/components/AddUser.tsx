@@ -1,10 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Form } from '@/components/Form/Form';
 import { useProjects } from '@/features/projects/api/getProjects';
-import { queryClient } from '@/lib/react-query';
-import { formatRoleForm } from '@/utils/format';
 import AddIcon from '@mui/icons-material/Add';
 import {
     Button, Container, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio,
@@ -19,16 +17,11 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
 
 import { AddUserDTO, useAddUser } from '../api/addUser';
-import { useUser } from '../api/getUser';
 
 const Item = styled(Paper)({
   padding: 8,
   textAlign: 'center',
 });
-
-type AddUserProps = {
-  employeeId: string;
-};
 
 export default function AddUser() {
   const addUserMutation = useAddUser();
@@ -36,8 +29,6 @@ export default function AddUser() {
 
   const [open, setOpen] = React.useState(false);
 
-  const [role, setRole] = React.useState('user');
-  const [roleForm, setRoleForm] = React.useState('null');
   const [assignedProject, setAssignedProject] = React.useState('');
 
   const theme = useTheme();
@@ -52,22 +43,14 @@ export default function AddUser() {
     }
   };
 
-  const changePassword = (event: SelectChangeEvent) => {
-    if (event.target.value.length >= 6) setValue('password', event.target.value);
-  };
-
   const convertRoles = (event: { target: { value: any } }) => {
     setValue('role', ['user', event.target.value]);
   };
 
   const {
-    unregister,
-    register,
-    watch,
     setValue,
     handleSubmit,
     control,
-    formState: { errors },
   } = useForm();
 
   const handleOpen = () => {

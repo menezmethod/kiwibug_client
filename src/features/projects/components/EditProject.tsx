@@ -1,5 +1,4 @@
-import { parseISO } from 'date-fns';
-import React, { useState } from 'react';
+import React from 'react';
 import { Controller, useForm } from 'react-hook-form';
 
 import { Form } from '@/components/Form/Form';
@@ -7,18 +6,17 @@ import { queryClient } from '@/lib/react-query';
 import EditIcon from '@material-ui/icons/Edit';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { Button, Container, Paper, Stack, styled, TextField, Typography } from '@mui/material';
+import { Button, Container, Paper, Stack, styled, TextField } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
 
 import { EditProjectDTO, useEditProject } from '../api/editProject';
-import { getProject, useProject } from '../api/getProject';
+import { useProject } from '../api/getProject';
 
 const Item = styled(Paper)({
   padding: 8,
@@ -42,8 +40,6 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
   const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
   const {
-    register,
-    watch,
     setValue,
     handleSubmit,
     control,

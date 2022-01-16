@@ -12,14 +12,6 @@ import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 
 const { Dashboard } = lazyImport({ factory: () => import('@/features/misc'), name: 'Dashboard' });
-const { ProjectsRoutes } = lazyImport({
-  factory: () => import('@/features/projects'),
-  name: 'ProjectsRoutes',
-});
-const { IssuesRoutes } = lazyImport({
-  factory: () => import('@/features/issues'),
-  name: 'IssuesRoutes',
-});
 const { Users } = lazyImport({ factory: () => import('@/features/users'), name: 'Users' });
 
 const App = () => {

@@ -4,23 +4,28 @@ import { Issue } from '@/features/issues';
 import { User } from '@/features/users';
 
 import { useAuth } from './auth';
+import { formatRoleAuth } from '@/utils/format';
 
 export enum ROLES {
-  ADMIN = 'ADMIN',  
-  MANAGER = 'MANAGER',
-  LEAD = 'LEAD',
-  USER = 'USER',
+  Admin = 'Admin',
+  Manager = 'Manager',
+  Lead = 'Lead',
+  User = 'User',
 }
 
 type RoleTypes = keyof typeof ROLES;
 
 export const POLICIES = {
   'issue:delete': (user: User, issue: Issue) => {
-    if (user.role === 'ADMIN') {
+    if (user.role === 'Admin') {
+      return true;
+    } else if (user.role === 'Manager') {
+      return true;
+    } else if (user.role === 'Lead') {
       return true;
     }
 
-    if (user.role === 'USER' && issue.id === user.id) {
+    if (user.role === 'User' && issue.createdBy === user.username) {
       return true;
     }
 
@@ -30,6 +35,7 @@ export const POLICIES = {
 
 export const useAuthorization = () => {
   const { user } = useAuth();
+  const role = formatRoleAuth(user?.authorities);
 
   if (!user) {
     throw Error('User does not exist!');
@@ -38,15 +44,15 @@ export const useAuthorization = () => {
   const checkAccess = React.useCallback(
     ({ allowedRoles }: { allowedRoles: RoleTypes[] }) => {
       if (allowedRoles && allowedRoles.length > 0) {
-        return allowedRoles?.includes(user.role);
+        return allowedRoles?.includes(role);
       }
 
       return true;
     },
-    [user.role]
+    [role]
   );
 
-  return { checkAccess, role: user.role };
+  return { checkAccess, role: role };
 };
 
 type AuthorizationProps = {

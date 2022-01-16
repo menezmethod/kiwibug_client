@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
 
 import { useIssues } from '../api/getIssues';
-import { Issue } from '../types';
 import AddIssue from './AddIssue';
 import { DeleteIssue } from './DeleteIssue';
 import EditIssue from './EditIssue';
@@ -19,14 +18,9 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(0.5),
 }));
 
-type EditIssueProps = {
-  issueId: string;
-};
 
 export const IssuesList = () => {
   const issuesQuery = useIssues();
-  const [open, setOpen] = React.useState(false);
-  const [issueData, setIssueData] = useState<Issue[]>([]);
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   if (!issuesQuery.data) return null;

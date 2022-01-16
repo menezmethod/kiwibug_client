@@ -11,7 +11,7 @@ export type AddUserDTO = {
     employeeName: string;
     email: string;
     password: string;
-    role: 'ADMIN' | 'MANAGER' | 'LEAD' | 'USER';
+    role: 'Admin' | 'User' | 'Lead' | 'Manager';
     username: string;
     createdOn: Date;
     createdBy: string;
@@ -32,7 +32,7 @@ type UseAddUserOptions = {
 export const useAddUser = ({ config }: UseAddUserOptions = {}) => {
   //   const { addNotification } = useNotificationStore();
   return useMutation({
-    onMutate: async (newUser) => {
+    onMutate: async (newUser : AddUserDTO) => {
       await queryClient.cancelQueries('users');
 
       const previousUsers = queryClient.getQueryData<User[]>('users');
@@ -53,7 +53,6 @@ export const useAddUser = ({ config }: UseAddUserOptions = {}) => {
       //     title: 'User Created',
       //   });
     },
-    ...config,
     mutationFn: addUser,
   });
 };
