@@ -63,7 +63,7 @@ export const IssuesList = () => {
     {
       field: 'issueSummary',
       headerName: 'Issue Summary',
-      width: 200,
+      width: 190,
     },
     {
       field: 'identifiedDate',
@@ -74,12 +74,12 @@ export const IssuesList = () => {
     {
       field: 'status',
       headerName: 'Status',
-      width: 80,
+      width: 75,
     },
     {
       field: 'priority',
       headerName: 'Priority',
-      width: 80,
+      width: 75,
     },
     {
       field: 'targetResolutionDate',

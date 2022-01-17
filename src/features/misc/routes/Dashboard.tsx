@@ -1,5 +1,6 @@
 import { ContentLayout } from '@/components/Layout/ContentLayout';
 import { useAuth } from '@/lib/auth';
+import { isMod } from '@/lib/authorization';
 import { formatRoleAuth } from '@/utils/format';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
@@ -30,17 +31,17 @@ export const Dashboard = () => {
   const { user } = useAuth();
   const role = formatRoleAuth(user?.authorities);
 
-  console.log(role);
   return (
     <ContentLayout title="Dashboard">
       <ThemeProvider theme={theme}>
         <Typography variant="h3">
           Welcome, {user?.name} ({role})
         </Typography>
+        {/* {isMod(role) ? 'This is what all moderators see.' : 'This is what regular user sees.'} */}
       </ThemeProvider>
       <br />
       <Grid container spacing={3}>
-      <Grid item xs>
+        <Grid item xs>
           <Item variant="outlined" square>
             Projects
           </Item>
@@ -55,11 +56,15 @@ export const Dashboard = () => {
             Reports
           </Item>
         </Grid>
-        <Grid item xs>
-          <Item variant="outlined" square>
-            Users
-          </Item>
-        </Grid>
+        {isMod(role) ? (
+          <Grid item xs>
+            <Item variant="outlined" square>
+              Users
+            </Item>
+          </Grid>
+        ) : (
+          ''
+        )}
       </Grid>
       <br />
       <Grid container spacing={2} columns={16}>

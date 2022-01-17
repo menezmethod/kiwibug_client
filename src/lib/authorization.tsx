@@ -2,9 +2,9 @@ import * as React from 'react';
 
 import { Issue } from '@/features/issues';
 import { User } from '@/features/users';
+import { formatRoleAuth } from '@/utils/format';
 
 import { useAuth } from './auth';
-import { formatRoleAuth } from '@/utils/format';
 
 export enum ROLES {
   Admin = 'Admin',
@@ -14,6 +14,12 @@ export enum ROLES {
 }
 
 type RoleTypes = keyof typeof ROLES;
+
+export function isMod(role: string) {
+  if (role === 'Admin' || role === 'Manager' || role === 'Lead') {
+    return true;
+  }
+}
 
 export const POLICIES = {
   'issue:delete': (user: User, issue: Issue) => {

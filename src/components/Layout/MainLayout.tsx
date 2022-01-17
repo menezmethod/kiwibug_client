@@ -1,10 +1,11 @@
 import * as React from 'react';
 
+import { useAuth } from '@/lib/auth';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import MenuIcon from '@material-ui/icons/Menu';
-import NotificationsIcon from '@material-ui/icons/Notifications';
+import Logout from '@mui/icons-material/Logout';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
-import Badge from '@mui/material/Badge';
+import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -13,8 +14,12 @@ import MuiDrawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
 import Link from '@mui/material/Link';
 import List from '@mui/material/List';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
+import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
 import { mainListItems, secondaryListItems } from './listItems';
@@ -92,16 +97,29 @@ type MainLayoutProps = {
 const Logo = styled('div')({
   position: 'relative',
   clear: 'both',
-  fontSize:"32px",
-  paddingRight: "20px",
-  fontWeight:"bold"
+  fontSize: '32px',
+  paddingRight: '20px',
+  fontWeight: 'bold',
 });
 
 export const MainLayout = ({ title, children }: MainLayoutProps) => {
   const [open, setOpen] = React.useState(true);
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const openUser = Boolean(anchorEl);
+
+  const { user, logout } = useAuth();
+
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
   const toggleDrawer = () => {
     setOpen(!open);
   };
+
+  let userLetter = user?.name.charAt(0);
 
   return (
     <ThemeProvider theme={mdTheme}>
@@ -130,11 +148,76 @@ export const MainLayout = ({ title, children }: MainLayoutProps) => {
             <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
               {title}
             </Typography>
-            <IconButton color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <NotificationsIcon />
-              </Badge>
-            </IconButton>
+            <React.Fragment>
+              <Tooltip title="User Settings">
+                <IconButton
+                  onClick={handleClick}
+                  size="small"
+                  sx={{ ml: 2 }}
+                  aria-controls={open ? 'account-menu' : undefined}
+                  aria-haspopup="true"
+                  aria-expanded={open ? 'true' : undefined}
+                >
+                  <Avatar sx={{ width: 32, height: 32 }}>{userLetter}</Avatar>
+                </IconButton>
+              </Tooltip>
+              <Menu
+                anchorEl={anchorEl}
+                id="account-menu"
+                open={openUser}
+                onClose={handleClose}
+                onClick={handleClose}
+                PaperProps={{
+                  elevation: 0,
+                  sx: {
+                    overflow: 'visible',
+                    filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                    mt: 1.5,
+                    '& .MuiAvatar-root': {
+                      width: 32,
+                      height: 32,
+                      ml: -0.5,
+                      mr: 1,
+                    },
+                    '&:before': {
+                      content: '""',
+                      display: 'block',
+                      position: 'absolute',
+                      top: 0,
+                      right: 14,
+                      width: 10,
+                      height: 10,
+                      bgcolor: 'background.paper',
+                      transform: 'translateY(-50%) rotate(45deg)',
+                      zIndex: 0,
+                    },
+                  },
+                }}
+                transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+              >
+                <MenuItem component="a" href="/profile">
+                  <Avatar /> My Profile
+                </MenuItem>
+                <Divider />
+                {/* <MenuItem>
+                  <ListItemIcon>
+                    <Settings fontSize="small" />
+                  </ListItemIcon>
+                  Settings
+                </MenuItem> */}
+                <MenuItem
+                  onClick={() => {
+                    logout();
+                  }}
+                >
+                  <ListItemIcon>
+                    <Logout fontSize="small" />
+                  </ListItemIcon>
+                  Logout
+                </MenuItem>
+              </Menu>
+            </React.Fragment>
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
@@ -145,7 +228,8 @@ export const MainLayout = ({ title, children }: MainLayoutProps) => {
               justifyContent: 'flex-end',
               px: [1],
             }}
-          ><Logo>KiwiBug</Logo>
+          >
+            <Logo>KiwiBug</Logo>
             <IconButton onClick={toggleDrawer}>
               <ChevronLeftIcon />
             </IconButton>

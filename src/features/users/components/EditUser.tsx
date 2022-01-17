@@ -7,21 +7,8 @@ import { queryClient } from '@/lib/react-query';
 import { formatRoleForm } from '@/utils/format';
 import EditIcon from '@mui/icons-material/Edit';
 import {
-  Button,
-  Container,
-  FormControl,
-  FormControlLabel,
-  FormLabel,
-  InputLabel,
-  MenuItem,
-  Paper,
-  Radio,
-  RadioGroup,
-  Select,
-  SelectChangeEvent,
-  Stack,
-  styled,
-  TextField,
+    Button, Container, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio,
+    RadioGroup, Select, SelectChangeEvent, Stack, styled, TextField
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -93,7 +80,7 @@ export default function EditUser({ employeeId }: EditUserProps) {
 
   const handleClose = () => {
     setOpen(false);
-    // Reset cache. This also allows the form to begin with most current selected values.
+    // Reset query. This also allows the form to begin with most current selected values.
     queryClient.resetQueries('user');
     queryClient.resetQueries('users');
     queryClient.resetQueries('projects');

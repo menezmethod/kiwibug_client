@@ -3,9 +3,10 @@ import { Controller, useForm } from 'react-hook-form';
 
 import { useAuth } from '@/lib/auth';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import LoginIcon from '@mui/icons-material/Login';
+import LoadingButton from '@mui/lab/LoadingButton';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import Container from '@mui/material/Container';
 import CssBaseline from '@mui/material/CssBaseline';
 import Grid from '@mui/material/Grid';
@@ -19,7 +20,7 @@ function Copyright(props: any) {
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
       <Link color="inherit" href="https://gimenez.dev">
-        Built by Luis Gimenez
+        KiwiBug Issue Tracker
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
@@ -34,18 +35,16 @@ type LoginFormProps = {
 const theme = createTheme();
 
 export const LoginForm = ({ onSuccess }: LoginFormProps) => {
-  const {
-    login,
-    // isLoggingIn
-  } = useAuth();
+  const { login, isLoggingIn } = useAuth();
 
-  const { handleSubmit, control } = useForm();
+  const { control, handleSubmit } = useForm();
 
   const onSubmit = async (values: any) => {
     await login(values);
     onSuccess();
     window.location.reload();
   };
+
   return (
     <ThemeProvider theme={theme}>
       <Container component="main" maxWidth="xs">
@@ -62,7 +61,7 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Login to your account
+            Sign in to your account
           </Typography>
           <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ mt: 1 }}>
             <Controller
@@ -79,6 +78,8 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                 />
               )}
               name="username"
+              defaultValue=""
+              rules={{ required: true }}
               control={control}
             />
             <Controller
@@ -95,27 +96,38 @@ export const LoginForm = ({ onSuccess }: LoginFormProps) => {
                 />
               )}
               name="password"
+              defaultValue=""
+              rules={{ required: true }}
               control={control}
             />
+
             {/* Remember to program this remember me feature... */}
             {/* <FormControlLabel
               control={<Checkbox value="remember" color="primary" />}
               label="Remember me"
             /> */}
-            <Button type="submit" fullWidth variant="text" sx={{ mt: 3, mb: 2 }}>
+            <LoadingButton
+              type="submit"
+              loadingPosition="start"
+              startIcon={<LoginIcon />}
+              variant="contained"
+              loading={isLoggingIn}
+              fullWidth
+              sx={{ mt: 3, mb: 2 }}
+            >
               Sign In
-            </Button>
+            </LoadingButton>
             <Grid container>
               {/* <Grid item xs>
                 <Link href="#" variant="body2">
                   Forgot password?
                 </Link>
               </Grid> */}
-              <Grid item>
+              {/* <Grid item>
                 <Link href="/auth/register" variant="body2">
                   {'Register'}
                 </Link>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Box>
         </Box>
