@@ -2,10 +2,11 @@ import { useMutation } from 'react-query';
 
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
+import { setSnackbar } from '@/redux/ducks/snackbar';
+import Notifications from '@/redux/Notifications';
 
 import { Issue } from '../types';
 
-// import { useNotificationStore } from '@/stores/notifications';
 export type AddIssueDTO = {
   data: {
     issueId: string;
@@ -36,14 +37,13 @@ type UseAddIssueOptions = {
 };
 
 export const useAddIssue = ({ config }: UseAddIssueOptions = {}) => {
-  //   const { addNotification } = useNotificationStore();
   return useMutation({
     onMutate: async (newIssue: any) => {
       await queryClient.cancelQueries('issues');
 
       const previousIssues = queryClient.getQueryData<Issue[]>('issues');
 
-      // queryClient.setQueryData('issues', [...(previousIssues || []), newIssue.data]);
+      queryClient.setQueryData('issues', [...(previousIssues || []), newIssue.data]);
 
       return { previousIssues };
     },
@@ -54,10 +54,7 @@ export const useAddIssue = ({ config }: UseAddIssueOptions = {}) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries('issues');
-      //   addNotification({
-      //     type: 'success',
-      //     title: 'Issue Created',
-      //   });
+      Notifications.dispatch(setSnackbar(true, 'success', 'Issue Created'));
     },
     ...config,
     mutationFn: addIssue,

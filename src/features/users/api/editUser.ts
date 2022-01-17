@@ -2,10 +2,11 @@ import { useMutation } from 'react-query';
 
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
+import { setSnackbar } from '@/redux/ducks/snackbar';
+import Notifications from '@/redux/Notifications';
 
 import { User } from '../types';
 
-// import { useNotificationStore } from '@/stores/notifications';
 export type EditUserDTO = {
   data: {
     userName: any;
@@ -25,16 +26,11 @@ type UseEditUserOptions = {
 };
 
 export const useEditUser = ({ config }: UseEditUserOptions = {}) => {
-  //   const { addNotification } = useNotificationStore();
-
   return useMutation({
     onMutate: async (editingUser: any) => {
       await queryClient.cancelQueries(['user', editingUser?.employeeId]);
 
-      const previousUser = queryClient.getQueryData<User>([
-        'user',
-        editingUser?.employeeId,
-      ]);
+      const previousUser = queryClient.getQueryData<User>(['user', editingUser?.employeeId]);
 
       queryClient.setQueryData(['user', editingUser?.employeeId], {
         ...previousUser,
@@ -52,10 +48,7 @@ export const useEditUser = ({ config }: UseEditUserOptions = {}) => {
     onSuccess: (data) => {
       queryClient.refetchQueries(['users', data.id]);
       queryClient.invalidateQueries(['user', data.id]);
-      //   addNotification({
-      //     type: 'success',
-      //     title: 'User Updated',
-      //   });
+      Notifications.dispatch(setSnackbar(true, 'success', 'User Updated'));
     },
     ...config,
     mutationFn: editUser,

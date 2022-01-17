@@ -24,18 +24,21 @@ const ProfileSubText = styled('span')({
 const SubButton = styled('div')({
   textAlign: 'center',
 });
+
 export const Profile = () => {
   const { user } = useAuth();
   const role = formatRoleAuth(user?.authorities);
+
+  let firstName  = user?.name.split(" ")[0]
 
   return (
     <ContentLayout title="User Profile">
       <Box>
         <Item>
           <ProfileText variant="h5" component="h2">
-            User Profile
+            {firstName}'s Profile
           </ProfileText>
-          <ProfileText variant="body2">User's personal details</ProfileText>
+          <ProfileText variant="body2">{firstName}'s account details</ProfileText>
           <Divider />
           <ProfileText variant="body2">
             <ProfileSubText>Full Name:</ProfileSubText> {user?.name}

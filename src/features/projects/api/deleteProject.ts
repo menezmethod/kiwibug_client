@@ -2,10 +2,11 @@ import { useMutation } from 'react-query';
 
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
+import { setSnackbar } from '@/redux/ducks/snackbar';
+import Notifications from '@/redux/Notifications';
 
 import { Project } from '../types';
 
-// import { useNotificationStore } from '@/stores/notifications';
 export type DeleteProjectDTO = {
   projectId: string;
 };
@@ -19,17 +20,16 @@ type UseDeleteProjectOptions = {
 };
 
 export const useDeleteProject = ({ config }: UseDeleteProjectOptions = {}) => {
-  //   const { addNotification } = useNotificationStore();
   return useMutation({
     onMutate: async (deletedProject) => {
       await queryClient.cancelQueries('projects');
 
       const previousProjects = queryClient.getQueryData<Project[]>('projects');
 
-    //   queryClient.setQueryData(
-    //     'projects',
-    //     previousProjects?.filter((project) => project.id !== deletedProject.projectId)
-    //   );
+      //   queryClient.setQueryData(
+      //     'projects',
+      //     previousProjects?.filter((project) => project.id !== deletedProject.projectId)
+      //   );
       return { previousProjects };
     },
     onError: (_, __, context: any) => {
@@ -39,10 +39,7 @@ export const useDeleteProject = ({ config }: UseDeleteProjectOptions = {}) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries('projects');
-      //   addNotification({
-      //     type: 'success',
-      //     title: 'Project Deleted',
-      //   });
+      Notifications.dispatch(setSnackbar(true, 'success', 'Project Deleted'));
     },
     ...config,
     mutationFn: deleteProject,

@@ -1,6 +1,8 @@
 import Axios, { AxiosRequestConfig } from 'axios';
 
 import { API_URL } from '@/config';
+import { setSnackbar } from '@/redux/ducks/snackbar';
+import Notifications from '@/redux/Notifications';
 import storage from '@/utils/storage';
 
 function authRequestInterceptor(config: AxiosRequestConfig) {
@@ -23,7 +25,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     const message = error.response?.data?.message || error.message;
-    console.log(message)
+    Notifications.dispatch(setSnackbar(true, 'error', message));
     return Promise.reject(error);
   }
 );

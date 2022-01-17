@@ -2,10 +2,11 @@ import { useMutation } from 'react-query';
 
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
+import { setSnackbar } from '@/redux/ducks/snackbar';
+import Notifications from '@/redux/Notifications';
 
 import { Project } from '../types';
 
-// import { useNotificationStore } from '@/stores/notifications';
 export type AddProjectDTO = {
   data: {
     projectName: any;
@@ -24,14 +25,13 @@ type UseAddProjectOptions = {
 };
 
 export const useAddProject = ({ config }: UseAddProjectOptions = {}) => {
-//   const { addNotification } = useNotificationStore();
   return useMutation({
     onMutate: async (newProject) => {
       await queryClient.cancelQueries('projects');
 
       const previousProjects = queryClient.getQueryData<Project[]>('projects');
 
-      // queryClient.setQueryData('projects', [...(previousProjects || []), newProject.data]);
+      queryClient.setQueryData('projects', [...(previousProjects || []), newProject.data]);
 
       return { previousProjects };
     },
@@ -41,11 +41,7 @@ export const useAddProject = ({ config }: UseAddProjectOptions = {}) => {
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries('projects');
-    //   addNotification({
-    //     type: 'success',
-    //     title: 'Project Created',
-    //   });
+      Notifications.dispatch(setSnackbar(true, 'success', 'Project Added'));
     },
     ...config,
     mutationFn: addProject,

@@ -2,10 +2,11 @@ import { useMutation } from 'react-query';
 
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
+import { setSnackbar } from '@/redux/ducks/snackbar';
+import Notifications from '@/redux/Notifications';
 
 import { User } from '../types';
 
-// import { useNotificationStore } from '@/stores/notifications';
 export type AddUserDTO = {
   data: {
     employeeName: string;
@@ -30,9 +31,8 @@ type UseAddUserOptions = {
 };
 
 export const useAddUser = ({ config }: UseAddUserOptions = {}) => {
-  //   const { addNotification } = useNotificationStore();
   return useMutation({
-    onMutate: async (newUser : AddUserDTO) => {
+    onMutate: async (newUser: AddUserDTO) => {
       await queryClient.cancelQueries('users');
 
       const previousUsers = queryClient.getQueryData<User[]>('users');
@@ -48,10 +48,7 @@ export const useAddUser = ({ config }: UseAddUserOptions = {}) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries('users');
-      //   addNotification({
-      //     type: 'success',
-      //     title: 'User Created',
-      //   });
+      Notifications.dispatch(setSnackbar(true, 'success', 'User Created'));
     },
     mutationFn: addUser,
   });

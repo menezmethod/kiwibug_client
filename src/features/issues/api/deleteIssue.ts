@@ -2,10 +2,12 @@ import { useMutation } from 'react-query';
 
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
+import { setSnackbar } from '@/redux/ducks/snackbar';
+import Notifications from '@/redux/Notifications';
 
 import { Issue } from '../types';
 
-// import { useNotificationStore } from '@/stores/notifications';
+
 export type DeleteIssueDTO = {
   issueId: string;
 };
@@ -19,17 +21,17 @@ type UseDeleteIssueOptions = {
 };
 
 export const useDeleteIssue = ({ config }: UseDeleteIssueOptions = {}) => {
-  //   const { addNotification } = useNotificationStore();
+  
   return useMutation({
     onMutate: async (deletedIssue) => {
       await queryClient.cancelQueries('issues');
 
       const previousIssues = queryClient.getQueryData<Issue[]>('issues');
 
-    //   queryClient.setQueryData(
-    //     'issues',
-    //     previousIssues?.filter((issue) => issue.id !== deletedIssue.issueId)
-    //   );
+      queryClient.setQueryData(
+        'issues',
+        previousIssues?.filter((issue) => issue.id !== deletedIssue.issueId)
+      );
       return { previousIssues };
     },
     onError: (_, __, context: any) => {
@@ -39,10 +41,7 @@ export const useDeleteIssue = ({ config }: UseDeleteIssueOptions = {}) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries('issues');
-      //   addNotification({
-      //     type: 'success',
-      //     title: 'Issue Deleted',
-      //   });
+      Notifications.dispatch(setSnackbar(true, 'success', "Issue Deleted"));
     },
     ...config,
     mutationFn: deleteIssue,

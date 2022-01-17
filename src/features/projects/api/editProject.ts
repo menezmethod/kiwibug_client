@@ -2,10 +2,11 @@ import { useMutation } from 'react-query';
 
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
+import { setSnackbar } from '@/redux/ducks/snackbar';
+import Notifications from '@/redux/Notifications';
 
 import { Project } from '../types';
 
-// import { useNotificationStore } from '@/stores/notifications';
 export type EditProjectDTO = {
   data: {
     projectName: any;
@@ -25,8 +26,6 @@ type UseEditProjectOptions = {
 };
 
 export const useEditProject = ({ config }: UseEditProjectOptions = {}) => {
-  //   const { addNotification } = useNotificationStore();
-
   return useMutation({
     onMutate: async (editingProject: any) => {
       await queryClient.cancelQueries(['project', editingProject?.projectId]);
@@ -52,10 +51,7 @@ export const useEditProject = ({ config }: UseEditProjectOptions = {}) => {
     onSuccess: (data) => {
       queryClient.refetchQueries(['projects', data.id]);
       queryClient.invalidateQueries(['project', data.id]);
-      //   addNotification({
-      //     type: 'success',
-      //     title: 'Project Updated',
-      //   });
+      Notifications.dispatch(setSnackbar(true, 'success', 'Project Updated'));
     },
     ...config,
     mutationFn: editProject,

@@ -11,6 +11,7 @@
     "@mui/styles": "^5.2.3",
     "@mui/x-data-grid": "^5.2.0",
     "@mui/x-data-grid-generator": "^5.2.0",
+    "@reduxjs/toolkit": "^1.7.1",
     "@testing-library/jest-dom": "latest",
     "@testing-library/react": "latest",
     "@testing-library/user-event": "latest",
@@ -28,8 +29,10 @@
     "react-moment": "^1.1.1",
     "react-query": "^3.34.5",
     "react-query-auth": "^1.1.0",
+    "react-redux": "^7.2.6",
     "react-router-dom": "^6.1.1",
     "react-scripts": "latest",
+    "redux": "^4.1.2",
     "styled-components": "latest",
     "zod": "^3.11.6"
   },

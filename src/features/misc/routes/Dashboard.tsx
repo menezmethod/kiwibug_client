@@ -31,11 +31,13 @@ export const Dashboard = () => {
   const { user } = useAuth();
   const role = formatRoleAuth(user?.authorities);
 
+  let firstName = user?.name.split(' ')[0];
+
   return (
     <ContentLayout title="Dashboard">
       <ThemeProvider theme={theme}>
         <Typography variant="h3">
-          Welcome, {user?.name} ({role})
+          Welcome, {firstName} ({role})
         </Typography>
         {/* {isMod(role) ? 'This is what all moderators see.' : 'This is what regular user sees.'} */}
       </ThemeProvider>

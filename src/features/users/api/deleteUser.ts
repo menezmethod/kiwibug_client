@@ -2,10 +2,11 @@ import { useMutation } from 'react-query';
 
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
+import { setSnackbar } from '@/redux/ducks/snackbar';
+import Notifications from '@/redux/Notifications';
 
 import { User } from '../types';
 
-// import { useNotificationStore } from '@/stores/notifications';
 export type DeleteUserDTO = {
   employeeId: string;
 };
@@ -19,17 +20,17 @@ type UseDeleteUserOptions = {
 };
 
 export const useDeleteUser = ({ config }: UseDeleteUserOptions = {}) => {
-  //   const { addNotification } = useNotificationStore();
   return useMutation({
     onMutate: async (deletedUser) => {
       await queryClient.cancelQueries('users');
 
       const previousUsers = queryClient.getQueryData<User[]>('users');
 
-    //   queryClient.setQueryData(
-    //     'users',
-    //     previousUsers?.filter((user) => user.id !== deletedUser.employeeId)
-    //   );
+      queryClient.setQueryData(
+        'users',
+        previousUsers?.filter((user) => user.id !== deletedUser.employeeId)
+      );
+
       return { previousUsers };
     },
     onError: (_, __, context: any) => {
@@ -39,10 +40,7 @@ export const useDeleteUser = ({ config }: UseDeleteUserOptions = {}) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries('users');
-      //   addNotification({
-      //     type: 'success',
-      //     title: 'User Deleted',
-      //   });
+      Notifications.dispatch(setSnackbar(true, 'success', 'User Deleted'));
     },
     ...config,
     mutationFn: deleteUser,
