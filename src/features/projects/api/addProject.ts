@@ -29,11 +29,11 @@ export const useAddProject = ({ config }: UseAddProjectOptions = {}) => {
     onMutate: async (newProject) => {
       await queryClient.cancelQueries('projects');
 
-      const previousProjects = queryClient.getQueryData<Project[]>('projects');
+      // const previousProjects = queryClient.getQueryData<Project[]>('projects');
 
-      queryClient.setQueryData('projects', [...(previousProjects || []), newProject.data]);
+      // queryClient.setQueryData('projects', [...(previousProjects || []), newProject.data]);
 
-      return { previousProjects };
+      // return { previousProjects };
     },
     onError: (_, __, context: any) => {
       if (context?.previousProjects) {
@@ -41,6 +41,7 @@ export const useAddProject = ({ config }: UseAddProjectOptions = {}) => {
       }
     },
     onSuccess: () => {
+      queryClient.invalidateQueries('projects');
       Notifications.dispatch(setSnackbar(true, 'success', 'Project Added'));
     },
     ...config,

@@ -41,11 +41,11 @@ export const useAddIssue = ({ config }: UseAddIssueOptions = {}) => {
     onMutate: async (newIssue: any) => {
       await queryClient.cancelQueries('issues');
 
-      const previousIssues = queryClient.getQueryData<Issue[]>('issues');
+      // const previousIssues = queryClient.getQueryData<Issue[]>('issues');
 
-      queryClient.setQueryData('issues', [...(previousIssues || []), newIssue.data]);
+      // queryClient.setQueryData('issues', [...(previousIssues || []), newIssue.data]);
 
-      return { previousIssues };
+      // return { previousIssues };
     },
     onError: (_: any, __: any, context: any) => {
       if (context?.previousIssues) {

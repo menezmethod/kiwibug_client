@@ -7,7 +7,6 @@ import Notifications from '@/redux/Notifications';
 
 import { Issue } from '../types';
 
-
 export type DeleteIssueDTO = {
   issueId: string;
 };
