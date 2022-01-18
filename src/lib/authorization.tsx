@@ -16,7 +16,7 @@ export enum ROLES {
 type RoleTypes = keyof typeof ROLES;
 
 export function isMod(role: string) {
-  if (role === 'Admin' || role === 'Manager' || role === 'Lead') {
+  if (role === 'Admin' || role === 'Manager') {
     return true;
   }
 }

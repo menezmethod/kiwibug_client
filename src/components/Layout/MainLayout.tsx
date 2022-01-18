@@ -1,9 +1,18 @@
 import * as React from 'react';
 
 import { useAuth } from '@/lib/auth';
+import { isMod } from '@/lib/authorization';
+import { formatRoleAuth } from '@/utils/format';
+import AccountTreeIcon from '@material-ui/icons/AccountTree';
+import AssignmentIcon from '@material-ui/icons/Assignment';
+import BugReportIcon from '@material-ui/icons/BugReport';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import DashboardIcon from '@material-ui/icons/Dashboard';
 import MenuIcon from '@material-ui/icons/Menu';
+import PeopleIcon from '@material-ui/icons/People';
+import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Logout from '@mui/icons-material/Logout';
+import { ListItem, ListItemText } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -22,8 +31,6 @@ import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 
-import { mainListItems, secondaryListItems } from './listItems';
-
 function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
@@ -37,7 +44,7 @@ function Copyright(props: any) {
   );
 }
 
-const drawerWidth: number = 240;
+const drawerWidth: number = 250;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -108,6 +115,7 @@ export const MainLayout = ({ title, children }: MainLayoutProps) => {
   const openUser = Boolean(anchorEl);
 
   const { user, logout } = useAuth();
+  const role = formatRoleAuth(user?.authorities);
 
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -235,9 +243,70 @@ export const MainLayout = ({ title, children }: MainLayoutProps) => {
             </IconButton>
           </Toolbar>
           <Divider />
-          <List>{mainListItems}</List>
+          <List>
+            {' '}
+            <ListItem button component="a" href="/">
+              <ListItemIcon>
+                <DashboardIcon />
+              </ListItemIcon>
+              <ListItemText primary="Dashboard" />
+            </ListItem>
+            <ListItem button component="a" href="/projects">
+              <ListItemIcon>
+                <AccountTreeIcon />
+              </ListItemIcon>
+              <ListItemText primary="Projects" />
+            </ListItem>
+            <ListItem button component="a" href="/issues">
+              <ListItemIcon>
+                <BugReportIcon />
+              </ListItemIcon>
+              <ListItemText primary="Issues" />
+            </ListItem>
+            {isMod(role) ? (
+              <ListItem button component="a" href="/users">
+                <ListItemIcon>
+                  <PeopleIcon />
+                </ListItemIcon>
+                <ListItemText primary="Users" />
+              </ListItem>
+            ) : (
+              ''
+            )}
+          </List>
           <Divider />
-          <List>{secondaryListItems}</List>
+          <List>
+            <ListItem button>
+              <ListItemIcon>
+                <AssignmentIcon />
+              </ListItemIcon>
+              <ListItemText primary="Issues Reports" />
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <ArrowRightIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText secondary="Summary by Project" />
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <ArrowRightIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText secondary="Assign Open Issues" />
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <ArrowRightIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText secondary="Target Resolution Dates" />
+            </ListItem>
+            <ListItem button>
+              <ListItemIcon>
+                <ArrowRightIcon fontSize="small" />
+              </ListItemIcon>
+              <ListItemText secondary="Resolved by Month" />
+            </ListItem>
+          </List>
         </Drawer>
         <Box
           component="main"

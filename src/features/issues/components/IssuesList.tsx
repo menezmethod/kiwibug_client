@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 
+import { formatDateGrid } from '@/utils/format';
 import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
 
@@ -18,7 +19,6 @@ const Item = styled(Paper)(({ theme }) => ({
   padding: theme.spacing(0.5),
 }));
 
-
 export const IssuesList = () => {
   const issuesQuery = useIssues();
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
@@ -35,7 +35,23 @@ export const IssuesList = () => {
     );
   }
 
-  function getAssignedToEmployeeId(params: { row: { assignedToEmployeeId: { employeeName: string; } | null; }; }) {
+  function identifiedDateFormat(params: { row: { identifiedDate: number } }) {
+    return formatDateGrid(params.row.identifiedDate);
+  }
+
+  function targetResolutionDateFormat(params: { row: { targetResolutionDate: number } }) {
+    return formatDateGrid(params.row.targetResolutionDate);
+  }
+
+  function actualResolutionDateFormat(params: { row: { actualResolutionDate: number } }) {
+    if (params.row.actualResolutionDate) {
+      return formatDateGrid(params.row.actualResolutionDate);
+    }
+  }
+
+  function getAssignedToEmployeeId(params: {
+    row: { assignedToEmployeeId: { employeeName: string } | null };
+  }) {
     if (params.row.assignedToEmployeeId === null) {
       return 'Unassigned';
     } else {
@@ -43,7 +59,9 @@ export const IssuesList = () => {
     }
   }
 
-  function getIdentifiedByEmployeeId(params: { row: { identifiedByEmployeeId: { employeeName: string; } | null; }; }) {
+  function getIdentifiedByEmployeeId(params: {
+    row: { identifiedByEmployeeId: { employeeName: string } | null };
+  }) {
     if (params.row.identifiedByEmployeeId === null) {
       return 'Unidentified';
     } else {
@@ -51,7 +69,9 @@ export const IssuesList = () => {
     }
   }
 
-  function getAssignedProject(params: { row: { relatedProjectId: { projectName: string; } | null; }; }) {
+  function getAssignedProject(params: {
+    row: { relatedProjectId: { projectName: string } | null };
+  }) {
     if (params.row.relatedProjectId === null) {
       return 'Unassigned';
     } else {
@@ -70,6 +90,7 @@ export const IssuesList = () => {
       headerName: 'Identified Date',
       type: 'date',
       width: 160,
+      valueGetter: identifiedDateFormat,
     },
     {
       field: 'status',
@@ -86,6 +107,7 @@ export const IssuesList = () => {
       headerName: 'Target Resolution Date',
       type: 'date',
       width: 175,
+      valueGetter: targetResolutionDateFormat,
     },
     {
       field: 'progress',
@@ -97,13 +119,13 @@ export const IssuesList = () => {
       headerName: 'Actual Resolution Date',
       type: 'date',
       width: 175,
+      valueGetter: actualResolutionDateFormat,
     },
     {
       field: 'identifiedByEmployeeId',
       headerName: 'Identified By',
       width: 160,
       valueGetter: getIdentifiedByEmployeeId,
-
     },
     {
       field: 'assignedProjects',
@@ -116,7 +138,7 @@ export const IssuesList = () => {
       headerName: 'Assigned To',
       width: 160,
       valueGetter: getAssignedToEmployeeId,
-    },    
+    },
     {
       field: 'resolutionSummary',
       headerName: 'Resolution Summary',
@@ -155,18 +177,18 @@ export const IssuesList = () => {
       <Grid container justifyContent="flex-end">
         <Item elevation={0}>
           <AddIssue />
-          </Item>
+        </Item>
         {selectionModel && selectionModel.length ? (
           <Item elevation={0}>
             <EditIssue issueId={selectionModel.join()} />
-            </Item>
+          </Item>
         ) : (
           ''
         )}
         {selectionModel && selectionModel.length ? (
           <Item elevation={0}>
             <DeleteIssue id={selectionModel.join()} />
-            </Item>
+          </Item>
         ) : (
           ''
         )}

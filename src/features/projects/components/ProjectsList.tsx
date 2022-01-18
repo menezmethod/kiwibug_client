@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
+import { formatDateGrid } from '@/utils/format';
 import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
 
@@ -27,6 +28,20 @@ const DataGridProject = styled(DataGrid)({
   marginTop: '-5.5vh',
 });
 
+function startDateFormat(params: { row: { startDate: number } }) {
+  return formatDateGrid(params.row.startDate);
+}
+
+function targetEndDateFormat(params: { row: { targetEndDate: number } }) {
+  return formatDateGrid(params.row.targetEndDate);
+}
+
+function actualEndDateFormat(params: { row: { actualEndDate: number } }) {
+  if (params.row.actualEndDate) {
+    return formatDateGrid(params.row.actualEndDate);
+  }
+}
+
 export const ProjectsList = () => {
   const projectsQuery = useProjects();
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
@@ -53,23 +68,27 @@ export const ProjectsList = () => {
       field: 'startDate',
       headerName: 'Start Date',
       width: 280,
+      valueGetter: startDateFormat,
     },
     {
       field: 'targetEndDate',
       headerName: 'Target End Date',
       width: 280,
+      valueGetter: targetEndDateFormat,
     },
     {
       field: 'actualEndDate',
       headerName: 'Actual End Date',
       width: 280,
+      valueGetter: actualEndDateFormat,
+
     },
   ];
 
   if (!projectsQuery.data) return null;
 
   let projectsRows = projectsQuery?.data;
-  
+
   return (
     <div style={{ height: '75vh', width: '100%' }}>
       <DataGridProject

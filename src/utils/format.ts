@@ -1,6 +1,7 @@
 import { default as dayjs } from 'dayjs';
 
-export const formatDate = (date: number) => dayjs(date).format('yyyy-MM-dd HH:mm:ss');
+export const formatDateGrid = (date: number) =>
+  dayjs(date).subtract(1, 'day').format('MMMM D, YYYY');
 
 // Looks up role and if it finds it, returns the formatted name of the role for forms.
 export const formatRoleForm = (role: any[]) => {

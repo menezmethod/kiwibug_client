@@ -1,12 +1,15 @@
-export const SET_SNACKBAR = "teamly/settings/SET_SNACKBAR";
+export const SET_SNACKBAR = 'teamly/settings/SET_SNACKBAR';
 
 const initialState = {
   snackbarOpen: false,
-  snackbarType: "success",
-  snackbarMessage: ""
+  snackbarType: 'success',
+  snackbarMessage: '',
 };
 
-const snackbarRedux = (state = initialState, action: { type?: any; snackbarOpen?: any; snackbarMessage?: any; snackbarType?: any; }) => {
+const snackbarRedux = (
+  state = initialState,
+  action: { type?: any; snackbarOpen?: any; snackbarMessage?: any; snackbarType?: any; }
+) => {
   switch (action.type) {
     case SET_SNACKBAR:
       const { snackbarOpen, snackbarMessage, snackbarType } = action;
@@ -14,7 +17,7 @@ const snackbarRedux = (state = initialState, action: { type?: any; snackbarOpen?
         ...state,
         snackbarOpen,
         snackbarType,
-        snackbarMessage
+        snackbarMessage,
       };
     default:
       return state;
@@ -23,12 +26,13 @@ const snackbarRedux = (state = initialState, action: { type?: any; snackbarOpen?
 
 export const setSnackbar = (
   snackbarOpen: boolean,
-  snackbarType = "error",
-  snackbarMessage = ""
+  snackbarType = 'error',
+  snackbarMessage = ''
 ) => ({
   type: SET_SNACKBAR,
   snackbarOpen,
   snackbarType,
-  snackbarMessage
+  snackbarMessage,
 });
+
 export default snackbarRedux;
