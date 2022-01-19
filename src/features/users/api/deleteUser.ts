@@ -3,7 +3,7 @@ import { useMutation } from 'react-query';
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
 import { setSnackbar } from '@/redux/ducks/snackbar';
-import Notifications from '@/redux/Notifications';
+import NotificationsStore from '@/redux/NotificationsStore';
 
 import { User } from '../types';
 
@@ -40,7 +40,7 @@ export const useDeleteUser = ({ config }: UseDeleteUserOptions = {}) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries('users');
-      Notifications.dispatch(setSnackbar(true, 'success', 'User Deleted'));
+      NotificationsStore.dispatch(setSnackbar(true, 'success', 'User Deleted'));
     },
     ...config,
     mutationFn: deleteUser,

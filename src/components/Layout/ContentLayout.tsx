@@ -8,10 +8,10 @@ type ContentLayoutProps = {
 };
 
 export const ContentLayout = ({ children, title }: ContentLayoutProps) => {
-  <Head title={title} />;
   return (
-    <div>
-      {children}
-    </div>
+    <>
+      <Head title={title} />
+      <div>{children}</div>
+    </>
   );
 };

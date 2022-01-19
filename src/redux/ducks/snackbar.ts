@@ -6,7 +6,7 @@ const initialState = {
   snackbarMessage: '',
 };
 
-const snackbarRedux = (
+const snackbarSlice = (
   state = initialState,
   action: { type?: any; snackbarOpen?: any; snackbarMessage?: any; snackbarType?: any; }
 ) => {
@@ -35,4 +35,4 @@ export const setSnackbar = (
   snackbarMessage,
 });
 
-export default snackbarRedux;
+export default snackbarSlice;

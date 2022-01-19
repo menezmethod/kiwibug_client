@@ -3,7 +3,7 @@ import { useMutation } from 'react-query';
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
 import { setSnackbar } from '@/redux/ducks/snackbar';
-import Notifications from '@/redux/Notifications';
+import NotificationsStore from '@/redux/NotificationsStore';
 
 import { User } from '../types';
 
@@ -48,7 +48,7 @@ export const useEditUser = ({ config }: UseEditUserOptions = {}) => {
     onSuccess: (data) => {
       queryClient.refetchQueries(['users', data.id]);
       queryClient.invalidateQueries(['user', data.id]);
-      Notifications.dispatch(setSnackbar(true, 'success', 'User Updated'));
+      NotificationsStore.dispatch(setSnackbar(true, 'success', 'User Updated'));
     },
     ...config,
     mutationFn: editUser,

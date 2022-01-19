@@ -3,7 +3,7 @@ import { useMutation } from 'react-query';
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
 import { setSnackbar } from '@/redux/ducks/snackbar';
-import Notifications from '@/redux/Notifications';
+import NotificationsStore from '@/redux/NotificationsStore';
 
 import { Project } from '../types';
 
@@ -39,7 +39,7 @@ export const useDeleteProject = ({ config }: UseDeleteProjectOptions = {}) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries('projects');
-      Notifications.dispatch(setSnackbar(true, 'success', 'Project Deleted'));
+      NotificationsStore.dispatch(setSnackbar(true, 'success', 'Project Deleted'));
     },
     ...config,
     mutationFn: deleteProject,

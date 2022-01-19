@@ -10,4 +10,5 @@ export type Project = {
   modifiedOn: Date;
   modifiedBy: string;
   map: any;
+  length: number;
 } & BaseEntity;

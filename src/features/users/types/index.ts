@@ -14,4 +14,5 @@ export type User = {
   name: string;
   assignedProjects: any;
   map: any;
+  length: number;
 } & BaseEntity;

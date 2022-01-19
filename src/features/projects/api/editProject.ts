@@ -3,7 +3,7 @@ import { useMutation } from 'react-query';
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
 import { setSnackbar } from '@/redux/ducks/snackbar';
-import Notifications from '@/redux/Notifications';
+import NotificationsStore from '@/redux/NotificationsStore';
 
 import { Project } from '../types';
 
@@ -51,7 +51,7 @@ export const useEditProject = ({ config }: UseEditProjectOptions = {}) => {
     onSuccess: (data) => {
       queryClient.refetchQueries(['projects', data.id]);
       queryClient.invalidateQueries(['project', data.id]);
-      Notifications.dispatch(setSnackbar(true, 'success', 'Project Updated'));
+      NotificationsStore.dispatch(setSnackbar(true, 'success', 'Project Updated'));
     },
     ...config,
     mutationFn: editProject,

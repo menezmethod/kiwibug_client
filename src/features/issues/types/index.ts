@@ -31,4 +31,5 @@ export type Issue = {
     projectId: any;
   };
   map: any;
+  length: number;
 } & BaseEntity;

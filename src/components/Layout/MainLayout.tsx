@@ -21,7 +21,6 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Divider from '@mui/material/Divider';
 import MuiDrawer from '@mui/material/Drawer';
 import IconButton from '@mui/material/IconButton';
-import Link from '@mui/material/Link';
 import List from '@mui/material/List';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Menu from '@mui/material/Menu';
@@ -30,17 +29,21 @@ import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { Link } from 'react-router-dom';
 
 function Copyright(props: any) {
   return (
-    <Typography variant="body2" color="text.secondary" align="center" {...props}>
-      {'Copyright © '}
-      <Link color="inherit" href="https://gimenez.dev/">
-        KiwiBug Issue Tracker
-      </Link>{' '}
-      {new Date().getFullYear()}
-      {'.'}
-    </Typography>
+    <>
+      <br />
+      <Typography variant="body2" color="text.secondary" align="center" {...props}>
+        {'Copyright © '}
+        <Link color="inherit" to="https://gimenez.dev/">
+          KiwiBug Issue Tracker
+        </Link>{' '}
+        {new Date().getFullYear()}
+        {'.'}
+      </Typography>
+    </>
   );
 }
 
@@ -109,7 +112,7 @@ const Logo = styled('div')({
   fontWeight: 'bold',
 });
 
-export const MainLayout = ({ title, children }: MainLayoutProps) => {
+export const MainLayout = ({ children }: MainLayoutProps) => {
   const [open, setOpen] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const openUser = Boolean(anchorEl);
@@ -154,7 +157,7 @@ export const MainLayout = ({ title, children }: MainLayoutProps) => {
             </IconButton>
 
             <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-              {title}
+              {document.title}
             </Typography>
             <React.Fragment>
               <Tooltip title="User Settings">
@@ -204,7 +207,7 @@ export const MainLayout = ({ title, children }: MainLayoutProps) => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
-                <MenuItem component="a" href="/profile">
+                <MenuItem component={Link} to={'/profile'}>
                   <Avatar /> My Profile
                 </MenuItem>
                 <Divider />
@@ -244,27 +247,26 @@ export const MainLayout = ({ title, children }: MainLayoutProps) => {
           </Toolbar>
           <Divider />
           <List>
-            {' '}
-            <ListItem button component="a" href="/">
+            <ListItem button component={Link} to={'/'}>
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
             </ListItem>
-            <ListItem button component="a" href="/projects">
+            <ListItem button component={Link} to={'/projects'}>
               <ListItemIcon>
                 <AccountTreeIcon />
               </ListItemIcon>
               <ListItemText primary="Projects" />
             </ListItem>
-            <ListItem button component="a" href="/issues">
+            <ListItem button component={Link} to={'/issues'}>
               <ListItemIcon>
                 <BugReportIcon />
               </ListItemIcon>
               <ListItemText primary="Issues" />
             </ListItem>
             {isMod(role) ? (
-              <ListItem button component="a" href="/users">
+              <ListItem button component={Link} to={'/users'}>
                 <ListItemIcon>
                   <PeopleIcon />
                 </ListItemIcon>
@@ -287,13 +289,17 @@ export const MainLayout = ({ title, children }: MainLayoutProps) => {
                 <ArrowRightIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText secondary="Summary by Project" />
-            </ListItem>
-            <ListItem button>
-              <ListItemIcon>
-                <ArrowRightIcon fontSize="small" />
-              </ListItemIcon>
-              <ListItemText secondary="Assign Open Issues" />
-            </ListItem>
+            </ListItem>{' '}
+            {isMod(role) ? (
+              <ListItem button>
+                <ListItemIcon>
+                  <ArrowRightIcon fontSize="small" />
+                </ListItemIcon>
+                <ListItemText secondary="Assign Open Issues" />
+              </ListItem>
+            ) : (
+              ''
+            )}
             <ListItem button>
               <ListItemIcon>
                 <ArrowRightIcon fontSize="small" />

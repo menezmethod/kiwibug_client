@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { setSnackbar } from '@/redux/ducks/snackbar';
-import { AppDispatch, RootState } from '@/redux/Notifications';
+import { AppDispatch, RootState } from '@/redux/NotificationsStore';
 import { makeStyles } from '@material-ui/core/styles';
 import Alert from '@mui/material/Alert';
 import Snackbar from '@mui/material/Snackbar';
