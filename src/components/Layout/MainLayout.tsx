@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Link } from 'react-router-dom';
 
 import { useAuth } from '@/lib/auth';
 import { isMod } from '@/lib/authorization';
@@ -29,7 +30,6 @@ import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
-import { Link } from 'react-router-dom';
 
 function Copyright(props: any) {
   return (
@@ -157,7 +157,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             </IconButton>
 
             <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-              {document.title}
+              KiwiBug Issue Tracker
             </Typography>
             <React.Fragment>
               <Tooltip title="User Settings">

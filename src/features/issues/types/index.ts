@@ -31,5 +31,6 @@ export type Issue = {
     projectId: any;
   };
   map: any;
+  filter: any;
   length: number;
 } & BaseEntity;

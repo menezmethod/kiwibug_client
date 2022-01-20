@@ -1,5 +1,6 @@
-import { Head } from '@/components/Head/Head';
 import { useNavigate } from 'react-router-dom';
+
+import { Head } from '@/components/Head/Head';
 
 import { LoginForm } from '../components/LoginForm';
 
