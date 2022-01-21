@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
 import { ContentLayout } from '@/components/Layout/ContentLayout';
 import { useIssues } from '@/features/issues/api/getIssues';
@@ -18,7 +19,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body1,
@@ -68,11 +68,14 @@ export const Dashboard = () => {
   });
 
   // Chart Data
-
   let pieChartData: any = [];
   let totalIssues = issuesData?.length ?? 1;
-  const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+  const COLORS: (string | undefined)[] = [];
 
+  // Random colors for pie chart slices
+  for (var i = 0; i < totalIssues; i++) {
+    COLORS.push('#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6));
+  }
   let pieLabel = function (entry: { name: string; value: string }) {
     return entry.name + ': ' + entry.value + '%';
   };

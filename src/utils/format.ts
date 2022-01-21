@@ -5,6 +5,8 @@ export const formatDate = (date: number) => dayjs(date).format('YYYY-MM-DDTHH:mm
 export const formatDateGrid = (date: number) =>
   dayjs(date).subtract(1, 'day').format('MMMM D, YYYY');
 
+export const formatDateReports = (date: number) => dayjs(date).format('MMMM D, YYYY');
+
 // Looks up role and if it finds it, returns the formatted name of the role for forms.
 export const formatRoleForm = (role: any[]) => {
   if (role.some((newRole) => newRole.name === 'ROLE_ADMIN')) {

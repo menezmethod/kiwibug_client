@@ -35,11 +35,11 @@ export const useAddUser = ({ config }: UseAddUserOptions = {}) => {
     onMutate: async (newUser: AddUserDTO) => {
       await queryClient.cancelQueries('users');
 
-      const previousUsers = queryClient.getQueryData<User[]>('users');
+      // const previousUsers = queryClient.getQueryData<User[]>('users');
 
-      queryClient.setQueryData('users', [...(previousUsers || []), newUser.data]);
+      // queryClient.setQueryData('users', [...(previousUsers || []), newUser.data]);
 
-      return { previousUsers };
+      // return { previousUsers };
     },
     onError: (_, __, context: any) => {
       if (context?.previousUsers) {

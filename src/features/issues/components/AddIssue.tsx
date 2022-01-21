@@ -131,7 +131,6 @@ export default function AddIssue() {
                     <Controller
                       name="relatedProjectId"
                       control={control}
-                      // rules={{ required: true }}
                       render={({ field }) => (
                         <FormControl fullWidth>
                           <InputLabel id="related-project-id">Related Project</InputLabel>

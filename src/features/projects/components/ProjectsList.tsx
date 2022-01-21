@@ -25,7 +25,7 @@ const Item = styled(Paper)(({ theme }) => ({
 
 const DataGridProject = styled(DataGrid)({
   border: '0',
-  marginTop: '-5.5vh',
+  marginTop: '-4vh',
 });
 
 function startDateFormat(params: { row: { startDate: number } }) {

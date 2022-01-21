@@ -284,14 +284,14 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               </ListItemIcon>
               <ListItemText primary="Issues Reports" />
             </ListItem>
-            <ListItem button>
+            <ListItem button component={Link} to={'/reports/summarybyproject'}>
               <ListItemIcon>
                 <ArrowRightIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText secondary="Summary by Project" />
             </ListItem>{' '}
             {isMod(role) ? (
-              <ListItem button>
+              <ListItem button component={Link} to={'/reports/assignissues'}>
                 <ListItemIcon>
                   <ArrowRightIcon fontSize="small" />
                 </ListItemIcon>
@@ -300,13 +300,13 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             ) : (
               ''
             )}
-            <ListItem button>
+            <ListItem button component={Link} to={'/reports/targetdates'}>
               <ListItemIcon>
                 <ArrowRightIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText secondary="Target Resolution Dates" />
             </ListItem>
-            <ListItem button>
+            <ListItem button component={Link} to={'/reports/resolvedbymonth'}>
               <ListItemIcon>
                 <ArrowRightIcon fontSize="small" />
               </ListItemIcon>
