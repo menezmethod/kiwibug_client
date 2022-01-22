@@ -6,8 +6,8 @@
     "@material-ui/icons": "^4.11.2",
     "@mui/icons-material": "^5.2.4",
     "@mui/lab": "latest",
-    "@mui/material": "latest",
-    "@mui/styled-engine-sc": "latest",
+    "@mui/material": "^5.3.0",
+    "@mui/styled-engine-sc": "^5.3.0",
     "@mui/styles": "^5.2.3",
     "@mui/x-data-grid": "^5.2.0",
     "@mui/x-data-grid-generator": "^5.2.0",
@@ -35,8 +35,7 @@
     "react-scripts": "latest",
     "recharts": "^2.1.8",
     "redux": "^4.1.2",
-    "styled-components": "latest",
-    "zod": "^3.11.6"
+    "styled-components": "^5.3.3"
   },
   "scripts": {
     "tsc": "./node_modules/.bin/tsc",

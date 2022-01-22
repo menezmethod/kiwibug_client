@@ -41,10 +41,7 @@ export default function SummaryByProject() {
   const [highPriority, setHighPriority] = React.useState<number>(0);
   const [mediumPriority, setMediumPriority] = React.useState<number>(0);
   const [lowPriority, setLowPriority] = React.useState<number>(0);
-  const [assignedTo, setAssignedTo] = React.useState<string[]>([]);
-  //   const [closedName, setClosedName] = React.useState<string>('');
-  //   const [closedIssue, setClosedIssue] = React.useState<string>('');
-  //   const [closedStatus, setClosedStatus] = React.useState<string>('');
+  const [assignedToRows, setAssignedTo] = React.useState<string[]>([]);
 
   const projectsQuery = useProjects();
   const issuesQuery = useIssues();
@@ -87,6 +84,7 @@ export default function SummaryByProject() {
       return a.priority === 'Low';
     });
 
+    // Get counts for bottom table.
     function getOccurrenceClosed(array: any, value: any) {
       return statusClosedIssue.filter((v: any) => v.assignedToEmployeeId?.employeeName === value)
         .length;
@@ -100,42 +98,45 @@ export default function SummaryByProject() {
         .length;
     }
 
+    // Create a temporary array for bottom table. Load it with data
     const assignedToArr: any[] = [];
+
     statusOpenIssue.map((a: any) => {
       if (getOccurrenceOpen(statusOpenIssue, a.assignedToEmployeeId?.employeeName)) {
-        let assignedToLoad = {
+        let openLoad = {
           name: a.assignedToEmployeeId?.employeeName,
           issues: getOccurrenceOpen(assignedToArr, a.assignedToEmployeeId?.employeeName),
           status: a.status,
         };
-        assignedToArr.push(assignedToLoad);
+        assignedToArr.push(openLoad);
       }
       return assignedToArr;
     });
 
     statusOnHoldIssues.map((a: any) => {
       if (getOccurrenceOnHold(statusOnHoldIssues, a.assignedToEmployeeId?.employeeName)) {
-        let assignedToLoad2 = {
+        let onHoldLoad = {
           name: a.assignedToEmployeeId?.employeeName,
           issues: getOccurrenceOnHold(assignedToArr, a.assignedToEmployeeId?.employeeName),
           status: a.status,
         };
-        assignedToArr.push(assignedToLoad2);
+        assignedToArr.push(onHoldLoad);
       }
       return assignedToArr;
     });
     statusClosedIssue.map((a: any) => {
       if (getOccurrenceClosed(statusClosedIssue, a.assignedToEmployeeId?.employeeName)) {
-        let assignedToLoad3 = {
+        let closedLoad = {
           name: a.assignedToEmployeeId?.employeeName,
           issues: getOccurrenceClosed(assignedToArr, a.assignedToEmployeeId?.employeeName),
           status: a.status,
         };
-        assignedToArr.push(assignedToLoad3);
+        assignedToArr.push(closedLoad);
       }
       return assignedToArr;
     });
 
+    // Remove duplicates before displaying
     const assignedToRows = assignedToArr.reduce((unique, o) => {
       if (
         !unique.some(
@@ -156,7 +157,6 @@ export default function SummaryByProject() {
       .filter((x: null) => x !== null);
 
     // Set values
-
     if (allIssuesById) {
       setTotalIssues(allIssuesById.length);
     } else {
@@ -189,6 +189,10 @@ export default function SummaryByProject() {
     // console.log(assignedToArr);
   };
 
+  function createData(name: string, values: any) {
+    return { name, values };
+  }
+
   const rows = [
     createData('First Issue Identified:', firstIdIssue),
     createData('Last Issue Closed:', lastIdIssue),
@@ -201,10 +205,6 @@ export default function SummaryByProject() {
     createData('Open Issues of Medium Priority:', mediumPriority),
     createData('Open Issues of Low Priority:', lowPriority),
   ];
-
-  function createData(name: string, values: any) {
-    return { name, values };
-  }
 
   return (
     <ContentLayout title="Issues Summary By Project">
@@ -249,7 +249,7 @@ export default function SummaryByProject() {
           </TableBody>
         </Table>
         <Divider />
-        <Table sx={{ minWidth: 600 }} aria-label="summary">
+        <Table aria-label="summary">
           <TableHead>
             <TableRow>
               <TableCell>Assigned To </TableCell>
@@ -258,9 +258,9 @@ export default function SummaryByProject() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {assignedTo?.map((row: any) => (
+            {assignedToRows?.map((row: any) => (
               <TableRow
-                key={Math.floor(Math.random() * 1000)}
+                key={row?.name + Math.floor(Math.random() * 100)}
                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
               >
                 <TableCell component="th" scope="row">

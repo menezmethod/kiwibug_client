@@ -167,8 +167,8 @@ export const Dashboard = () => {
                 <TableBody>
                   {overdueIssues?.map((row: any) => (
                     <TableRow
-                      key={row?.issueSummary}
-                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                    key={row?.issueSummary + Math.floor(Math.random() * 100)}
+                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
                         {row?.assignedToEmployeeId?.employeeName}
@@ -202,7 +202,7 @@ export const Dashboard = () => {
                 <TableBody>
                   {unassignedIssues?.map((row: any) => (
                     <TableRow
-                      key={row?.priority}
+                      key={row?.priority + Math.floor(Math.random() * 100)}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
@@ -241,7 +241,7 @@ export const Dashboard = () => {
                 <TableBody>
                   {recentIssues?.map((row: any) => (
                     <TableRow
-                      key={row?.priority}
+                      key={row?.priority + Math.floor(Math.random() * 100)}
                       sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
