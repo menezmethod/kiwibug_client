@@ -1,235 +1,137 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import FullCalendar, {
+  EventApi,
+  DateSelectArg,
+  EventClickArg,
+  EventContentArg,
+  formatDate,
+} from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import timeGridPlugin from '@fullcalendar/timegrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import { INITIAL_EVENTS, createEventId } from '@/utils/event';
+import '@fullcalendar/common/main.min.css';
+import '@fullcalendar/daygrid/main.min.css';
+import { useIssues } from '@/features/issues/api/getIssues';
+import dayjs from 'dayjs';
+import useLocalStorage from '@/hooks/useLocalStorage';
+import { Paper } from '@mui/material';
+import 'bootstrap/dist/css/bootstrap.css';
+import '@fortawesome/fontawesome-free/css/all.css'; // webpack uses file-loader to handle font files
 
-import { ViewState } from '@devexpress/dx-react-scheduler';
-import {
-  Scheduler,
-  DayView,
-  Appointments,
-  MonthView,
-  Toolbar,
-  DateNavigator,
-  ViewSwitcher,
-  TodayButton,
-  Resources,
-  AppointmentTooltip,
-} from '@devexpress/dx-react-scheduler-material-ui';
-import { withStyles, Theme, createStyles } from '@material-ui/core';
-import { indigo, blue, teal } from '@material-ui/core/colors';
-import { fade } from '@material-ui/core/styles/colorManipulator';
-import { WithStyles } from '@material-ui/styles';
-import classNames from 'clsx';
 
-const appointments = [
-  {
-    title: 'Prepare 2015 Marketing Plan',
-    startDate: new Date(2018, 5, 25, 13, 0),
-    endDate: new Date(2018, 5, 25, 13, 30),
-    priority: 2,
-    location: 'Room 3',
-  },
-  {
-    title: 'Brochure Design Review',
-    startDate: new Date(2018, 5, 28, 14, 10),
-    endDate: new Date(2018, 5, 28, 15, 30),
-    priority: 1,
-    location: 'Room 1',
-  },
-  {
-    title: 'Website Re-Design Plan',
-    startDate: new Date(2018, 5, 29, 9, 30),
-    endDate: new Date(2018, 5, 29, 11, 30),
-    priority: 1,
-    location: 'Room 3',
-  },
-  {
-    title: 'Book Flights to San Fran for Sales Trip',
-    startDate: new Date(2018, 6, 2, 12, 0),
-    endDate: new Date(2018, 6, 2, 13, 0),
-    priority: 3,
-    location: 'Room 2',
-  },
-  {
-    title: 'Install New Router in Dev Room',
-    startDate: new Date(2018, 6, 2, 14, 30),
-    endDate: new Date(2018, 6, 2, 15, 30),
-    priority: 2,
-    location: 'Room 3',
-  },
-  {
-    title: 'Approve Personal Computer Upgrade Plan',
-    startDate: new Date(2018, 6, 4, 10, 0),
-    endDate: new Date(2018, 6, 4, 11, 0),
-    priority: 1,
-    location: 'Room 1',
-  },
-  {
-    title: 'Final Budget Review',
-    startDate: new Date(2018, 6, 6, 12, 0),
-    endDate: new Date(2018, 6, 6, 13, 35),
-    priority: 3,
-    location: 'Room 1',
-  },
-  {
-    title: 'New Brochures',
-    startDate: new Date(2018, 6, 6, 14, 30),
-    endDate: new Date(2018, 6, 6, 15, 45),
-    priority: 3,
-    location: 'Room 3',
-  },
-  {
-    title: 'Install New Database',
-    startDate: new Date(2018, 6, 10, 9, 45),
-    endDate: new Date(2018, 6, 10, 11, 15),
-    priority: 2,
-    location: 'Room 2',
-  },
-  {
-    title: 'Approve New Online Marketing Strategy',
-    startDate: new Date(2018, 6, 12, 12, 0),
-    endDate: new Date(2018, 6, 12, 14, 0),
-    priority: 1,
-    location: 'Room 2',
-  },
-  {
-    title: 'Upgrade Personal Computers',
-    startDate: new Date(2018, 6, 16, 15, 15),
-    endDate: new Date(2018, 6, 16, 16, 30),
-    priority: 2,
-    location: 'Room 3',
-  },
-  {
-    title: 'Customer Workshop',
-    startDate: new Date(2018, 6, 18, 11, 0),
-    endDate: new Date(2018, 6, 18, 12, 0),
-    priority: 3,
-    location: 'Room 1',
-  },
-  {
-    title: 'Prepare 2015 Marketing Plan',
-    startDate: new Date(2018, 6, 20, 11, 0),
-    endDate: new Date(2018, 6, 20, 13, 30),
-    priority: 1,
-    location: 'Room 3',
-  },
-  {
-    title: 'New Brochures',
-    startDate: new Date(2018, 6, 23, 14, 30),
-    endDate: new Date(2018, 6, 23, 15, 45),
-    priority: 2,
-    location: 'Room 3',
-  },
-  {
-    title: 'Install New Database',
-    startDate: new Date(2018, 6, 23, 9, 45),
-    endDate: new Date(2018, 6, 23, 11, 15),
-    priority: 3,
-    location: 'Room 2',
-  },
-  {
-    title: 'Approve New Online Marketing Strategy',
-    startDate: new Date(2018, 6, 26, 12, 0),
-    endDate: new Date(2018, 6, 26, 14, 0),
-    priority: 1,
-    location: 'Room 1',
-  },
-  {
-    title: 'Upgrade Personal Computers',
-    startDate: new Date(2018, 6, 31, 15, 15),
-    endDate: new Date(2018, 6, 31, 16, 30),
-    priority: 2,
-    location: 'Room 3',
-  },
-  {
-    title: 'Install New Database',
-    startDate: new Date(2018, 6, 31, 9, 45),
-    endDate: new Date(2018, 6, 31, 11, 15),
-    priority: 3,
-    location: 'Room 2',
-  },
-];
+import { Calendar } from '@fullcalendar/core';
+import bootstrapPlugin from '@fullcalendar/bootstrap';
 
-const resources = [
-  {
-    fieldName: 'location',
-    title: 'Location',
-    instances: [
-      { id: 'Room 1', text: 'Room 1', color: indigo },
-      { id: 'Room 2', text: 'Room 2', color: blue },
-      { id: 'Room 3', text: 'Room 3', color: teal },
-    ],
-  },
-  {
-    fieldName: 'priority',
-    title: 'Priority',
-    instances: [
-      { id: 1, text: 'High Priority', color: teal },
-      { id: 2, text: 'Medium Priority', color: blue },
-      { id: 3, text: 'Low Priority', color: indigo },
-    ],
-  },
-];
+interface TargetCalendarState {
+  weekendsVisible: boolean;
+  currentEvents: EventApi[];
+}
 
-const stylesCal = ({ palette }: Theme) =>
-  createStyles({
-    appointment: {
-      borderRadius: 0,
-      borderBottom: 0,
-    },
-    highPriorityAppointment: {
-      borderLeft: `4px solid ${teal[500]}`,
-    },
-    mediumPriorityAppointment: {
-      borderLeft: `4px solid ${blue[500]}`,
-    },
-    lowPriorityAppointment: {
-      borderLeft: `4px solid ${indigo[500]}`,
-    },
-    weekEndCell: {
-      backgroundColor: fade(palette.action.disabledBackground, 0.04),
-      '&:hover': {
-        backgroundColor: fade(palette.action.disabledBackground, 0.04),
-      },
-      '&:focus': {
-        backgroundColor: fade(palette.action.disabledBackground, 0.04),
-      },
-    },
-    weekEndDayScaleCell: {
-      backgroundColor: fade(palette.action.disabledBackground, 0.06),
-    },
-    text: {
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      whiteSpace: 'nowrap',
-    },
-    content: {
-      opacity: 0.7,
-    },
-    container: {
-      width: '100%',
-      lineHeight: 1.2,
-      height: '100%',
-    },
-  });
+export default function TargeCalendar() {
+  //   state: TargetCalendarState = {
+  //     weekendsVisible: true,
+  //     currentEvents: [],
+  //   };
+  const issuesQuery = useIssues();
 
-type AppointmentProps = Appointments.AppointmentProps & WithStyles<typeof stylesCal>;
-type AppointmentContentProps = Appointments.AppointmentContentProps & WithStyles<typeof stylesCal>;
-type TimeTableCellProps = MonthView.TimeTableCellProps & WithStyles<typeof stylesCal>;
-type DayScaleCellProps = MonthView.DayScaleCellProps & WithStyles<typeof stylesCal>;
+  let issuesData = issuesQuery?.data;
 
-const isWeekEnd = (date: Date): boolean => date.getDay() === 0 || date.getDay() === 6;
-const defaultCurrentDate = new Date(2018, 6, 2, 11, 15);
+  const [targetDateData, setTargetDateData] = useLocalStorage('target_data', []);
+  const [updateData, setUpdateData] = useState(false);
 
-export default function TargetCalendar() {
+  useEffect(() => {
+    setTargetDateData(
+      issuesData?.map((a: any) => {
+        return {
+          id: a.issuesId,
+          title: a.issueSummary,
+          start: dayjs(a.targetResolutionDate).subtract(1, 'day').format('YYYY-MM-DD'),
+        };
+      })
+    );
+  }, [issuesData]);
+
+  //   console.log(targetDateData);
   return (
-    <Scheduler data={appointments}>
-      <ViewState defaultCurrentDate={defaultCurrentDate} />
+    <Paper sx={{ padding: 4 }}>
+      <FullCalendar
+        plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin, bootstrapPlugin]}
+        headerToolbar={{
+          left: 'prev,next today',
+          center: 'title',
+          right: 'dayGridMonth,timeGridWeek,timeGridDay',
+        }}
+        themeSystem="bootstrap"
+        initialView="dayGridMonth"
+        editable={false}
+        selectable={false}
+        selectMirror={true}
+        dayMaxEvents={true}
+        initialEvents={targetDateData} // alternatively, use the `events` setting to fetch from a feed
+        // select={this.handleDateSelect}
+        eventContent={renderEventContent} // custom render function
+        // eventClick={this.handleEventClick}
+        // eventsSet={this.handleEvents} // called after events are initialized/added/changed/removed
+        /* you can update a remote database when these fire:
+            eventAdd={function(){}}
+            eventChange={function(){}}
+            eventRemove={function(){}}
+            */
+      />
+    </Paper>
+  );
 
-      <MonthView />
-      <DayView displayName={'Three days'} startDayHour={9} endDayHour={17} intervalCount={3} />
-      {/* <Toolbar />
-      <DateNavigator />
-      <TodayButton />*/}
-      <Appointments />
-    </Scheduler>
+  //   handleWeekendsToggle = () => {
+  //     this.setState({
+  //       weekendsVisible: !this.state.weekendsVisible,
+  //     });
+  //   };
+
+  //   handleDateSelect = (selectInfo: DateSelectArg) => {
+  //     let title = prompt('Please enter a new title for your event');
+  //     let calendarApi = selectInfo.view.calendar;
+
+  //     calendarApi.unselect(); // clear date selection
+
+  //     if (title) {
+  //       calendarApi.addEvent({
+  //         id: createEventId(),
+  //         title,
+  //         start: selectInfo.startStr,
+  //         end: selectInfo.endStr,
+  //         allDay: selectInfo.allDay,
+  //       });
+  //     }
+  //   };
+
+  //   handleEventClick = (clickInfo: EventClickArg) => {
+  //     if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
+  //       clickInfo.event.remove();
+  //     }
+  //   };
+
+  //   handleEvents = (events: EventApi[]) => {
+  //     this.setState({
+  //       currentEvents: events,
+  //     });
+  //   };
+}
+
+function renderEventContent(eventContent: EventContentArg) {
+  return (
+    <>
+      <b>{eventContent.timeText}</b>
+      <i>{eventContent.event.title}</i>
+    </>
+  );
+}
+
+function renderSidebarEvent(event: EventApi) {
+  return (
+    <li key={event.id}>
+      <b>{formatDate(event.start!, { year: 'numeric', month: 'short', day: 'numeric' })}</b>
+      <i>{event.title}</i>
+    </li>
   );
 }

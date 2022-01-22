@@ -8,6 +8,7 @@ import { useProjects } from '../api/getProjects';
 import AddProject from './AddProject';
 import { DeleteProject } from './DeleteProject';
 import { EditProject } from './EditProject';
+import Container from '@mui/material/Container';
 
 export type ProjectListtDTO = {
   data: {
@@ -81,7 +82,6 @@ export const ProjectsList = () => {
       headerName: 'Actual End Date',
       width: 280,
       valueGetter: actualEndDateFormat,
-
     },
   ];
 
@@ -90,7 +90,7 @@ export const ProjectsList = () => {
   let projectsRows = projectsQuery?.data;
 
   return (
-    <div style={{ height: '75vh', width: '100%' }}>
+    <Container maxWidth="lg">
       <DataGridProject
         pageSize={10}
         rows={projectsRows}
@@ -137,6 +137,6 @@ export const ProjectsList = () => {
           ''
         )}
       </Grid>
-    </div>
+    </Container>
   );
 };

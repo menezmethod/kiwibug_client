@@ -176,6 +176,7 @@ export default function SummaryByProject() {
     } else {
       setLastIdIssue('No Issues Closed');
     }
+    
     setProjectName(event.target.value as string);
     setOpenIssues(statusOpenIssue.length);
     setClosedIssues(statusClosedIssue.length);
