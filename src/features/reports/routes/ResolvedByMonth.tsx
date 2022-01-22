@@ -3,20 +3,15 @@ import React from 'react';
 import { ContentLayout } from '@/components/Layout/ContentLayout';
 import { useIssues } from '@/features/issues/api/getIssues';
 import { useUsers } from '@/features/users/api/getUsers';
-import {
-  Chart,
-  BarSeries,
-  Title,
-  ArgumentAxis,
-  ValueAxis,
-} from '@devexpress/dx-react-chart-material-ui';
+import { Chart, Title, ArgumentAxis, ValueAxis } from '@devexpress/dx-react-chart-material-ui';
+import { BarSeries } from '@devexpress/dx-react-chart';
 
 import dayjs from 'dayjs';
+import { Paper } from '@mui/material';
 
 export default function ResolvedByMonth() {
   const issuesQuery = useIssues();
   const usersQuery = useUsers();
-  const [chartDataState, setChartDataState] = React.useState([]);
 
   let issuesData = issuesQuery?.data;
   let usersData = usersQuery?.data;
@@ -31,7 +26,7 @@ export default function ResolvedByMonth() {
 
   issuesData?.map((a: any) => {
     allNames?.map((b: any) => {
-      if (a.assignedToEmployeeId.employeeName === b.name) {
+      if (a.assignedToEmployeeId?.employeeName === b.name) {
         issuesByUser = issuesData?.filter(function (c: any) {
           return c.assignedToEmployeeId?.employeeName === b.name;
         });
@@ -84,22 +79,17 @@ export default function ResolvedByMonth() {
     chartData.push({ name: prop, days: Math.round(totalDays[prop] / issuesByUser.length) });
   }
 
-  let check = chartData.some((x) => x.name === x.name);
-
-  if (check) {
-    console.log(chartData);
-  }
-
   return (
     <ContentLayout title="Average Days To Resolve Issues">
-      {chartData?.map((row) => row.name + ' ' + row.days + ' ')}
-      {/* <Chart data={chartData} rotated>
-        <ArgumentAxis />
-        <ValueAxis max={50} />
-
-        <BarSeries valueField="name" argumentField="days" />
-        <Title text="Average Days To Resolve Issues" />
-      </Chart> */}
+      <Paper>
+        {' '}
+        <Chart data={chartData} rotated>
+          <ArgumentAxis />
+          <ValueAxis max={500} />
+          <BarSeries valueField="days" argumentField="name" />
+          <Title text="Average Days To Resolve Issues" />
+        </Chart>
+      </Paper>
     </ContentLayout>
   );
 }
