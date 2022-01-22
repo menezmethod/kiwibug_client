@@ -53,7 +53,7 @@ interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
 }
 
-const AppBar = styled(MuiAppBar, {
+const AppBarTop = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
 })<AppBarProps>(({ theme, open }) => ({
   zIndex: theme.zIndex.drawer + 1,
@@ -137,7 +137,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
 
-        <AppBar position="absolute" open={open}>
+        <AppBarTop position="absolute" open={open}>
           <Toolbar
             sx={{
               pr: '24px', // keep right padding when drawer closed
@@ -230,7 +230,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               </Menu>
             </React.Fragment>
           </Toolbar>
-        </AppBar>
+        </AppBarTop>
         <Drawer variant="permanent" open={open}>
           <Toolbar
             sx={{

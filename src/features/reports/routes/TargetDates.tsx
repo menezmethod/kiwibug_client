@@ -1,11 +1,15 @@
 import React from 'react';
 
-import { Container } from '@mui/material';
+import { ContentLayout } from '@/components/Layout/ContentLayout';
+import { Paper } from '@mui/material';
+import TargetCalendar from '../components/TargetCalendar';
 
 export default function TargetDates() {
-    return (
-        <Container>
-            TargetDates
-        </Container>
-    )
+  return (
+    <ContentLayout title="Target Resolution Dates">
+      <Paper>
+        <TargetCalendar />
+      </Paper>
+    </ContentLayout>
+  );
 }

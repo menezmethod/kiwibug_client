@@ -289,25 +289,6 @@ export const Dashboard = () => {
             <Export enabled={true} />
           </PieChart>
         </Item>
-        {/* <ResponsiveContainer height={300} width="100%">
-          <PieChart>
-            <Pie
-              data={pieChartData}
-              isAnimationActive={false}
-              cx="50%"
-              cy="50%"
-              labelLine={false}
-              label={pieLabel}
-              outerRadius={100}
-              fill="#8884d8"
-              dataKey="value"
-            >
-              {pieChartData.map((entry: any, index: number) => (
-                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-              ))}
-            </Pie>
-          </PieChart>
-        </ResponsiveContainer> */}
       </Grid>
     </ContentLayout>
   );
