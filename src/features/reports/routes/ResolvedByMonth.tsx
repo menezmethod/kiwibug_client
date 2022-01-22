@@ -85,7 +85,7 @@ export default function ResolvedByMonth() {
         {' '}
         <Chart data={chartData} rotated>
           <ArgumentAxis />
-          <ValueAxis max={500} />
+          <ValueAxis />
           <BarSeries valueField="days" argumentField="name" />
           <Title text="Average Days To Resolve Issues" />
         </Chart>

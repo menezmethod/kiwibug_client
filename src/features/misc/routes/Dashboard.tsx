@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
+// import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts';
 
 import { ContentLayout } from '@/components/Layout/ContentLayout';
 import { useIssues } from '@/features/issues/api/getIssues';
@@ -19,6 +19,14 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import PieChart, {
+  Series,
+  Label,
+  Connector,
+  SmallValuesGrouping,
+  Legend,
+  Export,
+} from 'devextreme-react/pie-chart';
 
 const Item = styled(Paper)(({ theme }) => ({
   ...theme.typography.body1,
@@ -89,6 +97,7 @@ export const Dashboard = () => {
     pieArray.push(obj?.relatedProjectId?.projectName);
     return obj?.relatedProjectId?.projectName;
   });
+
   projectsData?.map((obj: any) => {
     let pieLoad = {
       name: obj.projectName,
@@ -98,7 +107,10 @@ export const Dashboard = () => {
     // console.log(pieChartData);
     return (countOccurrences(pieArray, obj.projectName) / totalIssues) * 100;
   });
-
+  // console.log(pieChartData);
+  function formatLabel(arg: { argumentText: any; valueText: any }) {
+    return `${arg.argumentText}: ${arg.valueText}%`;
+  }
   return (
     <ContentLayout title="Dashboard">
       <ThemeProvider theme={theme}>
@@ -167,8 +179,8 @@ export const Dashboard = () => {
                 <TableBody>
                   {overdueIssues?.map((row: any) => (
                     <TableRow
-                    key={row?.issueSummary + Math.floor(Math.random() * 100)}
-                    sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                      key={row?.issueSummary + Math.floor(Math.random() * 100)}
+                      sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                     >
                       <TableCell component="th" scope="row">
                         {row?.assignedToEmployeeId?.employeeName}
@@ -265,8 +277,19 @@ export const Dashboard = () => {
         <Grid item xs={8}>
           <Item>Open Issues by Project</Item>
         </Grid>
-        <br />
-        <ResponsiveContainer height={300} width="100%">
+        <Item sx={{ marginTop: 3, width: '100%' }}>
+          <PieChart id="open_issues_by_project" dataSource={pieChartData} palette="Bright">
+            <Series argumentField="name" valueField="value">
+              <Label visible={true} customizeText={formatLabel} format="fixedPoint">
+                <Connector visible={true} width={0.5} />
+              </Label>
+              <SmallValuesGrouping threshold={4.5} mode="smallValueThreshold" />
+            </Series>
+            <Legend horizontalAlignment="center" verticalAlignment="bottom" />
+            <Export enabled={true} />
+          </PieChart>
+        </Item>
+        {/* <ResponsiveContainer height={300} width="100%">
           <PieChart>
             <Pie
               data={pieChartData}
@@ -284,7 +307,7 @@ export const Dashboard = () => {
               ))}
             </Pie>
           </PieChart>
-        </ResponsiveContainer>
+        </ResponsiveContainer> */}
       </Grid>
     </ContentLayout>
   );
