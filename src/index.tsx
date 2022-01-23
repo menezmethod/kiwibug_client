@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import '@fullcalendar/common/main.min.css';
 import '@fullcalendar/daygrid/main.min.css';
 import App from './App';
-import store from './redux/NotificationsStore';
+import store from './redux/createStore';
 
 ReactDOM.render(
   <React.StrictMode>

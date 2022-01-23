@@ -1,6 +1,6 @@
 import { API_URL } from '@/config';
-import { setSnackbar } from '@/redux/ducks/snackbar';
-import NotificationsStore from '@/redux/NotificationsStore';
+import { setSnackbar } from '@/redux/models/snackbar';
+import createStore from '@/redux/createStore'
 import storage from '@/utils/storage';
 import Axios, { AxiosRequestConfig } from 'axios';
 
@@ -25,7 +25,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     const message = error.response?.data?.message || error.message;
-    NotificationsStore.dispatch(setSnackbar(true, 'error', message));
+    createStore.dispatch(setSnackbar(true, 'error', message));
     return Promise.reject(error);
   }
 );

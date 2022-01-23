@@ -1,6 +1,6 @@
-import { useEffect } from 'react';
-import NProgress from 'nprogress';
 import { Box, CircularProgress } from '@mui/material';
+import NProgress from 'nprogress';
+import { useEffect } from 'react';
 
 function LoaderSuspense() {
   useEffect(() => {

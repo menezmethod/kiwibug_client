@@ -1,7 +1,7 @@
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
-import { setSnackbar } from '@/redux/ducks/snackbar';
-import NotificationsStore from '@/redux/NotificationsStore';
+import { setSnackbar } from '@/redux/models/snackbar';
+import createStore from '@/redux/createStore'
 import { useMutation } from 'react-query';
 import { Project } from '../types';
 
@@ -42,7 +42,7 @@ export const useAddProject = ({ config }: UseAddProjectOptions = {}) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries('projects');
-      NotificationsStore.dispatch(setSnackbar(true, 'success', 'Project Added'));
+      createStore.dispatch(setSnackbar(true, 'success', 'Project Added'));
     },
     ...config,
     mutationFn: addProject,

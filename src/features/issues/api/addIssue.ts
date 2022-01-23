@@ -2,8 +2,8 @@ import { useMutation } from 'react-query';
 
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
-import { setSnackbar } from '@/redux/ducks/snackbar';
-import NotificationsStore from '@/redux/NotificationsStore';
+import { setSnackbar } from '@/redux/models/snackbar';
+import createStore from '@/redux/createStore'
 
 import { Issue } from '../types';
 
@@ -54,7 +54,7 @@ export const useAddIssue = ({ config }: UseAddIssueOptions = {}) => {
     },
     onSuccess: () => {
       queryClient.invalidateQueries('issues');
-      NotificationsStore.dispatch(setSnackbar(true, 'success', 'Issue Created'));
+      createStore.dispatch(setSnackbar(true, 'success', 'Issue Created'));
     },
     ...config,
     mutationFn: addIssue,

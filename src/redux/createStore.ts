@@ -1,6 +1,6 @@
 import { combineReducers, createStore } from 'redux';
 
-import snackbarReducer from './ducks/snackbar';
+import snackbarReducer from './models/snackbar';
 
 const reducer = combineReducers({
   snackbar: snackbarReducer,
