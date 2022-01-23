@@ -1,9 +1,7 @@
-import * as React from 'react';
-
 import { Issue } from '@/features/issues';
 import { User } from '@/features/users';
 import { formatRoleAuth } from '@/utils/format';
-
+import * as React from 'react';
 import { useAuth } from './auth';
 
 export enum ROLES {

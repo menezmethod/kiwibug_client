@@ -1,6 +1,3 @@
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-
 import { Form } from '@/components/Form/Form';
 import { queryClient } from '@/lib/react-query';
 import EditIcon from '@material-ui/icons/Edit';
@@ -14,7 +11,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
-
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { EditProjectDTO, useEditProject } from '../api/editProject';
 import { useProject } from '../api/getProject';
 

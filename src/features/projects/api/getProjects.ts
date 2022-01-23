@@ -1,7 +1,5 @@
-import { useQuery } from 'react-query';
-
 import { axios } from '@/lib/axios';
-
+import { useQuery } from 'react-query';
 import { Project } from '../types';
 
 export const getProjects = (): Promise<Project> => {

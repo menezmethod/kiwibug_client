@@ -1,9 +1,9 @@
-import Axios, { AxiosRequestConfig } from 'axios';
-
 import { API_URL } from '@/config';
 import { setSnackbar } from '@/redux/ducks/snackbar';
 import NotificationsStore from '@/redux/NotificationsStore';
 import storage from '@/utils/storage';
+import Axios, { AxiosRequestConfig } from 'axios';
+
 
 function authRequestInterceptor(config: AxiosRequestConfig) {
   const token = storage.getToken();

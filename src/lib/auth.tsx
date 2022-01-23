@@ -1,12 +1,15 @@
-import { initReactQueryAuth } from 'react-query-auth';
-
+import LoaderSuspense from '@/components/LoaderSuspense';
 import {
-    AuthUser, getUser, LoginCredentialsDTO, loginWithUsernameAndPassword, RegisterCredentialsDTO,
-    registerWithEmailAndPassword, UserResponse
+  AuthUser,
+  getUser,
+  LoginCredentialsDTO,
+  loginWithUsernameAndPassword,
+  RegisterCredentialsDTO,
+  registerWithEmailAndPassword,
+  UserResponse,
 } from '@/features/auth';
 import storage from '@/utils/storage';
-import { Box } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
+import { initReactQueryAuth } from 'react-query-auth';
 
 async function handleUserResponse(data: UserResponse) {
   const { user } = data;
@@ -45,11 +48,7 @@ const authConfig = {
   registerFn,
   logoutFn,
   LoaderComponent() {
-    return (
-      <Box sx={{ display: 'flex' }}>
-        <CircularProgress />
-      </Box>
-    );
+    return <LoaderSuspense />;
   },
 };
 

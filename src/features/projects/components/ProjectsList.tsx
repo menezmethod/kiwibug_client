@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react';
-
+import LoaderSuspense from '@/components/LoaderSuspense';
 import { formatDateGrid } from '@/utils/format';
 import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
-
+import React, { useEffect, useState } from 'react';
 import { useProjects } from '../api/getProjects';
 import AddProject from './AddProject';
 import { DeleteProject } from './DeleteProject';
@@ -51,11 +50,7 @@ export const ProjectsList = () => {
   }, [selectionModel]);
 
   if (projectsQuery.isLoading) {
-    return (
-      <Box sx={{ display: 'flex' }}>
-        <CircularProgress />
-      </Box>
-    );
+    return <LoaderSuspense />;
   }
 
   const projectColumns = [

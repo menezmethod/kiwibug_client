@@ -1,5 +1,4 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-
 import { ProjectsList } from '../components/ProjectsList';
 import { Project } from './Project';
 

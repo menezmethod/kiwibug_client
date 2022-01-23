@@ -1,32 +1,32 @@
-import React, { useEffect, useState } from 'react';
 import PieChart, {
-  Connector,
-  Export,
-  Label,
-  Legend,
-  Series,
-  SmallValuesGrouping,
+    Connector,
+    Export,
+    Label,
+    Legend,
+    Series,
+    SmallValuesGrouping
 } from 'devextreme-react/pie-chart';
-import { Container } from '@mui/material';
 import 'devextreme/dist/css/dx.material.blue.light.css';
+import React, { useEffect, useState } from 'react';
 
 type OpenIssueProps = {
-  data: any;
+  name: string;
+  value: number;
 };
 
 function formatLabel(arg: { argumentText: any; valueText: any }) {
   return `${arg.argumentText}: ${arg.valueText}%`;
 }
 
-export default function OpenIssuesChart({ data }: OpenIssueProps) {
+export default function OpenIssuesChart({ data: dashboardPieChartData }: any) {
   const preData = [{ name: 'Loading..', value: 1 }];
-  const [pieData, setPieData] = useState(preData);
+  const [pieData, setPieData] = useState<OpenIssueProps[]>(preData);
 
   useEffect(() => {
-    if (data.some((a: any) => a.name !== undefined && a.value !== 0)) {
-      setPieData(data);
+    if (dashboardPieChartData.some((a: OpenIssueProps) => a.name !== undefined && a.value !== 0)) {
+      setPieData(dashboardPieChartData);
     }
-  }, [data]);
+  }, [dashboardPieChartData]);
 
   return (
     <>

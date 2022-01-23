@@ -1,25 +1,12 @@
-import React from 'react';
-
 import { ContentLayout } from '@/components/Layout/ContentLayout';
+import LoaderSuspense from '@/components/LoaderSuspense';
 import { useIssues } from '@/features/issues/api/getIssues';
 import { useUsers } from '@/features/users/api/getUsers';
-import { Container } from '@mui/material';
-
-import {
-  Chart,
-  Series,
-  CommonSeriesSettings,
-  Legend,
-  ValueAxis,
-  Title,
-  Export,
-  Tooltip,
-  Label,
-  Format,
-} from 'devextreme-react/chart';
-
+import { Container, Paper } from '@mui/material';
 import dayjs from 'dayjs';
-import { Paper } from '@mui/material';
+import { Chart, Format, Label, Series, Tooltip } from 'devextreme-react/chart';
+import 'devextreme/dist/css/dx.material.blue.light.css';
+import React from 'react';
 
 export default function ResolvedByMonth() {
   const issuesQuery = useIssues();
@@ -27,6 +14,10 @@ export default function ResolvedByMonth() {
 
   let issuesData = issuesQuery?.data;
   let usersData = usersQuery?.data;
+
+  if (issuesQuery.isLoading || usersQuery.isLoading) {
+    return <LoaderSuspense />;
+  }
 
   const allNames = usersData?.map((a: any) => {
     return { name: a.employeeName };
@@ -56,10 +47,8 @@ export default function ResolvedByMonth() {
             days: diffInTimePerIssue * -1,
           };
           days.push(dayLoad);
-          //   console.log(days);
           return diffInTimePerIssue;
         });
-        // console.log(obj2);
         return issuesByUser;
       }
       return allNames;
@@ -93,7 +82,7 @@ export default function ResolvedByMonth() {
 
   return (
     <ContentLayout title="Average Days To Resolve Issues">
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Paper>
           <Chart
             id="avg_days"

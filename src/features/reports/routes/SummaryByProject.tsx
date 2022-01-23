@@ -1,10 +1,9 @@
-import React from 'react';
-
 import { ContentLayout } from '@/components/Layout/ContentLayout';
+import LoaderSuspense from '@/components/LoaderSuspense';
 import { useIssues } from '@/features/issues/api/getIssues';
 import { useProjects } from '@/features/projects/api/getProjects';
 import { formatDateReports } from '@/utils/format';
-import { Divider, Typography } from '@mui/material';
+import { Container, Divider, Typography } from '@mui/material';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -17,7 +16,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import { Container } from '@mui/material';
+import React from 'react';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -46,6 +45,10 @@ export default function SummaryByProject() {
 
   const projectsQuery = useProjects();
   const issuesQuery = useIssues();
+
+  if (issuesQuery.isLoading || projectsQuery.isLoading) {
+    return <LoaderSuspense />;
+  }
 
   let projectsRows = projectsQuery?.data;
   let issuesData = issuesQuery?.data;
@@ -210,7 +213,7 @@ export default function SummaryByProject() {
 
   return (
     <ContentLayout title="Issues Summary By Project">
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <TableContainer component={Paper}>
           <FormControl sx={{ m: 1, width: '97%', textAlign: 'center' }}>
             <InputLabel id="select_project">Select Project</InputLabel>

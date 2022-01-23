@@ -1,55 +1,37 @@
-import React, { useEffect, useState } from 'react';
-import FullCalendar, {
-  EventApi,
-  DateSelectArg,
-  EventClickArg,
-  EventContentArg,
-  formatDate,
-} from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import interactionPlugin from '@fullcalendar/interaction';
-import { INITIAL_EVENTS, createEventId } from '@/utils/event';
-import '@fullcalendar/common/main.min.css';
-import '@fullcalendar/daygrid/main.min.css';
 import { useIssues } from '@/features/issues/api/getIssues';
-import dayjs from 'dayjs';
+import FullCalendar, { EventContentArg } from '@fullcalendar/react';
 import useLocalStorage from '@/hooks/useLocalStorage';
+import '@fortawesome/fontawesome-free/css/all.css'; // webpack uses file-loader to handle font files
+import bootstrapPlugin from '@fullcalendar/bootstrap';
+import '@fullcalendar/common/main.min.css';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import '@fullcalendar/daygrid/main.min.css';
+import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import { Paper } from '@mui/material';
 import 'bootstrap/dist/css/bootstrap.css';
-import '@fortawesome/fontawesome-free/css/all.css'; // webpack uses file-loader to handle font files
-
-
-import { Calendar } from '@fullcalendar/core';
-import bootstrapPlugin from '@fullcalendar/bootstrap';
-
-interface TargetCalendarState {
-  weekendsVisible: boolean;
-  currentEvents: EventApi[];
-}
+import dayjs from 'dayjs';
+import React, { useEffect } from 'react';
 
 export default function TargeCalendar() {
-  //   state: TargetCalendarState = {
-  //     weekendsVisible: true,
-  //     currentEvents: [],
-  //   };
   const issuesQuery = useIssues();
 
   let issuesData = issuesQuery?.data;
 
   const [targetDateData, setTargetDateData] = useLocalStorage('target_data', []);
-  const [updateData, setUpdateData] = useState(false);
 
   useEffect(() => {
-    setTargetDateData(
-      issuesData?.map((a: any) => {
-        return {
-          id: a.issuesId,
-          title: a.issueSummary,
-          start: dayjs(a.targetResolutionDate).subtract(1, 'day').format('YYYY-MM-DD'),
-        };
-      })
-    );
+    if (issuesData) {
+      setTargetDateData(
+        issuesData?.map((a: any) => {
+          return {
+            id: a.issuesId,
+            title: a.issueSummary,
+            start: dayjs(a.targetResolutionDate).subtract(1, 'day').format('YYYY-MM-DD'),
+          };
+        })
+      );
+    }
   }, [issuesData]);
 
   //   console.log(targetDateData);
@@ -124,14 +106,5 @@ function renderEventContent(eventContent: EventContentArg) {
       <b>{eventContent.timeText}</b>
       <i>{eventContent.event.title}</i>
     </>
-  );
-}
-
-function renderSidebarEvent(event: EventApi) {
-  return (
-    <li key={event.id}>
-      <b>{formatDate(event.start!, { year: 'numeric', month: 'short', day: 'numeric' })}</b>
-      <i>{event.title}</i>
-    </li>
   );
 }

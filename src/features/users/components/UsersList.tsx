@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
-
+import LoaderSuspense from '@/components/LoaderSuspense';
 import { formatRole } from '@/utils/format';
-import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
+import { Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
-
+import React, { useState } from 'react';
 import { useUsers } from '../api/getUsers';
 import AddUser from './AddUser';
 import { DeleteUser } from './DeleteUser';
@@ -24,17 +23,12 @@ export const UsersList = () => {
   const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   if (usersQuery.isLoading) {
-    return (
-      <Box sx={{ display: 'flex' }}>
-        <CircularProgress />
-      </Box>
-    );
+    return <LoaderSuspense />;
   }
 
   if (!usersQuery.data) return null;
 
   let usersRows = usersQuery?.data;
-
 
   function getAssignedProject(params: { row: { assignedProjects: { projectName: any } } }) {
     if (params.row.assignedProjects === null) {
@@ -42,7 +36,7 @@ export const UsersList = () => {
     }
     return `${params.row.assignedProjects.projectName}`;
   }
-  
+
   function getRole(params: any) {
     return formatRole(params.row.roles);
   }

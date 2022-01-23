@@ -1,16 +1,14 @@
+import LoaderSuspense from '@/components/LoaderSuspense';
+import { AuthProvider } from '@/lib/auth';
+import { queryClient } from '@/lib/react-query';
+import { AlertTitle, Button, Stack } from '@mui/material';
+import Alert from '@mui/material/Alert';
 import * as React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import { HelmetProvider } from 'react-helmet-async';
 import { QueryClientProvider } from 'react-query';
 import { ReactQueryDevtools } from 'react-query/devtools';
 import { BrowserRouter as Router } from 'react-router-dom';
-
-// import { Notifications } from '@/components/Notifications/Notifications';
-import { AuthProvider } from '@/lib/auth';
-import { queryClient } from '@/lib/react-query';
-import { AlertTitle, Box, Button, Stack } from '@mui/material';
-import Alert from '@mui/material/Alert';
-import CircularProgress from '@mui/material/CircularProgress';
 
 const ErrorFallback = () => {
   return (
@@ -32,18 +30,11 @@ type AppProviderProps = {
 
 export const AppProvider = ({ children }: AppProviderProps) => {
   return (
-    <React.Suspense
-      fallback={
-        <Box sx={{ display: 'flex' }}>
-          <CircularProgress />
-        </Box>
-      }
-    >
+    <React.Suspense fallback={<LoaderSuspense />}>
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <HelmetProvider>
           <QueryClientProvider client={queryClient}>
             {process.env.NODE_ENV !== 'test' && <ReactQueryDevtools />}
-            {/* <Notifications /> */}
             <AuthProvider>
               <Router>{children}</Router>
             </AuthProvider>

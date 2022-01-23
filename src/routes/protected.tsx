@@ -1,20 +1,17 @@
-import { Suspense } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-
 import { MainLayout } from '@/components/Layout/MainLayout';
+import LoaderSuspense from '@/components/LoaderSuspense';
 import { Issue } from '@/features/issues/routes/Issue';
 import { Issues } from '@/features/issues/routes/Issues';
 import { Project } from '@/features/projects/routes/Project';
 import { Projects } from '@/features/projects/routes/Projects';
 import AssignIssues from '@/features/reports/routes/AssignIssues';
-import AvgDaysToResolve from '@/features/reports/routes/AvgDaysToResolve';
 import ResolvedByMonth from '@/features/reports/routes/ResolvedByMonth';
 import SummaryByProject from '@/features/reports/routes/SummaryByProject';
 import TargetDates from '@/features/reports/routes/TargetDates';
 import { Profile } from '@/features/users';
 import { lazyImport } from '@/utils/lazyImport';
-import { Box } from '@mui/material';
-import CircularProgress from '@mui/material/CircularProgress';
+import { Suspense } from 'react';
+import { Navigate, Outlet } from 'react-router-dom';
 
 const { Dashboard } = lazyImport({ factory: () => import('@/features/misc'), name: 'Dashboard' });
 const { Users } = lazyImport({ factory: () => import('@/features/users'), name: 'Users' });
@@ -22,13 +19,7 @@ const { Users } = lazyImport({ factory: () => import('@/features/users'), name: 
 const App = () => {
   return (
     <MainLayout title="">
-      <Suspense
-        fallback={
-          <Box sx={{ display: 'flex' }}>
-            <CircularProgress />
-          </Box>
-        }
-      >
+      <Suspense fallback={<LoaderSuspense />}>
         <Outlet />
       </Suspense>
     </MainLayout>
@@ -49,7 +40,6 @@ export const protectedRoutes = [
       { path: '/issue', element: <Issue /> },
       // Reports
       { path: '/reports/assignissues', element: <AssignIssues /> },
-      { path: '/reports/avgdaystoresolve', element: <AvgDaysToResolve /> },
       { path: '/reports/resolvedbymonth', element: <ResolvedByMonth /> },
       { path: '/reports/summarybyproject', element: <SummaryByProject /> },
       { path: '/reports/targetdates', element: <TargetDates /> },

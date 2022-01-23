@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
-
+import LoaderSuspense from '@/components/LoaderSuspense';
 import { formatDateGrid } from '@/utils/format';
-import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
+import { Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
-
+import React, { useState } from 'react';
 import { useIssues } from '../api/getIssues';
 import AddIssue from './AddIssue';
 import { DeleteIssue } from './DeleteIssue';
 import EditIssue from './EditIssue';
+
+
 
 const DataGridIssue = styled(DataGrid)({
   border: '0',
@@ -28,11 +29,7 @@ export const IssuesList = () => {
   let issuesRows = issuesQuery?.data;
 
   if (issuesQuery.isLoading) {
-    return (
-      <Box sx={{ display: 'flex' }}>
-        <CircularProgress />
-      </Box>
-    );
+    return <LoaderSuspense />;
   }
 
   function identifiedDateFormat(params: { row: { identifiedDate: number } }) {

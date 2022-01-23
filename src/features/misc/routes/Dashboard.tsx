@@ -1,4 +1,5 @@
 import { ContentLayout } from '@/components/Layout/ContentLayout';
+import LoaderSuspense from '@/components/LoaderSuspense';
 import { useIssues } from '@/features/issues/api/getIssues';
 import { useProjects } from '@/features/projects/api/getProjects';
 import { useUsers } from '@/features/users/api/getUsers';
@@ -32,6 +33,10 @@ export const Dashboard = () => {
   const role = formatRoleAuth(user?.authorities);
 
   let firstName = user?.name.split(' ')[0];
+
+  if (issuesQuery.isLoading || projectsQuery.isLoading || usersQuery.isLoading) {
+    return <LoaderSuspense />;
+  }
 
   // Data from React Query / API
   let projectsData = projectsQuery?.data;
@@ -79,7 +84,7 @@ export const Dashboard = () => {
 
   return (
     <ContentLayout title="Dashboard">
-      <Container maxWidth="lg">
+      <Container maxWidth={false}>
         <Typography variant="h4" component="h4" gutterBottom>
           Welcome, {firstName} ({role})
         </Typography>

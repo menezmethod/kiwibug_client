@@ -1,12 +1,22 @@
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-
 import { Form } from '@/components/Form/Form';
 import { useProjects } from '@/features/projects/api/getProjects';
 import AddIcon from '@mui/icons-material/Add';
 import {
-    Button, Container, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio,
-    RadioGroup, Select, SelectChangeEvent, Stack, styled, TextField
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  styled,
+  TextField,
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -15,7 +25,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
-
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { AddUserDTO, useAddUser } from '../api/addUser';
 
 const Item = styled(Paper)({
@@ -47,11 +58,7 @@ export default function AddUser() {
     setValue('role', ['user', event.target.value]);
   };
 
-  const {
-    setValue,
-    handleSubmit,
-    control,
-  } = useForm();
+  const { setValue, handleSubmit, control } = useForm();
 
   const handleOpen = () => {
     // Check if there are assigned projects to employee and tells react-form-hooks about it.

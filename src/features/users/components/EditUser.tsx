@@ -1,14 +1,24 @@
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-
 import { Form } from '@/components/Form/Form';
 import { useProjects } from '@/features/projects/api/getProjects';
 import { queryClient } from '@/lib/react-query';
 import { formatRoleForm } from '@/utils/format';
 import EditIcon from '@mui/icons-material/Edit';
 import {
-    Button, Container, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio,
-    RadioGroup, Select, SelectChangeEvent, Stack, styled, TextField
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  styled,
+  TextField,
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -17,7 +27,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
-
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { EditUserDTO, useEditUser } from '../api/editUser';
 import { useUser } from '../api/getUser';
 

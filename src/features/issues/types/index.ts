@@ -30,6 +30,12 @@ export type Issue = {
     projectName: string;
     projectId: any;
   };
+  data: {
+    name: string;
+    value: number;
+  };
+  name: string;
+  value: number;
   map: any;
   filter: any;
   length: number;

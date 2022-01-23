@@ -1,12 +1,10 @@
-import React from 'react';
-
 import { ContentLayout } from '@/components/Layout/ContentLayout';
 import { useAuth } from '@/lib/auth';
 import { formatRoleAuth } from '@/utils/format';
 import { Divider, Paper, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Box } from '@mui/system';
-
+import React from 'react';
 import EditUser from '../components/EditUser';
 
 const Item = styled(Paper)({
@@ -29,7 +27,7 @@ export const Profile = () => {
   const { user } = useAuth();
   const role = formatRoleAuth(user?.authorities);
 
-  let firstName  = user?.name.split(" ")[0]
+  let firstName = user?.name.split(' ')[0];
 
   return (
     <ContentLayout title="User Profile">

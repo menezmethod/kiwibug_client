@@ -1,11 +1,11 @@
-import { useMutation } from 'react-query';
-
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
 import { setSnackbar } from '@/redux/ducks/snackbar';
 import NotificationsStore from '@/redux/NotificationsStore';
-
+import { useMutation } from 'react-query';
 import { Project } from '../types';
+
+
 
 export type AddProjectDTO = {
   data: {
