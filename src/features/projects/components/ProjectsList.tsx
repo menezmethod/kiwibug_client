@@ -1,6 +1,6 @@
 import LoaderSuspense from '@/components/LoaderSuspense';
 import { formatDateGrid } from '@/utils/format';
-import { Box, CircularProgress, Grid, Paper, styled } from '@mui/material';
+import { Grid, Paper, styled } from '@mui/material';
 import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { useProjects } from '../api/getProjects';

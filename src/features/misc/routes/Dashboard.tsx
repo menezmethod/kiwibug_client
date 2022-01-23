@@ -138,7 +138,7 @@ export const Dashboard = () => {
             <RecentIssues data={recentIssues} />
           </Grid>
           <Grid item xs={12} md={4}>
-            <Card>
+            <Card style={{ backgroundColor: '#1976d2', color: 'white' }}>
               <CardHeader title="Open Issues by Project" />
               <Divider />
               <TopBoxes sx={{ width: '100%' }}>

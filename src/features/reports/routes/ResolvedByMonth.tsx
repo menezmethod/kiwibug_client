@@ -82,8 +82,8 @@ export default function ResolvedByMonth() {
 
   return (
     <ContentLayout title="Average Days To Resolve Issues">
-      <Container maxWidth={false}>
-        <Paper>
+      <Container maxWidth="lg">
+        <Paper sx={{ padding: 3 }}>
           <Chart
             id="avg_days"
             title="Average Days To Resolve Issues"
@@ -97,9 +97,8 @@ export default function ResolvedByMonth() {
               showInLegend={false}
               valueField="days"
               argumentField="name"
-              name="Days"
               type="bar"
-              color="#2196f3"
+              color="#1976d2"
             />
             <Tooltip enabled={true} />
           </Chart>

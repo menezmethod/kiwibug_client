@@ -106,7 +106,10 @@ export default function SummaryByProject() {
     const assignedToArr: any[] = [];
 
     statusOpenIssue.map((a: any) => {
-      if (getOccurrenceOpen(statusOpenIssue, a.assignedToEmployeeId?.employeeName)) {
+      if (
+        getOccurrenceOpen(statusOpenIssue, a.assignedToEmployeeId?.employeeName) &&
+        a.assignedToEmployeeId?.employeeName !== undefined
+      ) {
         let openLoad = {
           name: a.assignedToEmployeeId?.employeeName,
           issues: getOccurrenceOpen(assignedToArr, a.assignedToEmployeeId?.employeeName),
@@ -215,7 +218,7 @@ export default function SummaryByProject() {
     <ContentLayout title="Issues Summary By Project">
       <Container maxWidth={false}>
         <TableContainer component={Paper}>
-          <FormControl sx={{ m: 1, width: '97%', textAlign: 'center' }}>
+          <FormControl sx={{ m: 1, width: '99%', textAlign: 'center' }}>
             <InputLabel id="select_project">Select Project</InputLabel>
             <Select
               labelId="select_project"

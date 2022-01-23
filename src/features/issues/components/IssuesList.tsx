@@ -8,8 +8,6 @@ import AddIssue from './AddIssue';
 import { DeleteIssue } from './DeleteIssue';
 import EditIssue from './EditIssue';
 
-
-
 const DataGridIssue = styled(DataGrid)({
   border: '0',
   marginTop: '-4vh',
@@ -80,66 +78,55 @@ export const IssuesList = () => {
     {
       field: 'issueSummary',
       headerName: 'Issue Summary',
-      width: 190,
     },
     {
       field: 'identifiedDate',
       headerName: 'Identified Date',
       type: 'date',
-      width: 160,
       valueGetter: identifiedDateFormat,
     },
     {
       field: 'status',
       headerName: 'Status',
-      width: 75,
     },
     {
       field: 'priority',
       headerName: 'Priority',
-      width: 75,
     },
     {
       field: 'targetResolutionDate',
       headerName: 'Target Resolution Date',
       type: 'date',
-      width: 175,
       valueGetter: targetResolutionDateFormat,
     },
     {
       field: 'progress',
       headerName: 'Progress',
-      width: 120,
     },
     {
       field: 'actualResolutionDate',
       headerName: 'Actual Resolution Date',
       type: 'date',
-      width: 175,
       valueGetter: actualResolutionDateFormat,
     },
     {
       field: 'identifiedByEmployeeId',
       headerName: 'Identified By',
-      width: 160,
       valueGetter: getIdentifiedByEmployeeId,
     },
     {
       field: 'assignedProjects',
       headerName: 'Project Name',
-      width: 160,
       valueGetter: getAssignedProject,
     },
     {
       field: 'assignedToEmployeeId',
       headerName: 'Assigned To',
-      width: 160,
       valueGetter: getAssignedToEmployeeId,
     },
     {
       field: 'resolutionSummary',
       headerName: 'Resolution Summary',
-      width: 160,
     },
   ];
   return (

@@ -15,12 +15,12 @@ type UnassignedIssuesProps = {
 
 export default function UnassignedIssues({ data }: UnassignedIssuesProps) {
   return (
-    <Card>
+    <Card style={{ backgroundColor: '#1976d2', color: 'white' }}>
       <CardHeader title="Unassigned Issues" />
       <Divider />
       <TableContainer component={Paper}>
         <Table aria-label="unassigned issues">
-          <TableHead>
+          <TableHead sx={{ borderRadius: 0, textTransform: 'uppercase', fontWeight: 100 }}>
             <TableRow>
               <TableCell>Identified By</TableCell>
               <TableCell>Target</TableCell>

@@ -1,11 +1,10 @@
 import { formatDateGrid } from '@/utils/format';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Card, CardHeader, Divider, Paper, Tooltip } from '@mui/material';
+import { Card, CardHeader, Divider, Paper, TableHead, Tooltip } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import React from 'react';
 
@@ -15,12 +14,12 @@ type OverdueIssuesProps = {
 
 export default function OverdueIssues({ data }: OverdueIssuesProps) {
   return (
-    <Card>
+    <Card style={{ backgroundColor: '#1976d2', color: 'white' }}>
       <CardHeader title="Overdue Issues" />
       <Divider />
       <TableContainer component={Paper}>
         <Table aria-label="overdue issues">
-          <TableHead>
+          <TableHead sx={{ borderRadius: 0, textTransform: 'uppercase', fontWeight: 100 }}>
             <TableRow>
               <TableCell>Assignee</TableCell>
               <TableCell>Target</TableCell>

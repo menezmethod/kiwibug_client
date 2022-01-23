@@ -1,19 +1,15 @@
-import * as React from 'react';
-import { Link } from 'react-router-dom';
-
 import { useAuth } from '@/lib/auth';
 import { isMod } from '@/lib/authorization';
 import { formatRoleAuth } from '@/utils/format';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
 import AssignmentIcon from '@material-ui/icons/Assignment';
 import BugReportIcon from '@material-ui/icons/BugReport';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import MenuIcon from '@material-ui/icons/Menu';
 import PeopleIcon from '@material-ui/icons/People';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Logout from '@mui/icons-material/Logout';
-import { ListItem, ListItemText } from '@mui/material';
+import { ListItem, ListItemText, useMediaQuery } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -30,6 +26,9 @@ import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import * as React from 'react';
+import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
 function Copyright(props: any) {
   return (
@@ -38,7 +37,7 @@ function Copyright(props: any) {
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
         {'Copyright © '}
         <Link color="inherit" to="https://gimenez.dev/">
-          KiwiBug Issue Tracker
+          KiwiBug Issue Tracker (beta)
         </Link>{' '}
         {new Date().getFullYear()}
         {'.'}
@@ -47,7 +46,7 @@ function Copyright(props: any) {
   );
 }
 
-const drawerWidth: number = 250;
+const drawerWidth: number = 242;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -113,7 +112,8 @@ const Logo = styled('div')({
 });
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
-  const [open, setOpen] = React.useState(true);
+  const matches = useMediaQuery('(min-width:600px)');
+  const [open, setOpen] = React.useState(matches);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const openUser = Boolean(anchorEl);
 
@@ -130,13 +130,16 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
     setOpen(!open);
   };
 
+  useEffect(() => {
+    setOpen(matches);
+  }, [matches]);
+
   let userLetter = user?.name.charAt(0);
 
   return (
     <ThemeProvider theme={mdTheme}>
       <Box sx={{ display: 'flex' }}>
         <CssBaseline />
-
         <AppBarTop position="absolute" open={open}>
           <Toolbar
             sx={{
@@ -155,9 +158,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             >
               <MenuIcon />
             </IconButton>
-
             <Typography component="h1" variant="h6" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-              KiwiBug Issue Tracker
+              Issue Tracker v0.1
             </Typography>
             <React.Fragment>
               <Tooltip title="User Settings">
@@ -236,14 +238,13 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
             sx={{
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'flex-end',
+              justifyContent: 'center',
               px: [1],
+              backgroundColor: '#1c1c1c',
+              color: '#ffffff',
             }}
           >
             <Logo>KiwiBug</Logo>
-            <IconButton onClick={toggleDrawer}>
-              <ChevronLeftIcon />
-            </IconButton>
           </Toolbar>
           <Divider />
           <List>

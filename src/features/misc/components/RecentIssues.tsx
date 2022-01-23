@@ -15,12 +15,12 @@ type RecentIssuesProps = {
 
 export default function RecentIssues({ data }: RecentIssuesProps) {
   return (
-    <Card>
+    <Card style={{ backgroundColor: '#1976d2', color: 'white' }}>
       <CardHeader title="Recent Issues" />
       <Divider />
       <TableContainer component={Paper}>
         <Table aria-label="recent issues">
-          <TableHead>
+          <TableHead sx={{ borderRadius: 0, textTransform: 'uppercase', fontWeight: 100 }}>
             <TableRow>
               <TableCell>Identified By</TableCell>
               <TableCell>Target</TableCell>

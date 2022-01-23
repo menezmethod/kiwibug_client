@@ -87,6 +87,7 @@
   "devDependencies": {
     "@craco/craco": "latest",
     "@types/node": "latest",
+    "@types/nprogress": "^0.2.0",
     "@types/react": "latest",
     "@types/react-dom": "latest",
     "@types/styled-components": "latest",
