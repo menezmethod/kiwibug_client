@@ -112,7 +112,7 @@ const Logo = styled('div')({
 });
 
 export const MainLayout = ({ children }: MainLayoutProps) => {
-  const matches = useMediaQuery('(min-width:600px)');
+  const matches = useMediaQuery('(min-width:767px)');
   const [open, setOpen] = React.useState(matches);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const openUser = Boolean(anchorEl);

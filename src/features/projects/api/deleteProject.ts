@@ -33,9 +33,9 @@ export const useDeleteProject = ({ config }: UseDeleteProjectOptions = {}) => {
       return { previousProjects };
     },
     onError: (_, __, context: any) => {
-      if (context?.previousProjects) {
-        queryClient.setQueryData('projects', context.previousProjects);
-      }
+      // if (context?.previousProjects) {
+      //   queryClient.setQueryData('projects', context.previousProjects);
+      // }
     },
     onSuccess: () => {
       queryClient.invalidateQueries('projects');

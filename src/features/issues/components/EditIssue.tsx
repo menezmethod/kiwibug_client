@@ -136,7 +136,9 @@ export default function EditIssue({ issueId }: EditIssueProps) {
   // Load data from api for assignment selects
   let projectsRows = projectsQuery?.data;
   let usersRows = usersQuery?.data;
-
+  const options = {
+    filterType: 'checkbox',
+  };
   return (
     <>
       <Button onClick={handleOpen} variant="outlined" startIcon={<EditIcon />}>

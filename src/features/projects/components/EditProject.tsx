@@ -1,9 +1,18 @@
 import { Form } from '@/components/Form/Form';
 import { queryClient } from '@/lib/react-query';
 import EditIcon from '@material-ui/icons/Edit';
-import { DatePicker, LocalizationProvider } from '@mui/lab';
+import { DatePicker, LoadingButton, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { Button, Container, Paper, Stack, styled, TextField } from '@mui/material';
+import {
+  Button,
+  Container,
+  IconButton,
+  Link,
+  Paper,
+  Stack,
+  styled,
+  TextField,
+} from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -23,9 +32,10 @@ const Item = styled(Paper)({
 
 type EditProjectProps = {
   projectId: string;
+  show: string;
 };
 
-export const EditProject = ({ projectId }: EditProjectProps) => {
+export const EditProject = ({ projectId, show }: EditProjectProps) => {
   const editProjectMutation = useEditProject();
   const projectQuery = useProject({ projectId });
   const [open, setOpen] = React.useState(false);
@@ -67,10 +77,27 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
 
   return (
     <>
-      <Button onClick={handleOpen} variant="outlined" startIcon={<EditIcon />}>
-        Edit
-      </Button>
-
+      {show === 'icon' ? (
+        <IconButton onClick={handleOpen} color="primary" aria-label="edit project" component="span">
+          <EditIcon />
+        </IconButton>
+      ) : (
+        ''
+      )}
+      {show === 'text' ? (
+        <Button onClick={handleOpen} variant="outlined" startIcon={<EditIcon />}>
+          Edit
+        </Button>
+      ) : (
+        ''
+      )}
+      {show === 'link' ? (
+        <Link onClick={handleOpen} style={{ textDecoration: 'none' }}>
+          Edit
+        </Link>
+      ) : (
+        ''
+      )}
       <Container>
         <Dialog
           fullScreen={fullScreen}
@@ -178,9 +205,15 @@ export const EditProject = ({ projectId }: EditProjectProps) => {
             </Box>
           </DialogContent>
           <DialogActions>
-            <Button autoFocus type="submit" onClick={handleSubmit(onSubmit)}>
+            <LoadingButton
+              variant="text"
+              autoFocus
+              type="submit"
+              onClick={handleSubmit(onSubmit)}
+              loading={editProjectMutation.isLoading}
+            >
               Edit
-            </Button>
+            </LoadingButton>
             <Button onClick={handleClose} autoFocus>
               Cancel
             </Button>

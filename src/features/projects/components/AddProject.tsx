@@ -1,6 +1,6 @@
 import { Form } from '@/components/Form/Form';
 import AccountTreeIcon from '@material-ui/icons/AccountTree';
-import { DatePicker, LocalizationProvider } from '@mui/lab';
+import { DatePicker, LoadingButton, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import { Button, Container, Paper, Stack, styled, TextField, Typography } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
@@ -51,9 +51,14 @@ export default function AddProject() {
 
   return (
     <>
-      <Button onClick={handleOpen} variant="outlined" startIcon={<AccountTreeIcon />}>
+      <LoadingButton
+        onClick={handleOpen}
+        variant="contained"
+        startIcon={<AccountTreeIcon />}
+        loading={addProjectMutation.isLoading}
+      >
         Add Project
-      </Button>
+      </LoadingButton>
       <Container>
         <Form<AddProjectDTO['data']> id="add-project">
           <Dialog
@@ -152,9 +157,15 @@ export default function AddProject() {
               </Box>
             </DialogContent>
             <DialogActions>
-              <Button autoFocus type="submit" onClick={handleSubmit(onSubmit)}>
+              <LoadingButton
+                variant="text"
+                autoFocus
+                type="submit"
+                onClick={handleSubmit(onSubmit)}
+                loading={addProjectMutation.isLoading}
+              >
                 Add
-              </Button>
+              </LoadingButton>
               <Button color="error" onClick={handleClose} autoFocus>
                 Cancel
               </Button>

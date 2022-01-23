@@ -1,8 +1,8 @@
 import LoaderSuspense from '@/components/LoaderSuspense';
 import { formatDateGrid } from '@/utils/format';
-import { Grid, Paper, styled } from '@mui/material';
-import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
-import React, { useEffect, useState } from 'react';
+import { Container, Grid, Stack, styled } from '@mui/material';
+import MUIDataTable from 'mui-datatables';
+import React from 'react';
 import { useProjects } from '../api/getProjects';
 import AddProject from './AddProject';
 import { DeleteProject } from './DeleteProject';
@@ -17,37 +17,15 @@ export type ProjectListtDTO = {
   };
 };
 
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(0.5),
+const Add = styled('div')(({ theme }) => ({
+  justifyContent: 'center',
+  '@media(minWidth: 780px)': {
+    alignItems: 'center',
+  },
 }));
-
-const DataGridProject = styled(DataGrid)({
-  border: '0',
-  marginTop: '-4vh',
-});
-
-function startDateFormat(params: { row: { startDate: number } }) {
-  return formatDateGrid(params.row.startDate);
-}
-
-function targetEndDateFormat(params: { row: { targetEndDate: number } }) {
-  return formatDateGrid(params.row.targetEndDate);
-}
-
-function actualEndDateFormat(params: { row: { actualEndDate: number } }) {
-  if (params.row.actualEndDate) {
-    return formatDateGrid(params.row.actualEndDate);
-  }
-}
 
 export const ProjectsList = () => {
   const projectsQuery = useProjects();
-  const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
-
-  useEffect(() => {
-    // console.log(selectionModel);
-  }, [selectionModel]);
 
   if (projectsQuery.isLoading) {
     return <LoaderSuspense />;
@@ -55,82 +33,71 @@ export const ProjectsList = () => {
 
   const projectColumns = [
     {
-      field: 'projectName',
-      headerName: 'Name',
-      width: 280,
+      label: 'PROJECT NAME',
+      name: 'projectName',
     },
     {
-      field: 'startDate',
-      headerName: 'Start Date',
-      width: 280,
-      valueGetter: startDateFormat,
+      name: 'startDate',
+      label: 'START DATE',
+      options: {
+        customBodyRender: (value: any) => formatDateGrid(value),
+      },
     },
     {
-      field: 'targetEndDate',
-      headerName: 'Target End Date',
-      width: 280,
-      valueGetter: targetEndDateFormat,
+      name: 'targetEndDate',
+      label: 'TARGET END DATE',
+      options: {
+        customBodyRender: (value: any) => formatDateGrid(value),
+      },
     },
     {
-      field: 'actualEndDate',
-      headerName: 'Actual End Date',
-      width: 280,
-      valueGetter: actualEndDateFormat,
+      name: 'actualEndDate',
+      label: 'ACTUAL END DATE',
+      options: {
+        customBodyRender: (value: any) => (value ? formatDateGrid(value) : ''),
+      },
+    },
+    {
+      name: 'projectId',
+      label: ' ',
+      options: {
+        customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
+          return (
+            <Grid container spacing={0} justifyContent="center">
+              <Grid item>
+                <EditProject projectId={value} show="icon" />
+              </Grid>
+              <Grid item>
+                <DeleteProject id={value} show="icon" />
+              </Grid>
+            </Grid>
+          );
+        },
+      },
     },
   ];
-
+  const options = {
+    filterType: 'checkbox',
+    selectableRows: 'none',
+  };
   if (!projectsQuery.data) return null;
 
   let projectsRows = projectsQuery?.data;
 
   return (
-    <div style={{ height: '71vh', width: '100%' }}>
-      <DataGridProject
-        pageSize={10}
-        rows={projectsRows}
-        columns={projectColumns}
-        getRowId={(row: { projectId: any }) => row.projectId}
-        rowsPerPageOptions={[10, 20]}
-        components={{
-          Toolbar: GridToolbar,
-        }}
-        initialState={{
-          filter: {
-            filterModel: {
-              items: [
-                {
-                  columnField: 'projectName',
-                  operatorValue: 'contains',
-                  value: '',
-                },
-              ],
-            },
-          },
-        }}
-        onSelectionModelChange={(newSelectionModel: React.SetStateAction<GridSelectionModel>) => {
-          setSelectionModel(newSelectionModel);
-        }}
-        selectionModel={selectionModel}
-      />
+    <Container maxWidth={false}>
       <Grid container justifyContent="flex-end">
-        <Item elevation={0}>
+        <Add>
           <AddProject />
-        </Item>
-        {selectionModel && selectionModel.length ? (
-          <Item elevation={0}>
-            <EditProject projectId={selectionModel.join()} />
-          </Item>
-        ) : (
-          ''
-        )}
-        {selectionModel && selectionModel.length ? (
-          <Item elevation={0}>
-            <DeleteProject id={selectionModel.join()} />
-          </Item>
-        ) : (
-          ''
-        )}
+        </Add>
       </Grid>
-    </div>
+      <br />
+      <MUIDataTable
+        title="Projects"
+        data={projectsRows}
+        columns={projectColumns}
+        options={options}
+      />
+    </Container>
   );
 };

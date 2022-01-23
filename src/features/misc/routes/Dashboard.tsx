@@ -84,9 +84,13 @@ export const Dashboard = () => {
   return (
     <ContentLayout title="Dashboard">
       <Container maxWidth={false}>
-        <Typography variant="h4" component="h4" gutterBottom>
-          Welcome, {firstName} ({role})
+        <Typography variant="h5" component="h5" gutterBottom>
+          Welcome, {firstName} ({role}) <br />
         </Typography>
+        <Typography variant="subtitle2">
+          <i>Today is an excellent day to solve some issues!</i>
+        </Typography>
+        <br />
         <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
           <Grid item xs={12} md={3}>
             <Link to="projects" style={{ textDecoration: 'none' }}>
