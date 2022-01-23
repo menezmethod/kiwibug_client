@@ -7,7 +7,7 @@ import { Container } from '@mui/material';
 export default function TargetDates() {
   return (
     <ContentLayout title="Target Resolution Dates">
-      <Container>
+      <Container maxWidth="lg">
         <TargetCalendar />
       </Container>
     </ContentLayout>

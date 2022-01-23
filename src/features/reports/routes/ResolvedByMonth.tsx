@@ -3,6 +3,8 @@ import React from 'react';
 import { ContentLayout } from '@/components/Layout/ContentLayout';
 import { useIssues } from '@/features/issues/api/getIssues';
 import { useUsers } from '@/features/users/api/getUsers';
+import { Container } from '@mui/material';
+
 import {
   Chart,
   Series,
@@ -91,23 +93,30 @@ export default function ResolvedByMonth() {
 
   return (
     <ContentLayout title="Average Days To Resolve Issues">
-      <Paper>
-        <Chart id="avg_days" title="Average Days To Resolve Issues" dataSource={chartData} rotated>
-          <Label visible={true}>
-            <Format type="fixedPoint" precision={0} />
-          </Label>
-          <Series
-            showInLegend={false}
-            valueField="days"
-            argumentField="name"
-            name="Days"
-            type="bar"
-            color="#2196f3"
-          />
-          <Tooltip enabled={true} />
-        </Chart>
-        <br />
-      </Paper>
+      <Container maxWidth="lg">
+        <Paper>
+          <Chart
+            id="avg_days"
+            title="Average Days To Resolve Issues"
+            dataSource={chartData}
+            rotated
+          >
+            <Label visible={true}>
+              <Format type="fixedPoint" precision={0} />
+            </Label>
+            <Series
+              showInLegend={false}
+              valueField="days"
+              argumentField="name"
+              name="Days"
+              type="bar"
+              color="#2196f3"
+            />
+            <Tooltip enabled={true} />
+          </Chart>
+          <br />
+        </Paper>
+      </Container>
     </ContentLayout>
   );
 }

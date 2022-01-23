@@ -17,6 +17,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { Container } from '@mui/material';
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -176,7 +177,7 @@ export default function SummaryByProject() {
     } else {
       setLastIdIssue('No Issues Closed');
     }
-    
+
     setProjectName(event.target.value as string);
     setOpenIssues(statusOpenIssue.length);
     setClosedIssues(statusClosedIssue.length);
@@ -209,71 +210,73 @@ export default function SummaryByProject() {
 
   return (
     <ContentLayout title="Issues Summary By Project">
-      <TableContainer component={Paper}>
-        <FormControl sx={{ m: 1, width: '97%', textAlign: 'center' }}>
-          <InputLabel id="select_project">Select Project</InputLabel>
-          <Select
-            labelId="select_project"
-            id="selectproject"
-            value={projectName}
-            onChange={handleChange}
-            input={<OutlinedInput label="Project Name" />}
-            MenuProps={MenuProps}
-          >
-            {projectsRows?.map((projectsRows: any) => (
-              <MenuItem key={projectsRows.projectId} value={projectsRows.projectId}>
-                {projectsRows.projectName}
-              </MenuItem>
-            ))}
-          </Select>
-        </FormControl>
-        <Table aria-label="summary">
-          <TableHead>
-            <TableRow>
-              <TableCell>
-                <Typography variant="h6">Summary</Typography>
-              </TableCell>
-              <TableCell align="right"></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {rows.map((row: any) => (
-              <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell component="th" scope="row">
-                  {row.name}
+      <Container maxWidth="lg">
+        <TableContainer component={Paper}>
+          <FormControl sx={{ m: 1, width: '97%', textAlign: 'center' }}>
+            <InputLabel id="select_project">Select Project</InputLabel>
+            <Select
+              labelId="select_project"
+              id="selectproject"
+              value={projectName}
+              onChange={handleChange}
+              input={<OutlinedInput label="Project Name" />}
+              MenuProps={MenuProps}
+            >
+              {projectsRows?.map((projectsRows: any) => (
+                <MenuItem key={projectsRows.projectId} value={projectsRows.projectId}>
+                  {projectsRows.projectName}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+          <Table aria-label="summary">
+            <TableHead>
+              <TableRow>
+                <TableCell>
+                  <Typography variant="h6">Summary</Typography>
                 </TableCell>
-                <TableCell align="right">
-                  <strong>{row.values}</strong>
-                </TableCell>
+                <TableCell align="right"></TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-        <Divider />
-        <Table aria-label="summary">
-          <TableHead>
-            <TableRow>
-              <TableCell>Assigned To </TableCell>
-              <TableCell>Number of Issues</TableCell>
-              <TableCell>Status</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {assignedToRows?.map((row: any) => (
-              <TableRow
-                key={row?.name + Math.floor(Math.random() * 100)}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-              >
-                <TableCell component="th" scope="row">
-                  {row?.name}
-                </TableCell>
-                <TableCell>{row?.issues}</TableCell>
-                <TableCell>{row?.status}</TableCell>
+            </TableHead>
+            <TableBody>
+              {rows.map((row: any) => (
+                <TableRow key={row.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                  <TableCell component="th" scope="row">
+                    {row.name}
+                  </TableCell>
+                  <TableCell align="right">
+                    <strong>{row.values}</strong>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Divider />
+          <Table aria-label="summary">
+            <TableHead>
+              <TableRow>
+                <TableCell>Assigned To </TableCell>
+                <TableCell>Number of Issues</TableCell>
+                <TableCell>Status</TableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
+            </TableHead>
+            <TableBody>
+              {assignedToRows?.map((row: any) => (
+                <TableRow
+                  key={row?.name + Math.floor(Math.random() * 100)}
+                  sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+                >
+                  <TableCell component="th" scope="row">
+                    {row?.name}
+                  </TableCell>
+                  <TableCell>{row?.issues}</TableCell>
+                  <TableCell>{row?.status}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </Container>
     </ContentLayout>
   );
 }

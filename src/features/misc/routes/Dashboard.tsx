@@ -1,52 +1,28 @@
-import { Link } from 'react-router-dom';
-
 import { ContentLayout } from '@/components/Layout/ContentLayout';
 import { useIssues } from '@/features/issues/api/getIssues';
 import { useProjects } from '@/features/projects/api/getProjects';
 import { useUsers } from '@/features/users/api/getUsers';
 import { useAuth } from '@/lib/auth';
 import { isMod } from '@/lib/authorization';
-import { formatDateGrid, formatRoleAuth } from '@/utils/format';
+import { formatRoleAuth } from '@/utils/format';
+import { Card, CardHeader, Divider } from '@mui/material';
 import Badge from '@mui/material/Badge';
+import Container from '@mui/material/Container';
 import Grid from '@mui/material/Grid';
 import Paper from '@mui/material/Paper';
-import Container from '@mui/material/Container';
-import { createTheme, styled, ThemeProvider } from '@mui/material/styles';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import PieChart, {
-  Series,
-  Label,
-  Connector,
-  SmallValuesGrouping,
-  Legend,
-  Export,
-} from 'devextreme-react/pie-chart';
+import { Link } from 'react-router-dom';
+import OpenIssuesChart from '../components/OpenIssuesChart';
+import OverdueIssues from '../components/OverdueIssues';
+import RecentIssues from '../components/RecentIssues';
+import UnassignedIssues from '../components/UnassignedIssues';
 
-const Item = styled(Paper)(({ theme }) => ({
+const TopBoxes = styled(Paper)(({ theme }) => ({
   ...theme.typography.body1,
   padding: theme.spacing(2),
-  textAlign: 'center',
   color: theme.palette.text.secondary,
 }));
-
-const theme = createTheme();
-
-theme.typography.h3 = {
-  marginTop: -20,
-  fontSize: '0.5rem',
-  '@media (min-width:600px)': {
-    fontSize: '.8rem',
-  },
-  [theme.breakpoints.up('md')]: {
-    fontSize: '1.5rem',
-  },
-};
 
 export const Dashboard = () => {
   const { user } = useAuth();
@@ -57,6 +33,7 @@ export const Dashboard = () => {
 
   let firstName = user?.name.split(' ')[0];
 
+  // Data from React Query / API
   let projectsData = projectsQuery?.data;
   let issuesData = issuesQuery?.data;
   let usersData = usersQuery?.data;
@@ -67,7 +44,7 @@ export const Dashboard = () => {
 
   const recentIssues = issuesData?.filter(function (a: any) {
     let today = new Date();
-    today.setDate(today.getDate() - 3);
+    today.setDate(today.getDate() - 7);
     return a.createdOn >= today.toISOString();
   });
 
@@ -76,17 +53,9 @@ export const Dashboard = () => {
   });
 
   // Chart Data
-  let pieChartData: any = [];
-  let totalIssues = issuesData?.length ?? 1;
-  const COLORS: (string | undefined)[] = [];
+  let pieChartData: { name: string; value: number }[] = [];
 
-  // Random colors for pie chart slices
-  for (var i = 0; i < totalIssues; i++) {
-    COLORS.push('#' + (0x1000000 + Math.random() * 0xffffff).toString(16).substr(1, 6));
-  }
-  let pieLabel = function (entry: { name: string; value: string }) {
-    return entry.name + ': ' + entry.value + '%';
-  };
+  let totalIssues = issuesData?.length ?? 1;
 
   const pieArray: any[] = [];
 
@@ -104,13 +73,10 @@ export const Dashboard = () => {
       value: Math.round((countOccurrences(pieArray, obj.projectName) / totalIssues) * 100),
     };
     pieChartData.push(pieLoad);
-    // console.log(pieChartData);
     return (countOccurrences(pieArray, obj.projectName) / totalIssues) * 100;
   });
   // console.log(pieChartData);
-  function formatLabel(arg: { argumentText: any; valueText: any }) {
-    return `${arg.argumentText}: ${arg.valueText}%`;
-  }
+
   return (
     <ContentLayout title="Dashboard">
       <Container maxWidth="lg">
@@ -120,165 +86,60 @@ export const Dashboard = () => {
         <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
           <Grid item xs={12} md={3}>
             <Link to="projects" style={{ textDecoration: 'none' }}>
-              <Item variant="outlined" square>
-                <Badge color="primary" badgeContent={projectsData?.length}>
+              <TopBoxes variant="outlined">
+                <Badge sx={{ width: '100%' }} color="primary" badgeContent={projectsData?.length}>
                   <Typography variant="h6">Projects</Typography>
                 </Badge>
-              </Item>
+              </TopBoxes>
             </Link>
           </Grid>
           <Grid item xs={12} md={3}>
             <Link to="issues" style={{ textDecoration: 'none' }}>
-              <Item variant="outlined" square>
-                <Badge color="primary" badgeContent={issuesData?.length}>
+              <TopBoxes variant="outlined">
+                <Badge sx={{ width: '100%' }} color="primary" badgeContent={issuesData?.length}>
                   <Typography variant="h6">Issues</Typography>
                 </Badge>
-              </Item>
-            </Link>
-          </Grid>
-          <Grid item xs={12} md={3}>
-            <Link to="reports" style={{ textDecoration: 'none' }}>
-              <Item variant="outlined" square>
-                <Typography variant="h6">Reports</Typography>
-              </Item>
+              </TopBoxes>
             </Link>
           </Grid>
           {isMod(role) ? (
             <Grid item xs={12} md={3}>
               <Link to="users" style={{ textDecoration: 'none' }}>
-                <Item variant="outlined" square>
-                  <Badge color="primary" badgeContent={usersData?.length}>
+                <TopBoxes variant="outlined">
+                  <Badge sx={{ width: '100%' }} color="primary" badgeContent={usersData?.length}>
                     <Typography variant="h6">Users</Typography>
                   </Badge>
-                </Item>
+                </TopBoxes>
               </Link>
             </Grid>
           ) : (
             ''
           )}
-          <Grid item xs={12} md={6}>
-            <Item>Overdue Issues</Item>
-            <br />
-            <Item elevation={0}>
-              <TableContainer component={Paper}>
-                <Table aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Assignee</TableCell>
-                      <TableCell>Target</TableCell>
-                      <TableCell>Project Name</TableCell>
-                      <TableCell>Priority</TableCell>
-                      <TableCell>Summary</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {overdueIssues?.map((row: any) => (
-                      <TableRow
-                        key={row?.issueSummary + Math.floor(Math.random() * 100)}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row?.assignedToEmployeeId?.employeeName}
-                        </TableCell>
-                        <TableCell>{formatDateGrid(row?.targetResolutionDate)}</TableCell>
-                        <TableCell>{row?.relatedProjectId?.projectName}</TableCell>
-                        <TableCell>{row?.priority}</TableCell>
-                        <TableCell>{row?.issueSummary.trim(30)}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Item>
+          <Grid item xs={12} md={3}>
+            <Link to="reports" style={{ textDecoration: 'none' }}>
+              <TopBoxes variant="outlined">
+                <Typography variant="h6">Reports</Typography>
+              </TopBoxes>
+            </Link>
           </Grid>
           <Grid item xs={12} md={6}>
-            <Item>Unassigned Issues</Item>
-            <br />
-            <Item elevation={0}>
-              <TableContainer component={Paper}>
-                <Table aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Identified By</TableCell>
-                      <TableCell>Target</TableCell>
-                      <TableCell>Project Name</TableCell>
-                      <TableCell>Priority</TableCell>
-                      <TableCell>Summary</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {unassignedIssues?.map((row: any) => (
-                      <TableRow
-                        key={row?.priority + Math.floor(Math.random() * 100)}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row?.identifiedByEmployeeId?.employeeName}
-                        </TableCell>
-                        <TableCell>{formatDateGrid(row?.targetResolutionDate)}</TableCell>
-                        <TableCell>{row?.relatedProjectId?.projectName}</TableCell>
-                        <TableCell>{row?.priority}</TableCell>
-                        <TableCell>{row?.issueSummary.trim(30)}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Item>
+            <OverdueIssues data={overdueIssues} />
+          </Grid>
+          <Grid item xs={12} md={6}>
+            <UnassignedIssues data={unassignedIssues} />
           </Grid>
           <br />
-          <Grid item xs={12}>
-            <Item>Recent Issues</Item>
-            <br />
-            <Item elevation={0}>
-              <TableContainer component={Paper}>
-                <Table aria-label="simple table">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Identified By</TableCell>
-                      <TableCell>Target</TableCell>
-                      <TableCell>Project Name</TableCell>
-                      <TableCell>Priority</TableCell>
-                      <TableCell>Assigned To</TableCell>
-                      <TableCell>Summary</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {recentIssues?.map((row: any) => (
-                      <TableRow
-                        key={row?.priority + Math.floor(Math.random() * 100)}
-                        sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
-                      >
-                        <TableCell component="th" scope="row">
-                          {row?.identifiedByEmployeeId?.employeeName}
-                        </TableCell>
-                        <TableCell>{formatDateGrid(row?.targetResolutionDate)}</TableCell>
-                        <TableCell>{row?.relatedProjectId?.projectName}</TableCell>
-                        <TableCell>{row?.priority}</TableCell>
-                        <TableCell>{row?.assignedToEmployeeId?.employeeName}</TableCell>
-                        <TableCell>{row?.issueSummary.trim(30)}</TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            </Item>
+          <Grid item xs={12} md={8}>
+            <RecentIssues data={recentIssues} />
           </Grid>
-          <br />
-          <Grid item xs={12}>
-            <Item>Open Issues by Project</Item>
-            <Item sx={{ marginTop: 3, width: '100%' }}>
-              <PieChart id="open_issues_by_project" dataSource={pieChartData} palette="Bright">
-                <Series argumentField="name" valueField="value">
-                  <Label visible={true} customizeText={formatLabel} format="fixedPoint">
-                    <Connector visible={true} width={0.5} />
-                  </Label>
-                  <SmallValuesGrouping threshold={4.5} mode="smallValueThreshold" />
-                </Series>
-                <Legend horizontalAlignment="center" verticalAlignment="bottom" />
-                <Export enabled={true} />
-              </PieChart>
-            </Item>{' '}
+          <Grid item xs={12} md={4}>
+            <Card>
+              <CardHeader title="Open Issues by Project" />
+              <Divider />
+              <TopBoxes sx={{ width: '100%' }}>
+                <OpenIssuesChart data={pieChartData} />
+              </TopBoxes>
+            </Card>
           </Grid>
         </Grid>
       </Container>
