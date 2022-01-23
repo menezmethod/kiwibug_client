@@ -32,7 +32,7 @@ export default function TargeCalendar() {
         })
       );
     }
-  }, [issuesData]);
+  }, [issuesData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   //   console.log(targetDateData);
   return (

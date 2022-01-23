@@ -46,7 +46,7 @@ function Copyright(props: any) {
   );
 }
 
-const drawerWidth: number = 242;
+const drawerWidth: number = 260;
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean;
@@ -107,7 +107,7 @@ const Logo = styled('div')({
   position: 'relative',
   clear: 'both',
   fontSize: '32px',
-  paddingRight: '20px',
+  paddingLeftt: '-30px',
   fontWeight: 'bold',
 });
 
@@ -234,7 +234,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           </Toolbar>
         </AppBarTop>
         <Drawer variant="permanent" open={open}>
-          <Toolbar
+          <Toolbar onClick={toggleDrawer}
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -244,7 +244,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               color: '#ffffff',
             }}
           >
-            <Logo>KiwiBug</Logo>
+            <Logo >KiwiBug</Logo>
+
           </Toolbar>
           <Divider />
           <List>
@@ -311,7 +312,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               <ListItemIcon>
                 <ArrowRightIcon fontSize="small" />
               </ListItemIcon>
-              <ListItemText secondary="Resolved by Month" />
+              <ListItemText secondary="Average Days To Resolve" />
             </ListItem>
           </List>
         </Drawer>

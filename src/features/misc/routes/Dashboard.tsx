@@ -22,7 +22,6 @@ import UnassignedIssues from '../components/UnassignedIssues';
 const TopBoxes = styled(Paper)(({ theme }) => ({
   ...theme.typography.body1,
   padding: theme.spacing(2),
-  color: theme.palette.text.secondary,
 }));
 
 export const Dashboard = () => {
@@ -92,7 +91,7 @@ export const Dashboard = () => {
           <Grid item xs={12} md={3}>
             <Link to="projects" style={{ textDecoration: 'none' }}>
               <TopBoxes variant="outlined">
-                <Badge sx={{ width: '100%' }} color="primary" badgeContent={projectsData?.length}>
+                <Badge sx={{ width: '100%' }} color="secondary" badgeContent={projectsData?.length}>
                   <Typography variant="h6">Projects</Typography>
                 </Badge>
               </TopBoxes>
@@ -101,7 +100,7 @@ export const Dashboard = () => {
           <Grid item xs={12} md={3}>
             <Link to="issues" style={{ textDecoration: 'none' }}>
               <TopBoxes variant="outlined">
-                <Badge sx={{ width: '100%' }} color="primary" badgeContent={issuesData?.length}>
+                <Badge sx={{ width: '100%' }} color="secondary" badgeContent={issuesData?.length}>
                   <Typography variant="h6">Issues</Typography>
                 </Badge>
               </TopBoxes>
@@ -111,7 +110,7 @@ export const Dashboard = () => {
             <Grid item xs={12} md={3}>
               <Link to="users" style={{ textDecoration: 'none' }}>
                 <TopBoxes variant="outlined">
-                  <Badge sx={{ width: '100%' }} color="primary" badgeContent={usersData?.length}>
+                  <Badge sx={{ width: '100%' }} color="secondary" badgeContent={usersData?.length}>
                     <Typography variant="h6">Users</Typography>
                   </Badge>
                 </TopBoxes>
