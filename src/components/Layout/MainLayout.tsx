@@ -328,7 +328,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               </ListItemIcon>
               <ListItemText secondary="Summary by Project" />
             </ListItemButton>
-            {isMod(role) ? (
+            {/* {isMod(role) ? (
               <ListItemButton
                 component={NavLink}
                 to={'/reports/assignissues'}
@@ -342,7 +342,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               </ListItemButton>
             ) : (
               ''
-            )}
+            )} */}
             <ListItemButton
               component={NavLink}
               to={'/reports/targetdates'}

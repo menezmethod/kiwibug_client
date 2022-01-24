@@ -26,7 +26,15 @@ import { DeleteIssue } from './DeleteIssue';
 import { useNavigate } from 'react-router-dom';
 import { useDeleteIssue } from '../api/deleteIssue';
 
-export default function ViewIssue({ issueId }) {
+type Issue = {
+  issueId: string;
+};
+
+type ViewIssueProps = {
+  issueId: string;
+};
+
+export default function ViewIssue({ issueId }: ViewIssueProps) {
   const issueQuery = useIssue({ issueId });
   const [open, setOpen] = React.useState(false);
 

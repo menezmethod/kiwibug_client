@@ -1,9 +1,8 @@
 import { API_URL } from '@/config';
 import { setSnackbar } from '@/redux/models/snackbar';
-import createStore from '@/redux/createStore'
+import createStore from '@/redux/createStore';
 import storage from '@/utils/storage';
 import Axios, { AxiosRequestConfig } from 'axios';
-
 
 function authRequestInterceptor(config: AxiosRequestConfig) {
   const token = storage.getToken();
@@ -25,6 +24,7 @@ axios.interceptors.response.use(
   },
   (error) => {
     const message = error.response?.data?.message || error.message;
+    // Can't do a dispatch from an axios interceptor, so have to dispatch to store directly.
     createStore.dispatch(setSnackbar(true, 'error', message));
     return Promise.reject(error);
   }

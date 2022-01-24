@@ -21,14 +21,14 @@ export const Issue = () => {
     <ContentLayout title="Edit Issue">
       <Grid container spacing={1} justifyContent="flex-end">
         <Grid item>
-          <EditIssue issueId={id} show="button" />
+          <EditIssue issueId={id || '1'} show="button" />
         </Grid>
         <Grid item>
-          <DeleteIssue id={id} show="button" />
+          <DeleteIssue id={id || '1'} show="button" />
         </Grid>
       </Grid>
       <br />
-      <ViewIssue issueId={id} />
+      <ViewIssue issueId={id || '1'} />
     </ContentLayout>
   );
 };

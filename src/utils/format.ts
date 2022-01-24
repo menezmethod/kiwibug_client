@@ -2,8 +2,7 @@ import { default as dayjs } from 'dayjs';
 
 export const formatDate = (date: number) => dayjs(date).format('YYYY-MM-DDTHH:mm');
 
-export const formatDateGrid = (date: number) =>
-  dayjs(date).subtract(1, 'day').format('MMMM D, YYYY');
+export const formatDateGrid = (date: number) => dayjs(date).format('MMMM D, YYYY');
 
 export const formatDateReports = (date: number) => dayjs(date).format('MMMM D, YYYY');
 
