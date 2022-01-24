@@ -21,7 +21,7 @@ export const formatRoleForm = (role: any[]) => {
 };
 // Looks up role and if it finds it, returns the formatted name of the role
 export const formatRole = (role: any[]) => {
-  if (role.some((newRole) => newRole.name === 'ROLE_ADMIN')) {
+  if (role.flat().some((newRole) => newRole.name === 'ROLE_ADMIN')) {
     return 'Administrator';
   } else if (role.some((newRole) => newRole.name === 'ROLE_MANAGER')) {
     return 'Manager';

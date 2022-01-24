@@ -1,6 +1,6 @@
 import LoaderSuspense from '@/components/LoaderSuspense';
 import { formatDateGrid } from '@/utils/format';
-import { Container, Grid, Stack, styled } from '@mui/material';
+import { Container, Grid, styled } from '@mui/material';
 import MUIDataTable from 'mui-datatables';
 import React from 'react';
 import { useProjects } from '../api/getProjects';
@@ -59,11 +59,18 @@ export const ProjectsList = () => {
     },
     {
       name: 'projectId',
-      label: ' ',
+      label: 'ACTIONS',
       options: {
+        setCellHeaderProps: () => ({
+          style: {
+            display: 'flex',
+            justifyContent: 'right',
+            flexDirection: 'row-reverse',
+          },
+        }),
         customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
           return (
-            <Grid container spacing={0} justifyContent="center">
+            <Grid container spacing={0} justifyContent="flex-end">
               <Grid item>
                 <EditProject projectId={value} show="icon" />
               </Grid>
@@ -76,10 +83,13 @@ export const ProjectsList = () => {
       },
     },
   ];
+
   const options = {
-    filterType: 'checkbox',
+    filterType: 'dropdown',
     selectableRows: 'none',
+    fixedHeader: true,
   };
+
   if (!projectsQuery.data) return null;
 
   let projectsRows = projectsQuery?.data;

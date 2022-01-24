@@ -1,29 +1,27 @@
 import LoaderSuspense from '@/components/LoaderSuspense';
 import { formatDateGrid } from '@/utils/format';
-import { Container, Paper, styled } from '@mui/material';
-import { DataGrid, GridSelectionModel } from '@mui/x-data-grid';
+import { Container, Grid, styled } from '@mui/material';
 import MUIDataTable from 'mui-datatables';
-import React, { useState } from 'react';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import { useIssues } from '../api/getIssues';
 import AddIssue from './AddIssue';
+import { DeleteIssue } from './DeleteIssue';
+import EditIssue from './EditIssue';
 
-const DataGridIssue = styled(DataGrid)({
-  border: '0',
-  marginTop: '-4vh',
-});
-
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(0.5),
+const Add = styled('div')(({ theme }) => ({
+  justifyContent: 'center',
+  '@media(minWidth: 780px)': {
+    alignItems: 'center',
+  },
 }));
 
 export const IssuesList = () => {
   const issuesQuery = useIssues();
-  const [selectionModel, setSelectionModel] = useState<GridSelectionModel>([]);
 
   if (!issuesQuery.data) return null;
 
-  let issuesRows = issuesQuery?.data;
+  const issuesRows = issuesQuery?.data;
 
   if (issuesQuery.isLoading) {
     return <LoaderSuspense />;
@@ -32,65 +30,94 @@ export const IssuesList = () => {
   const issueColumns = [
     {
       name: 'issueSummary',
-      label: 'Issue Summary',
+      label: 'SUMMARY',
+      options: {
+        // customBodyRender: (value: any) => <Link to={'issue/' + value.issuesId}>{value}</Link>,
+        customBodyRender: (value: any, dataIndex: any) => (
+          <Link to={'/issue/' + dataIndex.rowData[11]}>{value}</Link>
+        ),
+      },
     },
     {
       name: 'identifiedDate',
-      label: 'Identified Date',
+      label: 'IDENTIFIED',
       options: {
         customBodyRender: (value: any) => formatDateGrid(value),
       },
     },
     {
       name: 'status',
-      label: 'Status',
+      label: 'STATUS',
     },
     {
       name: 'priority',
-      label: 'Priority',
+      label: 'PRIORITY',
     },
     {
       name: 'targetResolutionDate',
-      label: 'Target Resolution Date',
+      label: 'TARGET',
       options: {
         customBodyRender: (value: any) => formatDateGrid(value),
       },
     },
     {
       name: 'progress',
-      label: 'Progress',
+      label: 'PROGRESS',
     },
     {
       name: 'actualResolutionDate',
-      label: 'Actual Resolution Date',
+      label: 'ACTUAL',
       options: {
         customBodyRender: (value: any) => (value ? formatDateGrid(value) : ' '),
       },
     },
     {
       name: 'identifiedByEmployeeId',
-      label: 'Identified By',
+      label: 'ID BY',
       options: {
         customBodyRender: (value: any) => value?.employeeName,
       },
     },
     {
       name: 'relatedProjectId',
-      label: 'Project Name',
+      label: 'PROJECT',
       options: {
         customBodyRender: (value: any) => value?.projectName,
       },
     },
     {
       name: 'assignedToEmployeeId',
-      label: 'Assigned To',
+      label: 'ASSIGNED',
       options: {
         customBodyRender: (value: any) => value?.employeeName,
       },
     },
     {
       name: 'resolutionSummary',
-      label: 'Resolution Summary',
+      label: 'OUTCOME',
+    },
+    {
+      name: 'issuesId',
+      label: 'ACTIONS',
+      options: {
+        setCellHeaderProps: () => ({
+          style: {
+            justifyContent: 'flex-end',
+          },
+        }),
+        customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
+          return (
+            <Grid container spacing={0} justifyContent="center">
+              <Grid item>
+                <EditIssue issueId={value} show="icon" />
+              </Grid>
+              <Grid item>
+                <DeleteIssue id={value} show="icon" />
+              </Grid>
+            </Grid>
+          );
+        },
+      },
     },
   ];
   const options = {
@@ -99,10 +126,12 @@ export const IssuesList = () => {
   };
   return (
     <Container maxWidth={false}>
-      <AddIssue />
-      {/* <EditIssue issueId={selectionModel.join()} /> */}
-      {/* <DeleteIssue id={selectionModel.join()} /> */}
-
+      <Grid container justifyContent="flex-end">
+        <Add>
+          <AddIssue />
+        </Add>
+      </Grid>
+      <br />
       <MUIDataTable title="Issues" data={issuesRows} columns={issueColumns} options={options} />
     </Container>
   );

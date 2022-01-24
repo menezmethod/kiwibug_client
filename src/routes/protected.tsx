@@ -37,7 +37,7 @@ export const protectedRoutes = [
       { path: '/users', element: <Users /> },
       { path: '/profile', element: <Profile /> },
       { path: '/issues', element: <Issues /> },
-      { path: '/issue', element: <Issue /> },
+      { path: '/issue/:id', element: <Issue /> },
       // Reports
       { path: '/reports/assignissues', element: <AssignIssues /> },
       { path: '/reports/resolvedbymonth', element: <ResolvedByMonth /> },

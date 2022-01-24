@@ -1,15 +1,24 @@
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-
 import { Form } from '@/components/Form/Form';
 import { useProjects } from '@/features/projects/api/getProjects';
 import { useUsers } from '@/features/users/api/getUsers';
 import BugReportIcon from '@mui/icons-material/BugReport';
-import { DatePicker, LocalizationProvider } from '@mui/lab';
+import { DatePicker, LoadingButton, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
-    Button, Container, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio,
-    RadioGroup, Select, SelectChangeEvent, Stack, styled, TextField
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  InputLabel,
+  MenuItem,
+  Paper,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  styled,
+  TextField,
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -18,7 +27,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
-
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { AddIssueDTO, useAddIssue } from '../api/addIssue';
 
 const Item = styled(Paper)({
@@ -76,9 +86,14 @@ export default function AddIssue() {
 
   return (
     <>
-      <Button onClick={handleOpen} variant="outlined" startIcon={<BugReportIcon />}>
+      <LoadingButton
+        onClick={handleOpen}
+        variant="contained"
+        loading={addIssueMutation.isLoading}
+        startIcon={<BugReportIcon />}
+      >
         Add Issue
-      </Button>
+      </LoadingButton>
       <Container>
         <Form<AddIssueDTO['data']> id="add-issue">
           <Dialog
@@ -357,12 +372,17 @@ export default function AddIssue() {
               </Box>
             </DialogContent>
             <DialogActions>
-              <Button autoFocus type="submit" onClick={handleSubmit(onSubmit)}>
+              <LoadingButton
+                autoFocus
+                type="submit"
+                onClick={handleSubmit(onSubmit)}
+                loading={addIssueMutation.isLoading}
+              >
                 Add
-              </Button>
-              <Button color="error" onClick={handleClose} autoFocus>
+              </LoadingButton>
+              <LoadingButton color="error" onClick={handleClose} autoFocus>
                 Cancel
-              </Button>
+              </LoadingButton>
             </DialogActions>
           </Dialog>
         </Form>

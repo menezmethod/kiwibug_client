@@ -1,6 +1,7 @@
 import { Form } from '@/components/Form/Form';
 import { useProjects } from '@/features/projects/api/getProjects';
 import AddIcon from '@mui/icons-material/Add';
+import { LoadingButton } from '@mui/lab';
 import {
   Button,
   Container,
@@ -81,9 +82,14 @@ export default function AddUser() {
 
   return (
     <>
-      <Button onClick={handleOpen} variant="outlined" startIcon={<AddIcon />}>
+      <LoadingButton
+        onClick={handleOpen}
+        variant="contained"
+        loading={addUserMutation.isLoading}
+        startIcon={<AddIcon />}
+      >
         Add User
-      </Button>
+      </LoadingButton>
       <Container>
         <Form<AddUserDTO['data']> id="add-user">
           <Dialog
@@ -214,9 +220,14 @@ export default function AddUser() {
               </Box>
             </DialogContent>
             <DialogActions>
-              <Button autoFocus type="submit" onClick={handleSubmit(onSubmit)}>
+              <LoadingButton
+                autoFocus
+                loading={addUserMutation.isLoading}
+                type="submit"
+                onClick={handleSubmit(onSubmit)}
+              >
                 Add
-              </Button>
+              </LoadingButton>
               <Button color="error" onClick={handleClose} autoFocus>
                 Cancel
               </Button>

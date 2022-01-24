@@ -1,21 +1,19 @@
 import LoaderSuspense from '@/components/LoaderSuspense';
 import { formatRole } from '@/utils/format';
-import { Grid, Paper, styled } from '@mui/material';
-import { DataGrid, GridSelectionModel, GridToolbar } from '@mui/x-data-grid';
+import { Container, Grid, styled } from '@mui/material';
+import { GridSelectionModel } from '@mui/x-data-grid';
+import MUIDataTable from 'mui-datatables';
 import React, { useState } from 'react';
 import { useUsers } from '../api/getUsers';
 import AddUser from './AddUser';
 import { DeleteUser } from './DeleteUser';
 import EditUser from './EditUser';
 
-const DataGridUser = styled(DataGrid)({
-  border: '0',
-  marginTop: '-4vh',
-});
-
-const Item = styled(Paper)(({ theme }) => ({
-  ...theme.typography.body2,
-  padding: theme.spacing(0.5),
+const Add = styled('div')(({ theme }) => ({
+  justifyContent: 'center',
+  '@media(minWidth: 780px)': {
+    alignItems: 'center',
+  },
 }));
 
 export const UsersList = () => {
@@ -26,10 +24,6 @@ export const UsersList = () => {
     return <LoaderSuspense />;
   }
 
-  if (!usersQuery.data) return null;
-
-  let usersRows = usersQuery?.data;
-
   function getAssignedProject(params: { row: { assignedProjects: { projectName: any } } }) {
     if (params.row.assignedProjects === null) {
       return 'Unassigned';
@@ -37,86 +31,78 @@ export const UsersList = () => {
     return `${params.row.assignedProjects.projectName}`;
   }
 
-  function getRole(params: any) {
-    return formatRole(params.row.roles);
-  }
   const userColumns = [
     {
-      field: 'employeeName',
-      headerName: 'Name',
-      width: 180,
+      name: 'employeeName',
+      label: 'NAME',
     },
     {
-      field: 'email',
-      headerName: 'Email',
-      width: 180,
+      name: 'email',
+      label: 'EMAIL',
     },
     {
-      field: 'employeeRole',
-      headerName: 'Role',
-      width: 180,
-      valueGetter: getRole,
+      name: 'roles',
+      label: 'ROLE',
+      options: {
+        customBodyRender: (value: any) => formatRole(value),
+      },
     },
     {
-      field: 'username',
-      headerName: 'Username',
-      width: 180,
+      name: 'username',
+      label: 'USERNAME',
     },
     {
-      field: 'assignedProjects',
-      headerName: 'Assigned Project',
-      width: 255,
-      valueGetter: getAssignedProject,
+      name: 'assignedProjects',
+      label: 'ASSIGNED PROJECT',
+      options: {
+        customBodyRender: (value: any) => value?.projectName,
+      },
+    },
+    {
+      name: 'employeeId',
+      label: 'ACTIONS',
+      options: {
+        setCellHeaderProps: () => ({
+          style: {
+            display: 'flex',
+            justifyContent: 'right',
+          },
+        }),
+        customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
+          return (
+            <Grid container spacing={0} justifyContent="flex-end">
+              <Grid item>
+                <EditUser employeeId={value} show="icon" />
+              </Grid>
+              <Grid item>
+                <DeleteUser id={value} show="icon" />
+              </Grid>
+            </Grid>
+          );
+        },
+      },
     },
   ];
+
+  const options = {
+    filterType: 'dropdown',
+    selectableRows: 'none',
+    fixedHeader: true,
+  };
+
+  if (!usersQuery.data) return null;
+
+  let usersRows = usersQuery?.data;
+
   return (
-    <div style={{ height: '71vh', width: '100%' }}>
-      <DataGridUser
-        rows={usersRows}
-        columns={userColumns}
-        pageSize={5}
-        getRowId={(row: { employeeId: any }) => row.employeeId}
-        rowsPerPageOptions={[5]}
-        components={{
-          Toolbar: GridToolbar,
-        }}
-        initialState={{
-          filter: {
-            filterModel: {
-              items: [
-                {
-                  columnField: 'employeeName',
-                  operatorValue: 'contains',
-                  value: '',
-                },
-              ],
-            },
-          },
-        }}
-        onSelectionModelChange={(newSelectionModel: React.SetStateAction<GridSelectionModel>) => {
-          setSelectionModel(newSelectionModel);
-        }}
-        selectionModel={selectionModel}
-      />
+    <Container maxWidth={false}>
       <Grid container justifyContent="flex-end">
-        <Item elevation={0}>
+        <Add>
           <AddUser />
-        </Item>
-        {selectionModel && selectionModel.length ? (
-          <Item elevation={0}>
-            <EditUser employeeId={selectionModel.join()} />
-          </Item>
-        ) : (
-          ''
-        )}
-        {selectionModel && selectionModel.length ? (
-          <Item elevation={0}>
-            <DeleteUser id={selectionModel.join()} />
-          </Item>
-        ) : (
-          ''
-        )}
+        </Add>
       </Grid>
-    </div>
+      <br />
+      <MUIDataTable title="Users" data={usersRows} columns={userColumns} options={options} />
+    </Container>
   );
 };

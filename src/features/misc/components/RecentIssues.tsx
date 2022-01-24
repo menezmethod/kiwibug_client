@@ -1,6 +1,6 @@
 import { formatDateGrid } from '@/utils/format';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import { Card, CardHeader, Divider, Paper, Tooltip } from '@mui/material';
+import LaunchIcon from '@mui/icons-material/Launch';
+import { Card, CardHeader, Divider, IconButton, Paper } from '@mui/material';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,12 +8,15 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 type RecentIssuesProps = {
   data: any;
 };
 
 export default function RecentIssues({ data }: RecentIssuesProps) {
+  const navigate = useNavigate();
+
   return (
     <Card style={{ backgroundColor: '#1976d2', color: 'white' }}>
       <CardHeader title="Recent Issues" />
@@ -45,10 +48,15 @@ export default function RecentIssues({ data }: RecentIssuesProps) {
                 <TableCell>{row?.priority}</TableCell>
                 <TableCell>{row?.assignedToEmployeeId?.employeeName}</TableCell>
                 <TableCell>{row?.issueSummary.trim(30)}</TableCell>
-                <TableCell align="right">
-                  <Tooltip title="Modify" arrow>
-                    <MoreVertIcon fontSize="small" />
-                  </Tooltip>
+                <TableCell align="right" color="primary">
+                  <IconButton
+                    color="primary"
+                    aria-label="view issue"
+                    component="span"
+                    onClick={() => navigate('/issue/' + row.issuesId)}
+                  >
+                    <LaunchIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}

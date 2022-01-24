@@ -9,7 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import PeopleIcon from '@material-ui/icons/People';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import Logout from '@mui/icons-material/Logout';
-import { ListItem, ListItemText, useMediaQuery } from '@mui/material';
+import { ListItemButton, ListItemText, useMediaQuery } from '@mui/material';
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from '@mui/material/AppBar';
 import Avatar from '@mui/material/Avatar';
 import Box from '@mui/material/Box';
@@ -28,7 +28,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import * as React from 'react';
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 function Copyright(props: any) {
   return (
@@ -36,9 +36,9 @@ function Copyright(props: any) {
       <br />
       <Typography variant="body2" color="text.secondary" align="center" {...props}>
         {'Copyright © '}
-        <Link color="inherit" to="https://gimenez.dev/">
+        <NavLink color="inherit" to="https://gimenez.dev/">
           KiwiBug Issue Tracker (beta)
-        </Link>{' '}
+        </NavLink>{' '}
         {new Date().getFullYear()}
         {'.'}
       </Typography>
@@ -116,10 +116,17 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   const [open, setOpen] = React.useState(matches);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const openUser = Boolean(anchorEl);
+  const [selectedIndex, setSelectedIndex] = React.useState(1);
 
   const { user, logout } = useAuth();
   const role = formatRoleAuth(user?.authorities);
 
+  const handleListItemClick = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number
+  ) => {
+    setSelectedIndex(index);
+  };
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
@@ -209,7 +216,7 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
                 transformOrigin={{ horizontal: 'right', vertical: 'top' }}
                 anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
               >
-                <MenuItem component={Link} to={'/profile'}>
+                <MenuItem component={NavLink} to={'/profile'}>
                   <Avatar /> My Profile
                 </MenuItem>
                 <Divider />
@@ -234,7 +241,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
           </Toolbar>
         </AppBarTop>
         <Drawer variant="permanent" open={open}>
-          <Toolbar onClick={toggleDrawer}
+          <Toolbar
+            onClick={toggleDrawer}
             sx={{
               display: 'flex',
               alignItems: 'center',
@@ -244,76 +252,118 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               color: '#ffffff',
             }}
           >
-            <Logo >KiwiBug</Logo>
-
+            <Logo>KiwiBug</Logo>
           </Toolbar>
           <Divider />
           <List>
-            <ListItem button component={Link} to={'/'}>
+            <ListItemButton
+              selected={selectedIndex === 0}
+              component={NavLink}
+              to={'/'}
+              key="Dashboard"
+              onClick={(event: any) => handleListItemClick(event, 0)}
+            >
               <ListItemIcon>
                 <DashboardIcon />
               </ListItemIcon>
               <ListItemText primary="Dashboard" />
-            </ListItem>
-            <ListItem button component={Link} to={'/projects'}>
+            </ListItemButton>
+            <ListItemButton
+              selected={selectedIndex === 1}
+              component={NavLink}
+              to={'/projects'}
+              key="Projects"
+              onClick={(event: any) => handleListItemClick(event, 1)}
+            >
               <ListItemIcon>
                 <AccountTreeIcon />
               </ListItemIcon>
               <ListItemText primary="Projects" />
-            </ListItem>
-            <ListItem button component={Link} to={'/issues'}>
+            </ListItemButton>
+            <ListItemButton
+              selected={selectedIndex === 2}
+              component={NavLink}
+              to={'/issues'}
+              key="Issues"
+              onClick={(event: any) => handleListItemClick(event, 2)}
+            >
               <ListItemIcon>
                 <BugReportIcon />
               </ListItemIcon>
               <ListItemText primary="Issues" />
-            </ListItem>
+            </ListItemButton>
             {isMod(role) ? (
-              <ListItem button component={Link} to={'/users'}>
+              <ListItemButton
+                selected={selectedIndex === 3}
+                component={NavLink}
+                to={'/users'}
+                key="Users"
+                onClick={(event: any) => handleListItemClick(event, 3)}
+              >
                 <ListItemIcon>
                   <PeopleIcon />
                 </ListItemIcon>
                 <ListItemText primary="Users" />
-              </ListItem>
+              </ListItemButton>
             ) : (
               ''
             )}
           </List>
           <Divider />
           <List>
-            <ListItem button>
+            <ListItemButton>
               <ListItemIcon>
                 <AssignmentIcon />
               </ListItemIcon>
               <ListItemText primary="Issues Reports" />
-            </ListItem>
-            <ListItem button component={Link} to={'/reports/summarybyproject'}>
+            </ListItemButton>
+            <ListItemButton
+              component={NavLink}
+              to={'/reports/summarybyproject'}
+              selected={selectedIndex === 4}
+              onClick={(event: any) => handleListItemClick(event, 4)}
+            >
               <ListItemIcon>
                 <ArrowRightIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText secondary="Summary by Project" />
-            </ListItem>{' '}
+            </ListItemButton>
             {isMod(role) ? (
-              <ListItem button component={Link} to={'/reports/assignissues'}>
+              <ListItemButton
+                component={NavLink}
+                to={'/reports/assignissues'}
+                selected={selectedIndex === 5}
+                onClick={(event: any) => handleListItemClick(event, 5)}
+              >
                 <ListItemIcon>
                   <ArrowRightIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText secondary="Assign Open Issues" />
-              </ListItem>
+              </ListItemButton>
             ) : (
               ''
             )}
-            <ListItem button component={Link} to={'/reports/targetdates'}>
+            <ListItemButton
+              component={NavLink}
+              to={'/reports/targetdates'}
+              selected={selectedIndex === 5}
+              onClick={(event: any) => handleListItemClick(event, 5)}
+            >
               <ListItemIcon>
                 <ArrowRightIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText secondary="Target Resolution Dates" />
-            </ListItem>
-            <ListItem button component={Link} to={'/reports/resolvedbymonth'}>
+            </ListItemButton>
+            <ListItemButton
+              component={NavLink}
+              to={'/reports/resolvedbymonth'}
+              selected={selectedIndex === 6}
+            >
               <ListItemIcon>
                 <ArrowRightIcon fontSize="small" />
               </ListItemIcon>
               <ListItemText secondary="Average Days To Resolve" />
-            </ListItem>
+            </ListItemButton>
           </List>
         </Drawer>
         <Box

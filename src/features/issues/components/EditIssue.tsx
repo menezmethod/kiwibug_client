@@ -1,6 +1,3 @@
-import React from 'react';
-import { Controller, useForm } from 'react-hook-form';
-
 import { Form } from '@/components/Form/Form';
 import { useProjects } from '@/features/projects/api/getProjects';
 import { useUsers } from '@/features/users/api/getUsers';
@@ -9,8 +6,23 @@ import EditIcon from '@mui/icons-material/Edit';
 import { DatePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import {
-    Button, Container, FormControl, FormControlLabel, FormLabel, InputLabel, MenuItem, Paper, Radio,
-    RadioGroup, Select, SelectChangeEvent, Stack, styled, TextField
+  Button,
+  Container,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  IconButton,
+  InputLabel,
+  Link,
+  MenuItem,
+  Paper,
+  Radio,
+  RadioGroup,
+  Select,
+  SelectChangeEvent,
+  Stack,
+  styled,
+  TextField,
 } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -19,7 +31,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { useTheme } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { Box } from '@mui/system';
-
+import React from 'react';
+import { Controller, useForm } from 'react-hook-form';
 import { EditIssueDTO, useEditIssue } from '../api/editIssue';
 import { useIssue } from '../api/getIssue';
 
@@ -30,9 +43,10 @@ const Item = styled(Paper)({
 
 type EditIssueProps = {
   issueId: string;
+  show: string;
 };
 
-export default function EditIssue({ issueId }: EditIssueProps) {
+export default function EditIssue({ issueId, show }: EditIssueProps) {
   // Load list of projects and users from api for select assignment
   const projectsQuery = useProjects();
   const usersQuery = useUsers();
@@ -136,14 +150,37 @@ export default function EditIssue({ issueId }: EditIssueProps) {
   // Load data from api for assignment selects
   let projectsRows = projectsQuery?.data;
   let usersRows = usersQuery?.data;
-  const options = {
-    filterType: 'checkbox',
-  };
+  // console.log(issueQuery.data?.relatedProjectId.projectId);
   return (
     <>
-      <Button onClick={handleOpen} variant="outlined" startIcon={<EditIcon />}>
-        Edit Issue
-      </Button>
+      {show === 'icon' ? (
+        <IconButton onClick={handleOpen} color="primary" aria-label="edit issue" component="span">
+          <EditIcon />
+        </IconButton>
+      ) : (
+        ''
+      )}
+      {show === 'button' ? (
+        <Button onClick={handleOpen} variant="contained" startIcon={<EditIcon />}>
+          Edit
+        </Button>
+      ) : (
+        ''
+      )}
+      {show === 'text' ? (
+        <Button onClick={handleOpen} variant="text" startIcon={<EditIcon />}>
+          Edit
+        </Button>
+      ) : (
+        ''
+      )}
+      {show === 'link' ? (
+        <Link onClick={handleOpen} style={{ textDecoration: 'none' }}>
+          Edit
+        </Link>
+      ) : (
+        ''
+      )}
       <Container>
         <Form<EditIssueDTO['data']> id="edit-issue">
           <Dialog
@@ -174,7 +211,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       )}
                       name="issueSummary"
                       control={control}
-                      defaultValue={issueQuery.data?.issueSummary}
+                      defaultValue={issueQuery.data?.issueSummary || ''}
                     />
                   </Item>
                   <Item elevation={0}>
@@ -191,21 +228,21 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       )}
                       name="issueDescription"
                       control={control}
-                      defaultValue={issueQuery.data?.issueDescription}
+                      defaultValue={issueQuery.data?.issueDescription || ''}
                     />
                   </Item>
                   <Item elevation={0}>
                     <Controller
                       name="relatedProjectId"
                       control={control}
-                      defaultValue={relatedProjectId}
+                      defaultValue={issueQuery.data?.relatedProjectId.projectId}
                       render={({ field }) => (
                         <FormControl fullWidth>
                           <InputLabel id="related-project-id">Related Project</InputLabel>
                           <Select
                             labelId="related-project"
                             id="assignedProjects"
-                            value={relatedProjectId}
+                            value={issueQuery.data?.relatedProjectId.projectId}
                             label="Related Project"
                             onChange={handleChangeAp}
                           >
@@ -255,7 +292,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       <Controller
                         name="identifiedDate"
                         control={control}
-                        // rules={{ required: true }}
+                        rules={{ required: true }}
                         defaultValue={identifiedDate}
                         render={({ field: { ref, ...rest } }) => (
                           <DatePicker
@@ -312,15 +349,11 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                           <RadioGroup row aria-label="status" {...field}>
                             <FormControlLabel value="Open" control={<Radio />} label="Open" />
                             <FormControlLabel value="On-Hold" control={<Radio />} label="On-Hold" />
-                            <FormControlLabel
-                              value="Closed"
-                              control={<Radio />}
-                              label="Closed"
-                            />{' '}
+                            <FormControlLabel value="Closed" control={<Radio />} label="Closed" />
                           </RadioGroup>
                         </FormControl>
                       )}
-                      defaultValue={issueQuery.data?.status}
+                      defaultValue={issueQuery.data?.status || ''}
                       name="status"
                       control={control}
                     />
@@ -339,7 +372,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       )}
                       name="priority"
                       control={control}
-                      defaultValue={issueQuery.data?.priority}
+                      defaultValue={issueQuery.data?.priority || ''}
                       // rules={{ required: true }}
                     />
                   </Item>
@@ -405,7 +438,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                       )}
                       name="progress"
                       control={control}
-                      defaultValue={issueQuery.data?.progress}
+                      defaultValue={issueQuery.data?.progress || ''}
                     />
                   </Item>
                   <Item elevation={0}>
@@ -422,7 +455,7 @@ export default function EditIssue({ issueId }: EditIssueProps) {
                         />
                       )}
                       name="resolutionSummary"
-                      defaultValue={issueQuery.data?.resolutionSummary}
+                      defaultValue={issueQuery.data?.resolutionSummary || ''}
                       control={control}
                     />
                   </Item>

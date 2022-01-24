@@ -1,11 +1,11 @@
-import { useMutation } from 'react-query';
-
 import { axios } from '@/lib/axios';
 import { MutationConfig, queryClient } from '@/lib/react-query';
+import createStore from '@/redux/createStore';
 import { setSnackbar } from '@/redux/models/snackbar';
-import createStore from '@/redux/createStore'
-
+import { useMutation } from 'react-query';
 import { Issue } from '../types';
+
+
 
 export type EditIssueDTO = {
   data: {
@@ -42,15 +42,15 @@ export const useEditIssue = ({ config }: UseEditIssueOptions = {}) => {
     onMutate: async (editingIssue: any) => {
       await queryClient.cancelQueries(['issue', editingIssue?.issueId]);
 
-      const previousIssue = queryClient.getQueryData<Issue>(['issue', editingIssue?.issueId]);
+      // const previousIssue = queryClient.getQueryData<Issue>(['issue', editingIssue?.issueId]);
 
-      queryClient.setQueryData(['issue', editingIssue?.issueId], {
-        ...previousIssue,
-        ...editingIssue.data,
-        id: editingIssue.issueId,
-      });
+      // queryClient.setQueryData(['issue', editingIssue?.issueId], {
+      //   ...previousIssue,
+      //   ...editingIssue.data,
+      //   id: editingIssue.issueId,
+      // });
 
-      return { previousIssue };
+      // return { previousIssue };
     },
     onError: (_, __, context: any) => {
       if (context?.previousIssue) {

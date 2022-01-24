@@ -9,7 +9,9 @@ import {
   FormControl,
   FormControlLabel,
   FormLabel,
+  IconButton,
   InputLabel,
+  Link,
   MenuItem,
   Paper,
   Radio,
@@ -39,9 +41,10 @@ const Item = styled(Paper)({
 
 type EditUserProps = {
   employeeId: string;
+  show: string;
 };
 
-export default function EditUser({ employeeId }: EditUserProps) {
+export default function EditUser({ employeeId, show }: EditUserProps) {
   const userQuery = useUser({ employeeId });
   const editUserMutation = useEditUser();
   const projectsQuery = useProjects();
@@ -108,9 +111,27 @@ export default function EditUser({ employeeId }: EditUserProps) {
 
   return (
     <>
-      <Button onClick={handleOpen} variant="outlined" startIcon={<EditIcon />}>
-        Edit User
-      </Button>
+      {show === 'icon' ? (
+        <IconButton onClick={handleOpen} color="primary" aria-label="edit project" component="span">
+          <EditIcon />
+        </IconButton>
+      ) : (
+        ''
+      )}
+      {show === 'text' ? (
+        <Button onClick={handleOpen} variant="outlined" startIcon={<EditIcon />}>
+          Edit
+        </Button>
+      ) : (
+        ''
+      )}
+      {show === 'link' ? (
+        <Link onClick={handleOpen} style={{ textDecoration: 'none' }}>
+          Edit
+        </Link>
+      ) : (
+        ''
+      )}
       <Container>
         <Form<EditUserDTO['data']> id="edit-user">
           <Dialog
