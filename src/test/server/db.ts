@@ -13,15 +13,13 @@ const models = {
     id: primaryKey(String),
     title: String,
     body: String,
-    teamId: String,
-    createdAt: Number,
+    createdOn: Number,
   },
   issue: {
     id: primaryKey(String),
     body: String,
-    authorId: String,
-    discussionId: String,
-    createdAt: Number,
+    issueId: String,
+    createdOn: Number,
   },
 };
 
