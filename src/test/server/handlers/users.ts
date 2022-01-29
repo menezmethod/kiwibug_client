@@ -7,22 +7,13 @@ import { requireAuth, requireAdmin, delayedResponse } from '../utils';
 
 type ProfileBody = {
   email: string;
-  firstName: string;
-  lastName: string;
-  bio: string;
+  name: string;
 };
 
 export const usersHandlers = [
   rest.get(`${API_URL}/users`, (req, res, ctx) => {
     try {
       const user = requireAuth(req);
-      const result = db.user.findMany({
-        where: {
-          teamId: {
-            equals: user.teamId,
-          },
-        },
-      });
 
       return delayedResponse(ctx.json(result));
     } catch (error: any) {
@@ -64,9 +55,6 @@ export const usersHandlers = [
         where: {
           id: {
             equals: userId,
-          },
-          teamId: {
-            equals: user.teamId,
           },
         },
       });

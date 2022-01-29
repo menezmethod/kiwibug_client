@@ -6,20 +6,20 @@ import { API_URL } from '@/config';
 import { db, persistDb } from '../db';
 import { requireAuth, delayedResponse } from '../utils';
 
-type CreateCommentBody = {
+type CreateIssueBody = {
   body: string;
-  discussionId: string;
+  issueId: string;
 };
 
-export const commentsHandlers = [
-  rest.get(`${API_URL}/comments`, (req, res, ctx) => {
+export const issuesHandlers = [
+  rest.get(`${API_URL}/issues`, (req, res, ctx) => {
     try {
       requireAuth(req);
-      const discussionId = req.url.searchParams.get('discussionId') || '';
-      const result = db.comment.findMany({
+      const issueId = req.url.searchParams.get('issueId') || '';
+      const result = db.issue.findMany({
         where: {
-          discussionId: {
-            equals: discussionId,
+          issueId: {
+            equals: issueId,
           },
         },
       });
@@ -32,17 +32,17 @@ export const commentsHandlers = [
     }
   }),
 
-  rest.post<CreateCommentBody>(`${API_URL}/comments`, (req, res, ctx) => {
+  rest.post<CreateIssueBody>(`${API_URL}/issues`, (req, res, ctx) => {
     try {
       const user = requireAuth(req);
       const data = req.body;
-      const result = db.comment.create({
+      const result = db.issue.create({
         authorId: user.id,
         id: nanoid(),
         createdAt: Date.now(),
         ...data,
       });
-      persistDb('comment');
+      persistDb('issue');
       return delayedResponse(ctx.json(result));
     } catch (error: any) {
       return delayedResponse(
@@ -52,14 +52,14 @@ export const commentsHandlers = [
     }
   }),
 
-  rest.delete(`${API_URL}/comments/:commentId`, (req, res, ctx) => {
+  rest.delete(`${API_URL}/issues/:issueId`, (req, res, ctx) => {
     try {
       const user = requireAuth(req);
-      const { commentId } = req.params;
-      const result = db.comment.delete({
+      const { issueId } = req.params;
+      const result = db.issue.delete({
         where: {
           id: {
-            equals: commentId,
+            equals: issueId,
           },
           ...(user.role === 'USER' && {
             authorId: {
@@ -68,7 +68,7 @@ export const commentsHandlers = [
           }),
         },
       });
-      persistDb('comment');
+      persistDb('issue');
       return delayedResponse(ctx.json(result));
     } catch (error: any) {
       return delayedResponse(

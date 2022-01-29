@@ -11,8 +11,6 @@ type RegisterBody = {
   lastName: string;
   email: string;
   password: string;
-  teamId?: string;
-  teamName?: string;
 };
 
 type LoginBody = {

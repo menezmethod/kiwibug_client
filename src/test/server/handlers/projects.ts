@@ -11,11 +11,11 @@ type DiscussionBody = {
   body: string;
 };
 
-export const discussionsHandlers = [
-  rest.get(`${API_URL}/discussions`, (req, res, ctx) => {
+export const projectsHandlers = [
+  rest.get(`${API_URL}/projects`, (req, res, ctx) => {
     try {
       const user = requireAuth(req);
-      const result = db.discussion.findMany({
+      const result = db.project.findMany({
         where: {
           teamId: {
             equals: user.teamId,
@@ -31,14 +31,14 @@ export const discussionsHandlers = [
     }
   }),
 
-  rest.get(`${API_URL}/discussions/:discussionId`, (req, res, ctx) => {
+  rest.get(`${API_URL}/projects/:projectId`, (req, res, ctx) => {
     try {
       const user = requireAuth(req);
-      const { discussionId } = req.params;
-      const result = db.discussion.findFirst({
+      const { projectId } = req.params;
+      const result = db.project.findFirst({
         where: {
           id: {
-            equals: discussionId,
+            equals: projectId,
           },
           teamId: {
             equals: user.teamId,
@@ -54,18 +54,18 @@ export const discussionsHandlers = [
     }
   }),
 
-  rest.post<DiscussionBody>(`${API_URL}/discussions`, (req, res, ctx) => {
+  rest.post<DiscussionBody>(`${API_URL}/projects`, (req, res, ctx) => {
     try {
       const user = requireAuth(req);
       const data = req.body;
       requireAdmin(user);
-      const result = db.discussion.create({
+      const result = db.project.create({
         teamId: user.teamId,
         id: nanoid(),
         createdAt: Date.now(),
         ...data,
       });
-      persistDb('discussion');
+      persistDb('project');
       return delayedResponse(ctx.json(result));
     } catch (error: any) {
       return delayedResponse(
@@ -75,24 +75,24 @@ export const discussionsHandlers = [
     }
   }),
 
-  rest.patch<DiscussionBody>(`${API_URL}/discussions/:discussionId`, (req, res, ctx) => {
+  rest.patch<DiscussionBody>(`${API_URL}/projects/:projectId`, (req, res, ctx) => {
     try {
       const user = requireAuth(req);
       const data = req.body;
-      const { discussionId } = req.params;
+      const { projectId } = req.params;
       requireAdmin(user);
-      const result = db.discussion.update({
+      const result = db.project.update({
         where: {
           teamId: {
             equals: user.teamId,
           },
           id: {
-            equals: discussionId,
+            equals: projectId,
           },
         },
         data,
       });
-      persistDb('discussion');
+      persistDb('project');
       return delayedResponse(ctx.json(result));
     } catch (error: any) {
       return delayedResponse(
@@ -102,19 +102,19 @@ export const discussionsHandlers = [
     }
   }),
 
-  rest.delete(`${API_URL}/discussions/:discussionId`, (req, res, ctx) => {
+  rest.delete(`${API_URL}/projects/:projectId`, (req, res, ctx) => {
     try {
       const user = requireAuth(req);
-      const { discussionId } = req.params;
+      const { projectId } = req.params;
       requireAdmin(user);
-      const result = db.discussion.delete({
+      const result = db.project.delete({
         where: {
           id: {
-            equals: discussionId,
+            equals: projectId,
           },
         },
       });
-      persistDb('discussion');
+      persistDb('project');
       return delayedResponse(ctx.json(result));
     } catch (error: any) {
       return delayedResponse(

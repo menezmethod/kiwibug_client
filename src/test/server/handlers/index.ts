@@ -1,6 +1,6 @@
 import { authHandlers } from './auth';
-import { commentsHandlers } from './comments';
-import { discussionsHandlers } from './discussions';
+import { commentsHandlers } from './issues';
+import { discussionsHandlers } from './projects';
 import { teamsHandlers } from './teams';
 import { usersHandlers } from './users';
 
