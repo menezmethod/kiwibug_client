@@ -21,7 +21,7 @@ export const IssuesList = () => {
 
     if (!issuesQuery.data) return null;
 
-    const issuesRows = issuesQuery?.data;
+    const issuesRows: any = issuesQuery?.data;
 
     if (issuesQuery.isLoading) {
         return <LoaderSuspense/>;
@@ -120,7 +120,7 @@ export const IssuesList = () => {
             },
         },
     ];
-    const options = {
+    const options: any = {
         filterType: 'checkbox',
         selectableRows: 'none',
     };

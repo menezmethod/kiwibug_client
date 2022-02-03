@@ -75,7 +75,7 @@ export const UsersList = () => {
         },
     ];
 
-    const options = {
+    const options: any = {
         filterType: 'dropdown',
         selectableRows: 'none',
         fixedHeader: true,
@@ -83,7 +83,7 @@ export const UsersList = () => {
 
     if (!usersQuery.data) return null;
 
-    let usersRows = usersQuery?.data;
+    let usersRows: any = usersQuery?.data;
 
     return (
         <Container maxWidth={false}>

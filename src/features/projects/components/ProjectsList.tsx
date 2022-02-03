@@ -8,13 +8,11 @@ import AddProject from './AddProject';
 import {DeleteProject} from './DeleteProject';
 import {EditProject} from './EditProject';
 
-export type ProjectListtDTO = {
-    data: {
+type ProjectListDTO = {
         projectName: any;
         startDate: any;
         targetEndDate: any;
         actualEndDate: any;
-    };
 };
 
 const Add = styled('div')(({theme}) => ({
@@ -84,7 +82,7 @@ export const ProjectsList = () => {
         },
     ];
 
-    const options = {
+    const options: any = {
         filterType: 'dropdown',
         selectableRows: 'none',
         fixedHeader: true,
@@ -92,7 +90,7 @@ export const ProjectsList = () => {
 
     if (!projectsQuery.data) return null;
 
-    let projectsRows = projectsQuery?.data;
+    let projectsRows: any = projectsQuery?.data;
 
     return (
         <Container maxWidth={false}>

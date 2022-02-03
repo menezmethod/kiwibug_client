@@ -28,7 +28,7 @@ type EditProjectProps = {
 
 export const EditProject = ({projectId, show}: EditProjectProps) => {
     const editProjectMutation = useEditProject();
-    const projectQuery = useProject({projectId});
+    const projectQuery: any = useProject({projectId});
     const [open, setOpen] = React.useState(false);
     const [startDate, setStartDate] = React.useState<Date | undefined | null>(undefined);
     const [targetEndDate, setTargetEndDate] = React.useState<Date | undefined | null>(undefined);

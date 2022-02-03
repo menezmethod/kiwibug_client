@@ -45,7 +45,7 @@ type EditUserProps = {
 };
 
 export default function EditUser({employeeId, show}: EditUserProps) {
-    const userQuery = useUser({employeeId});
+    const userQuery: any = useUser({employeeId});
     const editUserMutation = useEditUser();
     const projectsQuery = useProjects();
 

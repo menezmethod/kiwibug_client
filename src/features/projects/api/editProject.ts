@@ -8,12 +8,13 @@ import {Project} from '../types';
 
 export type EditProjectDTO = {
     data: {
-        projectName: any;
-        startDate: Date;
-        targetEndDate: Date;
-        actualEndDate: Date;
+        projectId: any;
+        projectName: string;
+        startDate: string;
+        targetEndDate: string;
+        actualEndDate: string;
     };
-    projectId: string;
+    projectId: any;
 };
 
 export const editProject = ({data, projectId}: EditProjectDTO): Promise<Project> => {

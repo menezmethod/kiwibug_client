@@ -1,18 +1,23 @@
 import {BaseEntity} from '@/types';
 
 export type User = {
-    employeeName: string;
-    email: string;
-    role: 'Admin' | 'User' | 'Lead' | 'Manager';
-    roles: any;
-    username: string;
-    createdOn: Date;
-    createdBy: string;
-    modifiedOn: Date;
-    modifiedBy: string;
-    projectName: string;
+    employeeId?: number;
+    employeeName?: string;
+    email?: string;
+    roles?: Roles[];
+    username?: string;
+    password?: string;
+    createdOn?: string;
+    createdBy?: any;
+    modifiedOn?: string;
+    modifiedBy?: any;
+    assignedProjects?: any;
     name: string;
-    assignedProjects: any;
     map: any;
     length: number;
 } & BaseEntity;
+
+export type Roles = {
+    id?: number;
+    name?: string;
+}
