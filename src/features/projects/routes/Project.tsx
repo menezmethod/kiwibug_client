@@ -1,4 +1,4 @@
-import { ContentLayout } from '@/components/Layout/ContentLayout';
+import {ContentLayout} from '@/components/Layout/ContentLayout';
 import React from 'react';
 
 export const Project = () => {

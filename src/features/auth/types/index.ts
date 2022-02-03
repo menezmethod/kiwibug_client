@@ -8,6 +8,6 @@ export type AuthUser = {
 };
 
 export type UserResponse = {
-  accessToken: string;
-  user: AuthUser;
+    accessToken: string;
+    user: AuthUser;
 };

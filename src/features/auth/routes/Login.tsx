@@ -1,16 +1,16 @@
-import { useNavigate } from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
 
-import { Head } from '@/components/Head/Head';
+import {Head} from '@/components/Head/Head';
 
-import { LoginForm } from '../components/LoginForm';
+import {LoginForm} from '../components/LoginForm';
 
 export const Login = () => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  return (
-    <>
-    <Head title="Sign in" />
-    <LoginForm onSuccess={() => navigate('/')} />
-    </>
-);
+    return (
+        <>
+            <Head title="Sign in"/>
+            <LoginForm onSuccess={() => navigate('/')}/>
+        </>
+    );
 };

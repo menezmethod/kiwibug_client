@@ -1,17 +1,17 @@
-import { axios } from '@/lib/axios';
-import { useQuery } from 'react-query';
-import { User } from '../types';
+import {axios} from '@/lib/axios';
+import {useQuery} from 'react-query';
+import {User} from '../types';
 
-export const getUser = ({ employeeId }: { employeeId: string }): Promise<User> => {
-  return axios.get(`/users/${employeeId}`);
+export const getUser = ({employeeId}: { employeeId: string }): Promise<User> => {
+    return axios.get(`/users/${employeeId}`);
 };
 type UseUserOptions = {
-  employeeId: string;
+    employeeId: string;
 };
 
-export const useUser = ({ employeeId }: UseUserOptions) => {
-  return useQuery({
-    queryKey: ['user', employeeId],
-    queryFn: () => getUser({ employeeId }),
-  });
+export const useUser = ({employeeId}: UseUserOptions) => {
+    return useQuery({
+        queryKey: ['user', employeeId],
+        queryFn: () => getUser({employeeId}),
+    });
 };

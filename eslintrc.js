@@ -14,9 +14,6 @@ module.exports = {
       parserOptions: {
         sourceType: "module"
     },
-    rules: {
-        "quotes": [ "error", "single" ]
-    },
       settings: {
         react: { version: 'detect' },
         'import/resolver': {
@@ -41,7 +38,8 @@ module.exports = {
         'plugin:testing-library/react',
         'plugin:jest-dom/recommended',
       ],
-      rules: {
+      rules:
+          {"quotes": [ "error", "single" ],
         'no-restricted-imports': [
           'error',
           {
@@ -50,7 +48,6 @@ module.exports = {
         ],
         'linebreak-style': ['error', 'unix'],
         'react/prop-types': 'off',
-
         'import/order': [
           'error',
           {

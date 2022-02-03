@@ -1,50 +1,49 @@
-import { axios } from '@/lib/axios';
-import { MutationConfig, queryClient } from '@/lib/react-query';
-import { setSnackbar } from '@/redux/models/snackbar';
+import {axios} from '@/lib/axios';
+import {MutationConfig, queryClient} from '@/lib/react-query';
+import {setSnackbar} from '@/redux/models/snackbar';
 import createStore from '@/redux/createStore'
-import { useMutation } from 'react-query';
-import { Project } from '../types';
-
+import {useMutation} from 'react-query';
+import {Project} from '../types';
 
 
 export type AddProjectDTO = {
-  data: {
-    projectName: any;
-    startDate: Date;
-    targetEndDate: Date;
-    actualEndDate: Date;
-  };
+    data: {
+        projectName: any;
+        startDate: Date;
+        targetEndDate: Date;
+        actualEndDate: Date;
+    };
 };
 
-export const addProject = ({ data }: AddProjectDTO): Promise<Project> => {
-  return axios.post(`/projects`, data);
+export const addProject = ({data}: AddProjectDTO): Promise<Project> => {
+    return axios.post(`/projects`, data);
 };
 
 type UseAddProjectOptions = {
-  config?: MutationConfig<typeof addProject>;
+    config?: MutationConfig<typeof addProject>;
 };
 
-export const useAddProject = ({ config }: UseAddProjectOptions = {}) => {
-  return useMutation({
-    onMutate: async (newProject) => {
-      await queryClient.cancelQueries('projects');
+export const useAddProject = ({config}: UseAddProjectOptions = {}) => {
+    return useMutation({
+        onMutate: async (newProject) => {
+            await queryClient.cancelQueries('projects');
 
-      // const previousProjects = queryClient.getQueryData<Project[]>('projects');
+            // const previousProjects = queryClient.getQueryData<Project[]>('projects');
 
-      // queryClient.setQueryData('projects', [...(previousProjects || []), newProject.data]);
+            // queryClient.setQueryData('projects', [...(previousProjects || []), newProject.data]);
 
-      // return { previousProjects };
-    },
-    onError: (_, __, context: any) => {
-      if (context?.previousProjects) {
-        queryClient.setQueryData('projects', context.previousProjects);
-      }
-    },
-    onSuccess: () => {
-      queryClient.invalidateQueries('projects');
-      createStore.dispatch(setSnackbar(true, 'success', 'Project Added'));
-    },
-    ...config,
-    mutationFn: addProject,
-  });
+            // return { previousProjects };
+        },
+        onError: (_, __, context: any) => {
+            if (context?.previousProjects) {
+                queryClient.setQueryData('projects', context.previousProjects);
+            }
+        },
+        onSuccess: () => {
+            queryClient.invalidateQueries('projects');
+            createStore.dispatch(setSnackbar(true, 'success', 'Project Added'));
+        },
+        ...config,
+        mutationFn: addProject,
+    });
 };

@@ -1,13 +1,11 @@
-import { authHandlers } from './auth';
-import { commentsHandlers } from './issues';
-import { discussionsHandlers } from './projects';
-import { teamsHandlers } from './teams';
-import { usersHandlers } from './users';
+import {authHandlers} from './auth';
+import {issuesHandlers} from './issues';
+import {projectsHandlers} from './projects';
+import {usersHandlers} from './users';
 
 export const handlers = [
-  ...authHandlers,
-  ...commentsHandlers,
-  ...discussionsHandlers,
-  ...teamsHandlers,
-  ...usersHandlers,
+    ...authHandlers,
+    ...issuesHandlers,
+    ...projectsHandlers,
+    ...usersHandlers,
 ];

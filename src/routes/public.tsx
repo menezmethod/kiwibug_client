@@ -1,10 +1,10 @@
-import { lazyImport } from '@/utils/lazyImport';
+import {lazyImport} from '@/utils/lazyImport';
 
-const { AuthRoutes } = lazyImport({ factory: () => import('@/features/auth'), name: 'AuthRoutes' });
+const {AuthRoutes} = lazyImport({factory: () => import('@/features/auth'), name: 'AuthRoutes'});
 
 export const publicRoutes = [
-  {
-    path: '/auth/*',
-    element: <AuthRoutes />,
-  },
+    {
+        path: '/auth/*',
+        element: <AuthRoutes/>,
+    },
 ];

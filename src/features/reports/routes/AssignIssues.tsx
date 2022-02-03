@@ -1,10 +1,10 @@
-import { Container } from '@mui/material';
+import {Container} from '@mui/material';
 import React from 'react';
 
 export default function AssignIssues() {
     return (
         <Container>
-           ASSIGN ISSUES 
+            ASSIGN ISSUES
         </Container>
     )
 }
