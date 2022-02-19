@@ -9,10 +9,10 @@ import {DeleteProject} from './DeleteProject';
 import {EditProject} from './EditProject';
 
 type ProjectListDTO = {
-        projectName: any;
-        startDate: any;
-        targetEndDate: any;
-        actualEndDate: any;
+    projectName: any;
+    startDate: any;
+    targetEndDate: any;
+    actualEndDate: any;
 };
 
 const Add = styled('div')(({theme}) => ({

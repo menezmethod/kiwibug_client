@@ -40,9 +40,9 @@ export const persistDb = (model: Model) => {
 export const initializeDb = () => {
     const database = loadDb();
     Object.entries(db).forEach(([key, model]) => {
-        const dataEntres = database[key];
-        if (dataEntres) {
-            dataEntres?.forEach((entry: Record<string, any>) => {
+        const dataEntries = database[key];
+        if (dataEntries) {
+            dataEntries?.forEach((entry: Record<string, any>) => {
                 // @ts-ignore
                 model.create(entry);
             });
