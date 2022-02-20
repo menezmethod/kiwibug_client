@@ -7,7 +7,7 @@ A simple issue tracking system built using React (TypeScript)
 ![Redux](https://img.shields.io/badge/redux-%23593d88.svg?style=for-the-badge&logo=redux&logoColor=white)
 
 ## Introduction
-After juggling multiple projects in my personal and professional life, I decided to create an app that I could not only use to showcase some of the latest technologies I'd been working with, but also use myself. This is a simple issue tracking system that you could use to keep track of issues in your projects.
+After juggling multiple projects in my personal and professional life, I decided to create an app that I could not only use to showcase some of the latest technologies I'd been working with, but also use the project myself. This is a simple issue tracking system that you could use to keep track of issues in your projects.
 
 This project's goal is to be scalable and to serve as a practice tool for real-world application development. Feel free to explore the code in this repository.
 ## Contributing
