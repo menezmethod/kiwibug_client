@@ -16,7 +16,7 @@ Contributions are always appreciated! Feel free to contribute if you have any id
 3. Make desired changes
 4. Test changes
 5. Push your branch and open a Pull Request
-### Demo
+## Demo
 [![KiwiBug Demo](https://github.com/menezmethod/kiwibug_frontend/blob/master/public/output.gif?raw=true)](https://kiwibug.netlify.app/)
 
 [![Licence](https://img.shields.io/github/license/Ileriayo/markdown-badges?style=for-the-badge)](https://choosealicense.com/licenses/mit/)
