@@ -35,7 +35,7 @@ export default function OverdueIssues({data}: OverdueIssuesProps) {
                     <TableBody>
                         {data?.map((row: any) => (
                             <TableRow
-                                key={row?.issueSummary + Math.floor(Math.random() * 100)}
+                                key={row?.issueId)}
                                 sx={{'&:last-child td, &:last-child th': {border: 0}}}
                             >
                                 <TableCell component="th" scope="row">
